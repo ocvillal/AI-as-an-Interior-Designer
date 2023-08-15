@@ -62,6 +62,15 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""SwitchLevel"",
+                    ""type"": ""Value"",
+                    ""id"": ""9f517d7c-cace-4ebc-8d56-692d7a790749"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
                 }
             ],
             ""bindings"": [
@@ -185,6 +194,61 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""action"": ""Jump"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""Arrow Keys"",
+                    ""id"": ""a68d15a3-a118-4502-a0f6-de3e607617b3"",
+                    ""path"": ""2DVector"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""SwitchLevel"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""up"",
+                    ""id"": ""68954d3d-0713-4efc-86e4-6af92e8b7dd1"",
+                    ""path"": ""<Keyboard>/upArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""SwitchLevel"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""down"",
+                    ""id"": ""d323e974-c189-42fb-9a28-1c4a03b6e300"",
+                    ""path"": ""<Keyboard>/downArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""SwitchLevel"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""left"",
+                    ""id"": ""494ea2a7-8df4-4af5-be16-10b635873164"",
+                    ""path"": ""<Keyboard>/leftArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""SwitchLevel"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""right"",
+                    ""id"": ""472d8aaa-4091-42c4-8b9f-94b0fcc86fae"",
+                    ""path"": ""<Keyboard>/rightArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""SwitchLevel"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
                 }
             ]
         }
@@ -197,6 +261,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         m_OnFoot_Look = m_OnFoot.FindAction("Look", throwIfNotFound: true);
         m_OnFoot_Swing = m_OnFoot.FindAction("Swing", throwIfNotFound: true);
         m_OnFoot_Jump = m_OnFoot.FindAction("Jump", throwIfNotFound: true);
+        m_OnFoot_SwitchLevel = m_OnFoot.FindAction("SwitchLevel", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -262,6 +327,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     private readonly InputAction m_OnFoot_Look;
     private readonly InputAction m_OnFoot_Swing;
     private readonly InputAction m_OnFoot_Jump;
+    private readonly InputAction m_OnFoot_SwitchLevel;
     public struct OnFootActions
     {
         private @PlayerControls m_Wrapper;
@@ -270,6 +336,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         public InputAction @Look => m_Wrapper.m_OnFoot_Look;
         public InputAction @Swing => m_Wrapper.m_OnFoot_Swing;
         public InputAction @Jump => m_Wrapper.m_OnFoot_Jump;
+        public InputAction @SwitchLevel => m_Wrapper.m_OnFoot_SwitchLevel;
         public InputActionMap Get() { return m_Wrapper.m_OnFoot; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -291,6 +358,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @Jump.started += instance.OnJump;
             @Jump.performed += instance.OnJump;
             @Jump.canceled += instance.OnJump;
+            @SwitchLevel.started += instance.OnSwitchLevel;
+            @SwitchLevel.performed += instance.OnSwitchLevel;
+            @SwitchLevel.canceled += instance.OnSwitchLevel;
         }
 
         private void UnregisterCallbacks(IOnFootActions instance)
@@ -307,6 +377,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @Jump.started -= instance.OnJump;
             @Jump.performed -= instance.OnJump;
             @Jump.canceled -= instance.OnJump;
+            @SwitchLevel.started -= instance.OnSwitchLevel;
+            @SwitchLevel.performed -= instance.OnSwitchLevel;
+            @SwitchLevel.canceled -= instance.OnSwitchLevel;
         }
 
         public void RemoveCallbacks(IOnFootActions instance)
@@ -330,5 +403,6 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         void OnLook(InputAction.CallbackContext context);
         void OnSwing(InputAction.CallbackContext context);
         void OnJump(InputAction.CallbackContext context);
+        void OnSwitchLevel(InputAction.CallbackContext context);
     }
 }

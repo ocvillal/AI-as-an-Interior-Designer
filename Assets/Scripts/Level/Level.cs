@@ -14,7 +14,7 @@ public class Level : MonoBehaviour
     public GameObject Toilet;
 
 
-    [SerializeField] private Vector2 _dimensions = new Vector2(10, 10);
+    [SerializeField] private Vector2 _dimensions = new Vector2(9, 9);
     public Vector2 Dimensions {
         get { return _dimensions; }
         set {
@@ -43,12 +43,11 @@ public class Level : MonoBehaviour
         Dimensions = _dimensions;
         Position = _position;
 
-        for (int j = 0; j < Dimensions.y; j++){
-            for (int i = 0; i < Dimensions.x; i++){
-                Grid[j, i] = 1;
-            }
-        }
-        Render();
+        // for (int j = 0; j < Dimensions.y; j++){
+        //     for (int i = 0; i < Dimensions.x; i++){
+        //         Grid[j, i] = 1;
+        //     }
+        // }
     }
 
     // Update is called once per frame
@@ -57,11 +56,11 @@ public class Level : MonoBehaviour
         
     }
 
-    bool CheckTileEmpty(int x, int y){
+    public bool CheckTileEmpty(int x, int y){
         return Grid[y, x] == 0f;
     }
 
-    bool PlaceItemAtTile(int x, int y){
+    public bool PlaceItemAtTile(int x, int y){
         if (Grid[y, x] == 0){
             Grid[y, x] = 1;
             return true;
@@ -70,7 +69,7 @@ public class Level : MonoBehaviour
         }
     }
 
-    bool RemoveItemAtTile(int x, int y){
+    public bool RemoveItemAtTile(int x, int y){
         if (Grid[y, x] == 1){
             Grid[y, x] = 0;
             return true;
@@ -79,16 +78,19 @@ public class Level : MonoBehaviour
         }
     }
 
-    void Render(){
+    public void Render(){
         Vector3 tile_pos = TopLeftCenter;
+        // Debug.Log(tile_pos);
         for (int j = 0; j < Dimensions.y; j++){
+            tile_pos.x = TopLeftCenter.x;
             for (int i = 0; i < Dimensions.x; i++){
                 if (!CheckTileEmpty(i, j)){
                     Instantiate(Toilet, tile_pos, Quaternion.identity);
+                    // Debug.Log(tile_pos);
                 }
                 tile_pos.x += TILE_SIZE;
+                
             }
-            tile_pos.x = TopLeftCenter.x;
             tile_pos.z += TILE_SIZE;
         }
     }
