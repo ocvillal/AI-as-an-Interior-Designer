@@ -285,8 +285,20 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3561480430639252251, guid: 8c9c5c3e1aec5f402811ce02efc8b128, type: 3}
+      propertyPath: _turnSpeed
+      value: 0.25
+      objectReference: {fileID: 0}
+    - target: {fileID: 3561480430639252251, guid: 8c9c5c3e1aec5f402811ce02efc8b128, type: 3}
       propertyPath: _jumpHeight
       value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 3561480430639252251, guid: 8c9c5c3e1aec5f402811ce02efc8b128, type: 3}
+      propertyPath: _maxTurnAngle
+      value: 45
+      objectReference: {fileID: 0}
+    - target: {fileID: 3561480430639252251, guid: 8c9c5c3e1aec5f402811ce02efc8b128, type: 3}
+      propertyPath: _minTurnAngle
+      value: -45
       objectReference: {fileID: 0}
     - target: {fileID: 3561480430639252251, guid: 8c9c5c3e1aec5f402811ce02efc8b128, type: 3}
       propertyPath: _playerCamDistance

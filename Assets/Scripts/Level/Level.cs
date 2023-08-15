@@ -42,12 +42,6 @@ public class Level : MonoBehaviour
     {
         Dimensions = _dimensions;
         Position = _position;
-
-        // for (int j = 0; j < Dimensions.y; j++){
-        //     for (int i = 0; i < Dimensions.x; i++){
-        //         Grid[j, i] = 1;
-        //     }
-        // }
     }
 
     // Update is called once per frame

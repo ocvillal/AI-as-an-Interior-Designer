@@ -6,7 +6,6 @@ public class LevelGenerator : MonoBehaviour
 {
     public int MAX_LEVELS_PER_ROW = 5;
     public float PLOT_SIZE = 14;
-    
 
     [SerializeField] private int _numLevels = 3;
     public int NumLevels {
@@ -17,9 +16,11 @@ public class LevelGenerator : MonoBehaviour
             TopLeftCenter.y = -1;
             TopLeftCenter.x = 
                 (_numLevels <= MAX_LEVELS_PER_ROW) ? - ((_numLevels - 1) * PLOT_SIZE)/2.0f : -((MAX_LEVELS_PER_ROW - 1) * PLOT_SIZE) / 2.0f;
-                Debug.Log(TopLeftCenter);
+            Debug.Log(TopLeftCenter);
         }
     }
+
+    // [Serialized]
 
 
     public GameObject Level;
@@ -27,17 +28,19 @@ public class LevelGenerator : MonoBehaviour
 
     public void CreateLevel(Vector2 dim, Vector3 pos){
         GameObject l = Instantiate(Level, pos, Quaternion.identity);
-Debug.Log(l);
+        Debug.Log(l);
         Level gen_level = l.GetComponent<Level>();
 
         gen_level.Dimensions = dim;
         gen_level.GetComponent<Level>().Position = pos;
 
         gen_level.PlaceItemAtTile(0,0);
-        gen_level.PlaceItemAtTile(4,4);
-        gen_level.PlaceItemAtTile(8,8);
-        gen_level.PlaceItemAtTile(0,8);
-        gen_level.PlaceItemAtTile(8,0);
+        // gen_level.PlaceItemAtTile(4,4);
+        gen_level.PlaceItemAtTile(9,9);
+        gen_level.PlaceItemAtTile(0,9);
+        gen_level.PlaceItemAtTile(9,0);
+
+        // Generation gets called here
 
         gen_level.GetComponent<Level>().Render();
         
@@ -62,11 +65,6 @@ Debug.Log(l);
         int count = 0;
         Vector3 plot_pos = TopLeftCenter;
         for (int k = 0; k < _numLevels; k++){
-
-
-            Debug.Log(count);
-            Debug.Log(plot_pos);
-
             if (count == 5){
                 Debug.Log("HELLO");
                 Debug.Log(_numLevels - k );
@@ -75,12 +73,9 @@ Debug.Log(l);
                 count = 0;
             }
 
-
-            CreateLevel(new Vector2(9, 9), plot_pos);
+            CreateLevel(new Vector2(10, 10), plot_pos);
             plot_pos.x += PLOT_SIZE;
             count += 1;
-
         }
     }
-
 }
