@@ -233,7 +233,7 @@ public class PlayerMovement : MonoBehaviour
             //BASICALLY, only affects player if on level ground or if going down a slope
             if (adjustedVelocity.y < 0 && !IsFalling && !IsJumping)
             {
-                Debug.Log("Adjusted velocity direction");
+                // Debug.Log("Adjusted velocity direction");
                 return adjustedVelocity;
             }
         }
