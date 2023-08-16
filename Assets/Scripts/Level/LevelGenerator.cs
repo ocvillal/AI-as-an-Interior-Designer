@@ -7,14 +7,17 @@ public class LevelGenerator : MonoBehaviour
     public int MAX_LEVELS_PER_ROW = 5;
     public float PLOT_SIZE = 14;
 
+    public LevelGene populations;
+
+
     [SerializeField] private int _numLevels = 3;
     public int NumLevels {
         get { return _numLevels; }
-        set { 
-            _numLevels = value; 
+        set {
+            _numLevels = value;
             TopLeftCenter = Vector3.zero;
             TopLeftCenter.y = -1;
-            TopLeftCenter.x = 
+            TopLeftCenter.x =
                 (_numLevels <= MAX_LEVELS_PER_ROW) ? - ((_numLevels - 1) * PLOT_SIZE)/2.0f : -((MAX_LEVELS_PER_ROW - 1) * PLOT_SIZE) / 2.0f;
             Debug.Log(TopLeftCenter);
         }
@@ -43,23 +46,31 @@ public class LevelGenerator : MonoBehaviour
         // Generation gets called here
 
         gen_level.GetComponent<Level>().Render();
-        
+
     }
+
 
 
     // Start is called before the first frame update
     void Start()
     {
         Debug.Log(_numLevels);
-        NumLevels = _numLevels;
-        Render();
+        NumLevels = _numLevels;  // Population Size
+
+
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+
     }
+
+    void generateSuccessors(){ // Octavio
+
+    }
+
 
     void Render(){
         int count = 0;
