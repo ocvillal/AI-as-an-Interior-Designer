@@ -414,8 +414,33 @@
 
     },
 
-    "furniture_pack_2" : {
 
+    "furniture_pack_2" : {
+        "glass_coffee_table" : {
+            "name" : "glass_coffee_able",
+            "dimensions" : [2, 3],
+            "constraints" : [],
+            "tags" : []
+        },
+
+        "file_cabinet" : {
+            "name" : "file_cabinet",
+            "dimensions" : [1, 1],
+            "constraints" : [
+                "back_against_wall"
+            ],
+            "tags" : []
+        },
+
+        "desk" : {
+            "name" : "desk",
+            "dimensions" : [1, 1],
+            "constraints" : [
+                "back_against_wall"
+            ],
+            "tags" : []
+        }
     }
+
 
 }
