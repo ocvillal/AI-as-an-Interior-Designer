@@ -1,0 +1,10 @@
+Furnature Pack 2:
+
+Coffee Table:
+    Name in JSON: "glass_coffee_table"
+    Scaled to: 2,2,2
+
+Furnature Pack 3:
+Computer Desk:
+    Name in JSON: "Desk"
+    Scaled to: 2,1,2
