@@ -8,7 +8,7 @@ using UnityEngine;
 // Finish by Thursday
 
 
-using Feature = System.Tuple<string, float, float>; // name of the furniture, x, y
+using Feature = FurnitureFeature; // name of the furniture, x, y
 
 // Represents an individual inside the population
 public class LevelGene {
