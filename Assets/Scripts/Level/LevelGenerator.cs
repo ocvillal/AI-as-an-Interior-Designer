@@ -7,7 +7,7 @@ public class LevelGenerator : MonoBehaviour
     public int MAX_LEVELS_PER_ROW = 5;
     public float PLOT_SIZE = 14;
 
-    public LevelGene populations;
+    public List<LevelGene> population;
 
 
     [SerializeField] private int _numLevels = 3;
@@ -67,46 +67,46 @@ public class LevelGenerator : MonoBehaviour
 
     }
 
-    
-    void elitestSelection(){
-        List<> results = new List<>();
+
+    List<LevelGene> elitestSelection(){
+        List<LevelGene> results = new List<LevelGene>();
         // Sort from Biggest to smallest
-        List<> randPop = new List<>();
+        List<LevelGene> randPop = new List<LevelGene>();
         // randPop = populations.OrderBy(x => x.count).ToList();
-        for(int i = 0; i < populations.Length % 2; i++){
+        for(int i = 0; i < population.Count % 2; i++){
             results.Add(population[i]);
         }
         return results;
     }
 
-    void tourneySelection(){
-        List<> results = new List<>();
-        List<> randPop = new List<>();
+    List<LevelGene> tourneySelection(){
+        List<LevelGene> results = new List<LevelGene>();
+        List<LevelGene> randPop = new List<LevelGene>();
         // randPop = populations.OrderBy(x=> Random.Shared.Next()).ToList();
-        for(int i = 0; population.Length < results.Lenght % 2; i++){
-            contestantA = randPop[i];
-            contestantB = randPop[populations.Length - i];
-            if contestantB > contestantA{
-                results.Add(cotestantA);
+        for(int i = 0; population.Count < results.Count % 2; i++){
+            LevelGene contestantA = randPop[i];
+            LevelGene contestantB = randPop[population.Count - i];
+            if (contestantB.Fitness() > contestantA.Fitness()){
+                results.Add(contestantB);
             }
             else{
-                results.Add(cotestantB);
+                results.Add(contestantA);
             }
         }
         return results;
     }
 
-    void generateSuccessors(){ // Octavio
-        List<> results = new List<>();
-        List<> selectList = elitestSelection();
-        selectList.AddRange(tourneySelection);
-        for(int i = 0; i < selectList.Lenght % 2; i++){
-            parentFirst = selectList[i];
-            parentSecond = selectList[-(i+1)];
-            results.Add(generateChildren);
-            results.Add(generateChildren)
+    List<LevelGene> generateSuccessors(){ // Octavio
+        List<LevelGene> results = new List<LevelGene>();
+        List<LevelGene> selectList = elitestSelection();
+        selectList.AddRange(tourneySelection());
+        for(int i = 0; i < selectList.Count % 2; i++){
+            LevelGene parentFirst = selectList[i];
+            LevelGene parentSecond = selectList[-(i+1)];
+            results.AddRange(parentFirst.GenerateChildren(parentSecond));
+            // results.Add(parentSecond.generateChildren);
         }
-        return results
+        return results;
     }
 
 

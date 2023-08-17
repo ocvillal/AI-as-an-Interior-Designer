@@ -81,23 +81,9 @@ public class LevelGene {
         }
         return emptyLevel;
     }
-    bool isCategory(Feature feature, string category)
-    {
+
+    bool isCategory(Feature feature, string category){
         // Get furniture category from JSON
-
-        return false;
-    }
-
-    float furnitureArea(Feature feature)
-    {
-        // Get furniture dimensions from JSON
-
-        return 1.0f;
-    }
-
-    bool hasTag(Feature feature, string tag)
-    {
-        // Check tags from JSON
 
         return false;
     }
@@ -105,28 +91,27 @@ public class LevelGene {
     Dictionary<string, float> Metrics()
     { // THE MEAT (HOw would we define this???? Someone research) Angela
         float balance = 0.0f;
-
         float harmony = 0.0f;
-
         float emphasis = 0.0f;
+        float contrast = 0.0f;
+        float scale = 0.0f;
+        float details = 0.0f;
+        float rhythm = 0.0f;
+
         int emphasisCount = 0;
 
-        float contrast = 0.0f;
         bool hasSmall = false;
         bool hasLarge = false;
 
-        float scale = 0.0f;
-
-        float details = 0.0f;
-
-        float rhythm = 0.0f;
         var rhythmList = new List<string>();
 
-        foreach (var item in features)
+        foreach (var feature in features)
         {
+            float area = feature.GetArea();
+
             // Balance
             // May check if furniture of the same size are on opposite sides of the room
-            if furnitureArea(item > 8.0f) {
+            if (area > 8.0f){
                 if (hasLarge) {
                     balance = -1.0f;
                 } else {
@@ -139,20 +124,16 @@ public class LevelGene {
 
             // Emphasis
             // This may also use the color of the furniture
-            if (isCategory(item, "general"){
+            if (isCategory(feature, "general")){
                 emphasisCount++;
             }
 
             // Contrast
-            if (!hasSmall || !hasLarge)
-            {
-                float area = furnitureArea(item);
-                if (area < 4.0f)
-                {
+            if (!hasSmall || !hasLarge){
+                if (area < 4.0f){
                     hasSmall = true;
                 }
-                else if (area > 8.0f)
-                {
+                else if (area > 8.0f){
                     hasLarge = true;
                 }
             } else {
@@ -160,23 +141,19 @@ public class LevelGene {
             }
 
             // Scale and Proportion
-            scale += furnitureArea(item);
+            scale += area;
 
-            // Deatils
-            if (hasTag(item, "decorative"))
-            {
+            // Deatils - Decorative furniture
+            if (feature.HasTag("decorative")){
                 details += 1.0f;
             }
 
-            // Rhythm
-            if (!hasTag(item, "essential"))
-            {
-                if (!rhythmList.Contains(item[0]))
-                {
-                    rhythmList.Add(item[0]);
+            // Rhythm - Small and duplicate non-essential furniture
+            if (!feature.HasTag("essential")){
+                if (!rhythmList.Contains(feature.name)){
+                    rhythmList.Add(feature.name);
                 }
-                else
-                {
+                else {
                     rhythm += 1.0f;
                 }
             }
@@ -198,7 +175,7 @@ public class LevelGene {
         return metrics;
     }
 
-    float Fitness(){
+    public float Fitness(){
         var tileMetrics = Metrics();
         float fitness = 0.0f;
 
@@ -233,40 +210,35 @@ public class LevelGene {
     LevelGene Mutate(){ // A mutate function // Angela
         // Either
         int actions = Random.Range(0, 4);
-
+        int[,] occupiedSpace = new int[10, 10];
+        foreach (var feature in features){
+                // Set to 1 if the space is occupied
+            }
         switch (actions)
         {
         // Modifies the placement of an item
             case 0:
-                int[,] occupiedSpace = new int[10, 10];
-                foreach (var item in features)
-                {
-                    // Set to 1 if the space is occupied
-                }
+
+
                 // Rotate or move?
                 break;
 
         // Adds a new item
             case 1:
-                int[,] occupiedSpace = new int[10, 10];
-                foreach(var item in features){
-                    // Set to 1 if the space is occupied
-                }
                 string randomItem = "";
-                
                 break;
 
         // Removes an item
             case 2:
                 var removableFeatureList = new List<string>();
-                foreach(var item in features) {
-                    if (!hasTag(item, "essential") {
-                        removableFeatureList.Add(item[0]);
+                foreach(var feature in features) {
+                    if (!feature.HasTag("essential")) {
+                        removableFeatureList.Add(feature.name);
                     }
                 }
                 if (removableFeatureList.Count > 0) {
                     int removeIndex = Random.Range(0, removableFeatureList.Count);
-                    features.Remove(removableFeatureList[removeIndex]);
+                    features.RemoveAt(removeIndex);
                 }
                 break;
 
@@ -282,10 +254,11 @@ public class LevelGene {
     }
 
     LevelGene RemoveObject(){ // Octavio
+
         return new LevelGene();
     }
 
-    List<LevelGene> GenerateChildren(LevelGene other) { // Alan
+    public List<LevelGene> GenerateChildren(LevelGene other) { // Alan
         // crossover
 
 

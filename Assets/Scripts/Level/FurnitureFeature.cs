@@ -13,8 +13,6 @@ public class FurnitureFeature{
     public Vector3 dimensions;
     public float orientation;
 
-
-
     public FurnitureFeature(string name, float x,  float z){
         this.name = name;
         this.position = new Vector3(x, 0, z);
@@ -45,6 +43,15 @@ public class FurnitureFeature{
                 my_br.z > other_tl.z
                 ;
     }
+
+    public float GetArea(){
+        return dimensions.x * dimensions.z;
+    }
+
+    public bool HasTag(string tag){
+        return furnitureLibrary.GetFurnitureTags(name).Contains(tag);
+    }
+
 
     public override string ToString(){
         return string.Format("{0} TL: {1} - BR: {2} ", name, this.position - this.dimensions / 2, this.position + this.dimensions / 2);
