@@ -81,29 +81,109 @@ public class LevelGene {
         }
         return emptyLevel;
     }
+    bool isCategory(Feature feature, string category)
+    {
+        // Get furniture category from JSON
 
+        return false;
+    }
 
-    Dictionary<string, float> Metrics(){ // THE MEAT (HOw would we define this???? Someone research) Angela
-        // Balance
+    float furnitureArea(Feature feature)
+    {
+        // Get furniture dimensions from JSON
+
+        return 1.0f;
+    }
+
+    bool hasTag(Feature feature, string tag)
+    {
+        // Check tags from JSON
+
+        return false;
+    }
+
+    Dictionary<string, float> Metrics()
+    { // THE MEAT (HOw would we define this???? Someone research) Angela
         float balance = 0.0f;
 
-        // Harmony
         float harmony = 0.0f;
 
-        // Emphasis
         float emphasis = 0.0f;
+        int emphasisCount = 0;
 
-        // Contrast
         float contrast = 0.0f;
+        bool hasSmall = false;
+        bool hasLarge = false;
 
-        // Scale and Proportion
         float scale = 0.0f;
 
-        // Deatils
         float details = 0.0f;
 
-        // Rhythm
         float rhythm = 0.0f;
+        var rhythmList = new List<string>();
+
+        foreach (var item in features)
+        {
+            // Balance
+            // May check if furniture of the same size are on opposite sides of the room
+            if furnitureArea(item > 8.0f) {
+                if (hasLarge) {
+                    balance = -1.0f;
+                } else {
+                    hasLarge = true;
+                }
+            }
+
+            // Harmony
+            // This uses the color of the furniture
+
+            // Emphasis
+            // This may also use the color of the furniture
+            if (isCategory(item, "general"){
+                emphasisCount++;
+            }
+
+            // Contrast
+            if (!hasSmall || !hasLarge)
+            {
+                float area = furnitureArea(item);
+                if (area < 4.0f)
+                {
+                    hasSmall = true;
+                }
+                else if (area > 8.0f)
+                {
+                    hasLarge = true;
+                }
+            } else {
+                contrast = 1.0f;
+            }
+
+            // Scale and Proportion
+            scale += furnitureArea(item);
+
+            // Deatils
+            if (hasTag(item, "decorative"))
+            {
+                details += 1.0f;
+            }
+
+            // Rhythm
+            if (!hasTag(item, "essential"))
+            {
+                if (!rhythmList.Contains(item[0]))
+                {
+                    rhythmList.Add(item[0]);
+                }
+                else
+                {
+                    rhythm += 1.0f;
+                }
+            }
+        }
+
+        // Parabola of fitness -(x - 2)^2 + 4
+        emphasis = -((emphasisCount - 2) * (emphasisCount - 2)) + 4;
 
         var metrics = new Dictionary<string, float>(){
             {"Balance", balance},
@@ -158,14 +238,36 @@ public class LevelGene {
         {
         // Modifies the placement of an item
             case 0:
+                int[,] occupiedSpace = new int[10, 10];
+                foreach (var item in features)
+                {
+                    // Set to 1 if the space is occupied
+                }
+                // Rotate or move?
                 break;
 
         // Adds a new item
             case 1:
+                int[,] occupiedSpace = new int[10, 10];
+                foreach(var item in features){
+                    // Set to 1 if the space is occupied
+                }
+                string randomItem = "";
+                
                 break;
 
         // Removes an item
             case 2:
+                var removableFeatureList = new List<string>();
+                foreach(var item in features) {
+                    if (!hasTag(item, "essential") {
+                        removableFeatureList.Add(item[0]);
+                    }
+                }
+                if (removableFeatureList.Count > 0) {
+                    int removeIndex = Random.Range(0, removableFeatureList.Count);
+                    features.Remove(removableFeatureList[removeIndex]);
+                }
                 break;
 
             // Do nothing
