@@ -25,11 +25,27 @@ public class LevelGene {
             LevelGene.LoadAllFurniture();
         }
         features = new List<Feature>();
+        Feature feat1 = new Feature("bed_single", 0, 0);
+        Feature feat2 = new Feature("door", 0, 0);
+        Feature feat3 = new Feature("night_stand", 2.5f, 0.5f);
+        Feature feat4 = new Feature("drawer_small", 3.5f, 3f);
+
+        Debug.Log(feat1);
+        Debug.Log(feat2);
+        Debug.Log(feat3);
+        Debug.Log(feat4);
+
+        Debug.Log(feat1.OverlapsWith(feat1));
+        Debug.Log(feat1.OverlapsWith(feat2));
+        Debug.Log(feat1.OverlapsWith(feat3));
+        Debug.Log(feat1.OverlapsWith(feat4));
+
+
     }
 
     static void LoadAllFurniture(){ // Arrian
         LevelGene.furnitureLibrary = JsonConvert.DeserializeObject<FurnitureLibrary>(File.ReadAllText("./TileData/FurnitureData.json"));
-
+        Feature.furnitureLibrary = LevelGene.furnitureLibrary;
         // Debug.Log(string.Join(", ", LevelGene.furnitureLibrary.categories));
         // string val = "";
         // foreach (KeyValuePair<string, List<string>> kvp in LevelGene.furnitureLibrary.categories)
@@ -46,6 +62,8 @@ public class LevelGene {
         //     dval += string.Format("Key = {0}, Value = {1}", kvp.Key, kvp.Value.ToString());
         // }
         // Debug.Log(dval);
+
+
     }
 
     static LevelGene GenerateRandomLevelGene(){ // Arrian
@@ -118,6 +136,12 @@ public class LevelGene {
 
     bool ValidateSelf(){ // n^2 complexity
         return true;
+    }
+
+
+    public bool FeatureIsWithinBounds(Feature feat){
+
+        return false;
     }
 
     bool ValidateFeatureAddition(Feature feat, bool allowDuplicates){ // Can I add this item into myself? O(n) complexity // THE MEAT // Arrian
