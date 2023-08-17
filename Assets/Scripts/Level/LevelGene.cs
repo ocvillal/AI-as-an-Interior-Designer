@@ -28,13 +28,67 @@ public class LevelGene {
         return new LevelGene();
     }
 
-    static LevelGene GenerateEmptyLevelGene(){ // Angela
-        return new LevelGene();
+    static LevelData GenerateEmptyLevelData(){ // Angela
+        emptyLevel = new LevelGene();
+        for (int i = 0; i < 10; i++)
+        {
+            for (int j = 0; j < 10; j++)
+            {
+                emptyLevel.features.Add(new Feature("empty", i, j));
+            }
+        }
     }
 
 
-    float Fitness(){ // THE MEAT (HOw would we define this???? Someone research) Angela
-        return 0.0f;
+    Dictionary<string, float> Metrics(){ // THE MEAT (HOw would we define this???? Someone research) Angela
+        // Balance
+        float balance = 0.0;
+
+        // Harmony
+        float harmony = 0.0;
+
+        // Emphasis
+        float emphasis = 0.0;
+
+        // Contrast
+        float contrast = 0.0;
+
+        // Scale and Proportion
+        float scale = 0.0;
+
+        // Deatils
+        float details = 0.0;
+
+        // Rhythm
+        float rhythm = 0.0;
+
+        var metrics = new Dictionary<string, float>(){
+            {"Balance", balance},
+            {"Harmony", harmony}
+            {"Emphasis", emphasis},
+            {"Contrast", contrast},
+            {"Scale", scale},
+            {"Details", details},
+            {"Rhythm", rhythm}
+        };
+
+        return fitness;
+    }
+
+    float Fitness(){
+        var tileMetrics = Metrics();
+        float fitness = 0.0;
+
+        // How heavily each category should affect overall fitness
+        float balance = 0.0;
+        float harmony = 0.0;
+        float emphasis = 0.0;
+        float contrast = 0.0;
+        float scale = 0.0;
+        float details = 0.0;
+        float rhythm = 0.0;
+
+        reutrn fitness;
     }
 
     bool ValidateSelf(){ // n^2 complexity
@@ -49,13 +103,26 @@ public class LevelGene {
 
     LevelGene Mutate(){ // A mutate function // Angela
         // Either
+        int actions = Random.Range(0, 4);
 
-        // Modifies the placement of an item
+        switch (actions)
+        {
+            // Modifies the placement of an item
+            case 0:
+                break;
 
-        // Adds a new item
+            // Adds a new item
+            case 1:
+                break;
 
-        // Removes an item
-        return new LevelGene();
+            // Removes an item
+            case 2:
+                break;
+
+            // Do nothing
+            default:
+                break;
+        }
     }
 
     LevelGene PlaceObject(){ // Alan
