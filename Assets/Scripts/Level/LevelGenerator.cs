@@ -67,8 +67,46 @@ public class LevelGenerator : MonoBehaviour
 
     }
 
-    void generateSuccessors(){ // Octavio
+    
+    void elitestSelection(){
+        List<> results = new List<>();
+        // Sort from Biggest to smallest
+        List<> randPop = new List<>();
+        // randPop = populations.OrderBy(x => x.count).ToList();
+        for(int i = 0; i < populations.Length % 2; i++){
+            results.Add(population[i]);
+        }
+        return results;
+    }
 
+    void tourneySelection(){
+        List<> results = new List<>();
+        List<> randPop = new List<>();
+        // randPop = populations.OrderBy(x=> Random.Shared.Next()).ToList();
+        for(int i = 0; population.Length < results.Lenght % 2; i++){
+            contestantA = randPop[i];
+            contestantB = randPop[populations.Length - i];
+            if contestantB > contestantA{
+                results.Add(cotestantA);
+            }
+            else{
+                results.Add(cotestantB);
+            }
+        }
+        return results;
+    }
+
+    void generateSuccessors(){ // Octavio
+        List<> results = new List<>();
+        List<> selectList = elitestSelection();
+        selectList.AddRange(tourneySelection);
+        for(int i = 0; i < selectList.Lenght % 2; i++){
+            parentFirst = selectList[i];
+            parentSecond = selectList[-(i+1)];
+            results.Add(generateChildren);
+            results.Add(generateChildren)
+        }
+        return results
     }
 
 
