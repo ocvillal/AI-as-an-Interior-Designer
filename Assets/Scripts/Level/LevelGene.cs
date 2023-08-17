@@ -1,3 +1,6 @@
+
+using Newtonsoft.Json;
+using System.IO;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -11,17 +14,38 @@ using Feature = System.Tuple<string, float, float>; // name of the furniture, x,
 public class LevelGene {
 
     //static // What would the json load in?
+    static FurnitureLibrary furnitureLibrary = null;
 
     List<Feature> features;
 
     bool isValid;
 
-    LevelGene(){
+    public LevelGene(){
+        if (furnitureLibrary == null){
+            LevelGene.LoadAllFurniture();
+        }
         features = new List<Feature>();
     }
 
     static void LoadAllFurniture(){ // Arrian
-        // JsonUtility"../TileData/FurnitureData.json"
+        LevelGene.furnitureLibrary = JsonConvert.DeserializeObject<FurnitureLibrary>(File.ReadAllText("./TileData/FurnitureData.json"));
+
+        // Debug.Log(string.Join(", ", LevelGene.furnitureLibrary.categories));
+        // string val = "";
+        // foreach (KeyValuePair<string, List<string>> kvp in LevelGene.furnitureLibrary.categories)
+        // {
+        //     val += string.Format("Key = {0}, Value = {1}", kvp.Key, string.Join(", ", kvp.Value));
+        // }
+        // Debug.Log(val);
+        // Debug.Log(string.Join(", ", LevelGene.furnitureLibrary.tags));
+        // Debug.Log(string.Join(", ", LevelGene.furnitureLibrary.constraints));
+
+        // string dval = "";
+        // foreach (KeyValuePair<string, FurnitureData> kvp in LevelGene.furnitureLibrary.furniture_pack_2)
+        // {
+        //     dval += string.Format("Key = {0}, Value = {1}", kvp.Key, kvp.Value.ToString());
+        // }
+        // Debug.Log(dval);
     }
 
     static LevelGene GenerateRandomLevelGene(){ // Arrian

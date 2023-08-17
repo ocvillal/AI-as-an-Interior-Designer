@@ -6,8 +6,15 @@ using UnityEngine;
 
 [System.Serializable]
 public class FurnitureData{
-    string name;
-    Tuple<int, int> dimensions;
-    List<string> constraints;
-    List<string> tags;
+    public string name;
+    public List<int> dimensions;
+    public List<string> constraints;
+    public List<string> tags;
+    // public static FurnitureData CreateFromJSON(string jsonString)
+    // {
+    //     return JsonUtility.FromJson<FurnitureData>(jsonString);
+    // }
+    public override string ToString(){
+        return name + string.Format(" ({0}, {1})", dimensions[0], dimensions[1]);
+    }
 }

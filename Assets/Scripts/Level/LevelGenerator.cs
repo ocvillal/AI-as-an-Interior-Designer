@@ -57,7 +57,7 @@ public class LevelGenerator : MonoBehaviour
         Debug.Log(_numLevels);
         NumLevels = _numLevels;  // Population Size
 
-
+        LevelGene g = new LevelGene();
 
     }
 

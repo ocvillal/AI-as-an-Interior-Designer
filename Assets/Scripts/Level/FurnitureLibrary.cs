@@ -12,4 +12,11 @@ public class FurnitureLibrary{
     public Dictionary<string, FurnitureData> furniture_pack_1;
     public Dictionary<string, FurnitureData> furniture_pack_2;
 
+    // public static FurnitureLibrary CreateFromJSON(string jsonString)
+    // {
+    //     Debug.Log("LOL");
+    //     return JsonUtility.FromJson<FurnitureLibrary>(jsonString);
+    // }
+
+
 }
