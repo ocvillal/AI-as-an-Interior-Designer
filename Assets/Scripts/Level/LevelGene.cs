@@ -54,14 +54,14 @@ public class LevelGene {
         LevelGene try1 = TryPlaceObject(feat1);
         Debug.Log(try1.ToString());
 
-        // LevelGene try2 = TryPlaceObject(feat2);
-        // Debug.Log(try2.ToString());
+        LevelGene try2 = try1.TryPlaceObject(feat2);
+        Debug.Log(try2.ToString());
 
-        // LevelGene try3 = TryPlaceObject(feat3);
-        // Debug.Log(try3.ToString());
+        LevelGene try3 = try2.TryPlaceObject(feat3);
+        Debug.Log(try3.ToString());
 
-        // LevelGene try4 = TryPlaceObject(feat4);
-        // Debug.Log(try4.ToString());
+        LevelGene try4 = try3.TryPlaceObject(feat4);
+        Debug.Log(try4.ToString());
     }
 
     public LevelGene(LevelGene gene){
@@ -255,6 +255,7 @@ public class LevelGene {
         ret &= CheckNoOverlaps(feat);
         // go through every piece of furniture in the features
         // validate with the rest of the
+        Debug.Log(ret);
         return ret;
     }
 
@@ -351,7 +352,7 @@ public class LevelGene {
 
         for (int j = 0; j < dimensions.y; j++){
             for (int i = 0; i < dimensions.x; i++){
-                ret += string.Format(" {{0}} ", ret_grid[j, i]);
+                ret += (ret_grid[j, i] != null) ? string.Format(" [{0}] ", ret_grid[j, i]) : " [-] ";
             }
             ret += "\n";
         }

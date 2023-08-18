@@ -14,7 +14,8 @@ public class FurnitureFeature{
     public float orientation;
 
     static public bool operator ==(FurnitureFeature item1, FurnitureFeature item2){
-        return item1 != null && item2 != null &&
+        return !object.ReferenceEquals(null, item1) &&
+                !object.ReferenceEquals(null, item2) &&
                 item1.name == item2.name &&
                 item1.position == item2.position &&
                 item1.dimensions == item2.dimensions &&
@@ -23,8 +24,9 @@ public class FurnitureFeature{
 
 
     static public bool operator !=(FurnitureFeature item1, FurnitureFeature item2){
-        return item1 == null || item2 == null ||
-                item1.name != item2.name ||
+        return object.ReferenceEquals(null, item1) ||
+                object.ReferenceEquals(null, item2) ||
+                 item1.name != item2.name ||
                 item1.position != item2.position ||
                 item1.dimensions != item2.dimensions ||
                  item1.orientation != item2.orientation;
