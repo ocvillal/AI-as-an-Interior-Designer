@@ -14,8 +14,8 @@ public class Level : MonoBehaviour
     public GameObject Toilet;
 
 
-    [SerializeField] private Vector2 _dimensions = new Vector2(9, 9);
-    public Vector2 Dimensions {
+    [SerializeField] private Vector2Int _dimensions = new Vector2Int(9, 9);
+    public Vector2Int Dimensions {
         get { return _dimensions; }
         set {
             _dimensions = value;
@@ -47,7 +47,7 @@ public class Level : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
     public bool CheckTileEmpty(int x, int y){
@@ -83,7 +83,7 @@ public class Level : MonoBehaviour
                     // Debug.Log(tile_pos);
                 }
                 tile_pos.x += TILE_SIZE;
-                
+
             }
             tile_pos.z += TILE_SIZE;
         }

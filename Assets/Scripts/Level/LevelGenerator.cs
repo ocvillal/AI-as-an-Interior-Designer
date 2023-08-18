@@ -10,6 +10,14 @@ public class LevelGenerator : MonoBehaviour
     public List<LevelGene> population;
 
 
+    [SerializeField] private Vector2Int _dimensions = new Vector2Int(9, 9);
+    public Vector2Int Dimensions {
+        get { return _dimensions; }
+        set {
+            _dimensions = value;
+        }
+    }
+
     [SerializeField] private int _numLevels = 3;
     public int NumLevels {
         get { return _numLevels; }
@@ -29,7 +37,7 @@ public class LevelGenerator : MonoBehaviour
     public GameObject Level;
     public Vector3 TopLeftCenter;
 
-    public void CreateLevel(Vector2 dim, Vector3 pos){
+    public void CreateLevel(Vector2Int dim, Vector3 pos){
         GameObject l = Instantiate(Level, pos, Quaternion.identity);
         Debug.Log(l);
         Level gen_level = l.GetComponent<Level>();
@@ -57,7 +65,7 @@ public class LevelGenerator : MonoBehaviour
         Debug.Log(_numLevels);
         NumLevels = _numLevels;  // Population Size
 
-        LevelGene g = new LevelGene();
+        LevelGene g = new LevelGene(Dimensions);
 
     }
 
@@ -122,7 +130,7 @@ public class LevelGenerator : MonoBehaviour
                 count = 0;
             }
 
-            CreateLevel(new Vector2(10, 10), plot_pos);
+            CreateLevel(new Vector2Int(10, 10), plot_pos);
             plot_pos.x += PLOT_SIZE;
             count += 1;
         }

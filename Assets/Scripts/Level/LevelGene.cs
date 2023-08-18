@@ -17,30 +17,60 @@ public class LevelGene {
     static FurnitureLibrary furnitureLibrary = null;
 
     List<Feature> features;
+    Vector2Int dimensions;
+
+    int[,] grid;
 
     bool isValid;
 
-    public LevelGene(){
+    public LevelGene(Vector2Int dimensions){
         if (furnitureLibrary == null){
             LevelGene.LoadAllFurniture();
         }
+        this.dimensions = dimensions;
+
+
         features = new List<Feature>();
-        Feature feat1 = new Feature("bed_single", 0, 0);
-        Feature feat2 = new Feature("door", 0, 0);
-        Feature feat3 = new Feature("night_stand", 2.5f, 0.5f);
-        Feature feat4 = new Feature("drawer_small", 3.5f, 3f);
+        Feature feat1 = new Feature("bed_single", 0, 2);
+        Feature feat2 = new Feature("door", 0, 2);
+        Feature feat3 = new Feature("night_stand", 3, 3);
+        Feature feat4 = new Feature("drawer_small", 4, 0);
 
         Debug.Log(feat1);
         Debug.Log(feat2);
         Debug.Log(feat3);
         Debug.Log(feat4);
 
-        Debug.Log(feat1.OverlapsWith(feat1));
-        Debug.Log(feat1.OverlapsWith(feat2));
-        Debug.Log(feat1.OverlapsWith(feat3));
-        Debug.Log(feat1.OverlapsWith(feat4));
+        // Debug.Log(feat1.OverlapsWith(feat1));
+        // Debug.Log(feat1.OverlapsWith(feat2));
+        // Debug.Log(feat1.OverlapsWith(feat3));
+        // Debug.Log(feat1.OverlapsWith(feat4));
+
+        grid = new int[(int) dimensions.x, (int) dimensions.y]; // Top left (0,0) Bottom right (n, n)
 
 
+        Debug.Log(ToString());
+
+        LevelGene try1 = TryPlaceObject(feat1);
+        Debug.Log(try1.ToString());
+
+        // LevelGene try2 = TryPlaceObject(feat2);
+        // Debug.Log(try2.ToString());
+
+        // LevelGene try3 = TryPlaceObject(feat3);
+        // Debug.Log(try3.ToString());
+
+        // LevelGene try4 = TryPlaceObject(feat4);
+        // Debug.Log(try4.ToString());
+    }
+
+    public LevelGene(LevelGene gene){
+        this.features = gene.features.ConvertAll(feat => new Feature(feat));
+        this.dimensions = new Vector2Int(gene.dimensions.x, gene.dimensions.y);
+        this.grid = new int[(int) dimensions.x, (int) dimensions.y];
+        for (int y = 0; y < dimensions.y; y++)
+            for (int x = 0; x < dimensions.x; x++)
+                this.grid[y, x] = gene.grid[y, x];
     }
 
     static void LoadAllFurniture(){ // Arrian
@@ -66,21 +96,21 @@ public class LevelGene {
 
     }
 
-    static LevelGene GenerateRandomLevelGene(){ // Arrian
-        return new LevelGene();
-    }
+    // static LevelGene GenerateRandomLevelGene(){ // Arrian
+    //     return new LevelGene();
+    // }
 
-    static LevelGene GenerateEmptyLevelData(){ // Angela
-        LevelGene emptyLevel = new LevelGene();
-        for (int i = 0; i < 10; i++)
-        {
-            for (int j = 0; j < 10; j++)
-            {
-                emptyLevel.features.Add(new Feature("empty", i, j));
-            }
-        }
-        return emptyLevel;
-    }
+    // static LevelGene GenerateEmptyLevelData(){ // Angela
+    //     LevelGene emptyLevel = new LevelGene();
+    //     for (int i = 0; i < 10; i++)
+    //     {
+    //         for (int j = 0; j < 10; j++)
+    //         {
+    //             emptyLevel.features.Add(new Feature("empty", i, j));
+    //         }
+    //     }
+    //     return emptyLevel;
+    // }
 
     bool isCategory(Feature feature, string category){
         // Get furniture category from JSON
@@ -90,13 +120,13 @@ public class LevelGene {
 
     Dictionary<string, float> Metrics()
     { // THE MEAT (HOw would we define this???? Someone research) Angela
-        float balance = 0.0f;
-        float harmony = 0.0f;
-        float emphasis = 0.0f;
-        float contrast = 0.0f;
-        float scale = 0.0f;
-        float details = 0.0f;
-        float rhythm = 0.0f;
+        float balance   = 0.0f;
+        float harmony   = 0.0f;
+        float emphasis  = 0.0f;
+        float contrast  = 0.0f;
+        float scale     = 0.0f;
+        float details   = 0.0f;
+        float rhythm    = 0.0f;
 
         int emphasisCount = 0;
 
@@ -163,13 +193,13 @@ public class LevelGene {
         emphasis = -((emphasisCount - 2) * (emphasisCount - 2)) + 4;
 
         var metrics = new Dictionary<string, float>(){
-            {"Balance", balance},
-            {"Harmony", harmony},
-            {"Emphasis", emphasis},
-            {"Contrast", contrast},
-            {"Scale", scale},
-            {"Details", details},
-            {"Rhythm", rhythm}
+            {"balance", balance},
+            {"harmony", harmony},
+            {"emphasis", emphasis},
+            {"contrast", contrast},
+            {"scale", scale},
+            {"details", details},
+            {"rhythm", rhythm}
         };
 
         return metrics;
@@ -180,13 +210,21 @@ public class LevelGene {
         float fitness = 0.0f;
 
         // How heavily each category should affect overall fitness
-        float balance = 0.0f;
-        float harmony = 0.0f;
-        float emphasis = 0.0f;
-        float contrast = 0.0f;
-        float scale = 0.0f;
-        float details = 0.0f;
-        float rhythm = 0.0f;
+        float balance   = 0.0f;
+        float harmony   = 0.0f;
+        float emphasis  = 0.0f;
+        float contrast  = 0.0f;
+        float scale     = 0.0f;
+        float details   = 0.0f;
+        float rhythm    = 0.0f;
+
+        fitness += tileMetrics["Balance"]   * balance;
+        fitness += tileMetrics["harmony"]   * harmony;
+        fitness += tileMetrics["emphasis"]  * emphasis;
+        fitness += tileMetrics["contrast"]  * contrast;
+        fitness += tileMetrics["scale"]     * scale;
+        fitness += tileMetrics["details"]   * details;
+        fitness += tileMetrics["rhythm"]    * rhythm;
 
         return fitness;
     }
@@ -201,10 +239,23 @@ public class LevelGene {
         return false;
     }
 
+    bool CheckNoOverlaps(Feature feat){
+        bool ret = true;
+        foreach (Feature f in features){
+            if (f == feat) continue;
+            ret &= !feat.OverlapsWith(f);
+            if (!ret) break;
+        }
+        return ret;
+    }
+
     bool ValidateFeatureAddition(Feature feat, bool allowDuplicates){ // Can I add this item into myself? O(n) complexity // THE MEAT // Arrian
+        bool ret =  true;
+
+        ret &= CheckNoOverlaps(feat);
         // go through every piece of furniture in the features
         // validate with the rest of the
-        return false;
+        return ret;
     }
 
     LevelGene Mutate(){ // A mutate function // Angela
@@ -246,16 +297,125 @@ public class LevelGene {
             default:
                 break;
         }
-        return new LevelGene();
+        return null;
     }
 
-    LevelGene PlaceObject(){ // Alan
-        return new LevelGene();
+    List<(int, int)> GetAvailableTiles(){
+        List<(int, int)> availableTiles = new List<(int,int)>();
+        for(int x = 0; x < 10; x++){
+            for(int y = 0; y < 10; y++){
+                if(grid[x,y] == 0){
+                    availableTiles.Add( new (x, y));
+                }
+            }
+        }
+        return availableTiles;
     }
 
-    LevelGene RemoveObject(){ // Octavio
+    // Returns where the top left corner an object can be  in
+    List<(int, int)> GetValidTiles(string name, float orientation=0){
+        List<int> furn_dims = furnitureLibrary.GetFurnitureDimensions(name);
 
-        return new LevelGene();
+        List<(int, int)> availableTiles = GetAvailableTiles();
+
+        List<(int, int)> validTiles = new List<(int, int)>();
+
+        int dim_x = (orientation == 0 || orientation == 180) ? furn_dims[0] : furn_dims[1];
+        int dim_y = (orientation == 90 || orientation == 270) ? furn_dims[1] : furn_dims[0];
+        foreach((int, int) tile in availableTiles){
+            bool isValid = true;
+            for (int y = tile.Item2; y < tile.Item2 + dim_y; y++){
+                for (int x = tile.Item1; x < tile.Item1 + dim_x; x++){
+                    isValid &= grid[y, x] == 0;
+                    if (!isValid) break;
+                }
+            }
+            if (isValid) validTiles.Add(tile);
+        }
+
+        return validTiles;
+    }
+
+    public override string ToString() {
+        string [,] ret_grid = new string[dimensions[0], dimensions[1]];
+        string ret = "";
+
+        foreach (Feature feat in features){
+            List<int> furn_dims = feat.dimensions;
+            for (int y = feat.position.y; y < feat.position.y + furn_dims[1]; y++){
+                for (int x = feat.position.x; x < feat.position.x + furn_dims[0]; x++){
+                    ret_grid[y, x] = new string(feat.name[0], 1);
+                }
+            }
+        }
+
+        for (int j = 0; j < dimensions.y; j++){
+            for (int i = 0; i < dimensions.x; i++){
+                ret += string.Format(" {{0}} ", ret_grid[j, i]);
+            }
+            ret += "\n";
+        }
+
+        return ret;
+    }
+    LevelGene TryPlaceObject(Feature feat){
+        return (ValidateFeatureAddition(feat, false)) ? PlaceObject(feat) : this;
+    }
+
+
+    LevelGene PlaceObject(Feature feature){ //
+        LevelGene ret = new LevelGene(this);
+        List<int> furn_dims = feature.dimensions;
+
+        // Rectangular features
+        List<int> dims = feature.dimensions;
+        int dim_x = dims[0];
+        int dim_y = dims[1];
+        if (dims[0] != dims[1]) {
+            dim_x = (feature.orientation == 0 || feature.orientation == 180) ? furn_dims[0] : furn_dims[1];
+            dim_y = (feature.orientation == 90 || feature.orientation == 270) ? furn_dims[1] : furn_dims[0];
+        }
+
+        for (int y = feature.position.y; y < feature.position.y + dim_y; y++){
+            for (int x = feature.position.x; x < feature.position.x + dim_x; x++){
+                ret.grid[y, x] = 1;
+            }
+        }
+
+        ret.features.Add(feature);
+        return ret;
+
+    }
+
+    LevelGene RemoveObject(Feature feature){ // Octavio
+        LevelGene ret = new LevelGene(this);
+        List<int> furn_dims = feature.dimensions;
+
+        // What if there's more than one of a particular feature
+        // A: features are always unique by comparison
+
+        // Update grid
+        if(!(ret.features.Contains(feature))) {
+            return null;
+        }
+
+        // Rectangular features
+        List<int> dims = feature.dimensions;
+        int dim_x = dims[0];
+        int dim_y = dims[1];
+        if (dims[0] != dims[1]) {
+            dim_x = (feature.orientation == 0 || feature.orientation == 180) ? furn_dims[0] : furn_dims[1];
+            dim_y = (feature.orientation == 90 || feature.orientation == 270) ? furn_dims[1] : furn_dims[0];
+        }
+
+        for (int y = feature.position.y; y < feature.position.y + dim_y; y++){
+            for (int x = feature.position.x; x < feature.position.x + dim_x; x++){
+                ret.grid[y, x] = 0;
+            }
+        }
+
+        ret.features.Remove(feature);
+        return ret;
     }
 
     public List<LevelGene> GenerateChildren(LevelGene other) { // Alan
