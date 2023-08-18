@@ -421,11 +421,38 @@ public class LevelGene {
 
     public List<LevelGene> GenerateChildren(LevelGene other) { // Alan
         // crossover
+        List<LevelGene> children = new List<LevelGene>();
 
+        int crossoverPoint = Random.Range(0, features.Count); // Choose a random crossover point
+
+        // Create the first child by combining the features from the two parents
+        LevelGene child1 = new LevelGene(this);
+        for (int i = 0; i < crossoverPoint; i++)
+        {
+            Feature featureToAdd = other.features[i]; // Take feature from the other parent
+            if (child1.ValidateFeatureAddition(featureToAdd, true))
+            {
+                child1 = child1.PlaceObject(featureToAdd); // Add the feature to the child if valid
+            }
+        }
+        children.Add(child1);
+
+        // Create the second child by combining the features from the two parents
+        LevelGene child2 = new LevelGene(other);
+        for (int i = crossoverPoint; i < other.features.Count; i++)
+        {
+            Feature featureToAdd = features[i]; // Take feature from this parent
+            if (child2.ValidateFeatureAddition(featureToAdd, true))
+            {
+                child2 = child2.PlaceObject(featureToAdd); // Add the feature to the child if valid
+            }
+        }
+        children.Add(child2);
+
+        return children;
 
         // validation is needed
         // Consider feasible and infeasible population?
-        return new List<LevelGene>();
 
     }
 
