@@ -16,10 +16,17 @@ public class LevelGene {
     //static // What would the json load in?
     static FurnitureLibrary furnitureLibrary = null;
 
-    List<Feature> features;
-    Vector2Int dimensions;
+    public List<Feature> features;
+    public Vector2Int dimensions;
 
-    int[,] grid;
+    private int[,] grid;
+    public int[,] Grid {
+        get { return grid; }
+        set {
+            grid = value;
+        }
+    }
+
 
     bool isValid;
 
@@ -28,43 +35,15 @@ public class LevelGene {
             LevelGene.LoadAllFurniture();
         }
         this.dimensions = dimensions;
-
-
         features = new List<Feature>();
-        Feature feat1 = new Feature("bed_single", 0, 2);
-        Feature feat2 = new Feature("door", 0, 2);
-        Feature feat3 = new Feature("night_stand", 3, 3);
-        Feature feat4 = new Feature("drawer_small", 4, 0);
-
-        Debug.Log(feat1);
-        Debug.Log(feat2);
-        Debug.Log(feat3);
-        Debug.Log(feat4);
-
-        // Debug.Log(feat1.OverlapsWith(feat1));
-        // Debug.Log(feat1.OverlapsWith(feat2));
-        // Debug.Log(feat1.OverlapsWith(feat3));
-        // Debug.Log(feat1.OverlapsWith(feat4));
-
         grid = new int[(int) dimensions.x, (int) dimensions.y]; // Top left (0,0) Bottom right (n, n)
-
-
-        Debug.Log(ToString());
-
-        LevelGene try1 = TryPlaceObject(feat1);
-        Debug.Log(try1.ToString());
-
-        LevelGene try2 = try1.TryPlaceObject(feat2);
-        Debug.Log(try2.ToString());
-
-        LevelGene try3 = try2.TryPlaceObject(feat3);
-        Debug.Log(try3.ToString());
-
-        LevelGene try4 = try3.TryPlaceObject(feat4);
-        Debug.Log(try4.ToString());
     }
 
     public LevelGene(LevelGene gene){
+        if (furnitureLibrary == null){
+            LevelGene.LoadAllFurniture();
+        }
+
         this.features = gene.features.ConvertAll(feat => new Feature(feat));
         this.dimensions = new Vector2Int(gene.dimensions.x, gene.dimensions.y);
         this.grid = new int[(int) dimensions.x, (int) dimensions.y];
@@ -96,21 +75,37 @@ public class LevelGene {
 
     }
 
-    // static LevelGene GenerateRandomLevelGene(){ // Arrian
-    //     return new LevelGene();
-    // }
+    public static LevelGene GenerateRandomLevelGene(Vector2Int dims, int num_feat){
+        LevelGene randomLevel = new LevelGene(dims);
 
-    // static LevelGene GenerateEmptyLevelData(){ // Angela
-    //     LevelGene emptyLevel = new LevelGene();
-    //     for (int i = 0; i < 10; i++)
-    //     {
-    //         for (int j = 0; j < 10; j++)
-    //         {
-    //             emptyLevel.features.Add(new Feature("empty", i, j));
-    //         }
-    //     }
-    //     return emptyLevel;
-    // }
+        for (int i = 0; i < num_feat; i++){
+            FurnitureData furnitureData = LevelGene.furnitureLibrary.GetRandomFurnitureByMultipleType("livingroom", "general");
+            // Debug.Log(furnitureData.ToString());
+            Feature feat = null;
+            if (furnitureData != null)
+                feat = randomLevel.GenerateValidFeature(furnitureData);
+            // Debug.Log(feat);
+            // Debug.Log(feat != null);
+
+            if (feat != null){
+                randomLevel = randomLevel.TryPlaceObject(feat);
+            }
+        }
+
+        return randomLevel;
+    }
+
+    public static LevelGene GenerateEmptyLevelData(Vector2Int dims){
+        LevelGene emptyLevel = new LevelGene(dims);
+        // for (int i = 0; i < 10; i++)
+        // {
+        //     for (int j = 0; j < 10; j++)
+        //     {
+        //         emptyLevel.features.Add(new Feature("empty", i, j));
+        //     }
+        // }
+        return emptyLevel;
+    }
 
     bool isCategory(Feature feature, string category){
         // Get furniture category from JSON
@@ -255,7 +250,7 @@ public class LevelGene {
         ret &= CheckNoOverlaps(feat);
         // go through every piece of furniture in the features
         // validate with the rest of the
-        Debug.Log(ret);
+        // Debug.Log(ret);
         return ret;
     }
 
@@ -272,7 +267,7 @@ public class LevelGene {
             case 0:
 
 
-                // Rotate or move?
+                // Rotate or move? A; Both
                 break;
 
         // Adds a new item
@@ -303,9 +298,9 @@ public class LevelGene {
 
     List<(int, int)> GetAvailableTiles(){
         List<(int, int)> availableTiles = new List<(int,int)>();
-        for(int x = 0; x < 10; x++){
-            for(int y = 0; y < 10; y++){
-                if(grid[x,y] == 0){
+        for(int y = 0; y < dimensions.y; y++){
+            for(int x = 0; x < dimensions.x; x++){
+                if(grid[y, x] == 0){
                     availableTiles.Add( new (x, y));
                 }
             }
@@ -314,8 +309,9 @@ public class LevelGene {
     }
 
     // Returns where the top left corner an object can be  in
-    List<(int, int)> GetValidTiles(string name, float orientation=0){
-        List<int> furn_dims = furnitureLibrary.GetFurnitureDimensions(name);
+    List<(int, int)> GetValidTiles(FurnitureData feat, float orientation=0){
+        List<int> furn_dims = feat.dimensions;
+
 
         List<(int, int)> availableTiles = GetAvailableTiles();
 
@@ -327,9 +323,20 @@ public class LevelGene {
             bool isValid = true;
             for (int y = tile.Item2; y < tile.Item2 + dim_y; y++){
                 for (int x = tile.Item1; x < tile.Item1 + dim_x; x++){
+                    if (x >= dimensions.x || y >= dimensions.y){
+                        isValid = false;
+                        break;
+                    }
+
+                    // Debug.Log(string.Format("{0} {1}", x, y));
                     isValid &= grid[y, x] == 0;
+                    // Some extra validation needs to be done here... or maybe not...
+
+                    // Constraints
+
                     if (!isValid) break;
                 }
+                if (!isValid) break;
             }
             if (isValid) validTiles.Add(tile);
         }
@@ -337,12 +344,30 @@ public class LevelGene {
         return validTiles;
     }
 
+    public Feature GenerateValidFeature(FurnitureData featureData){
+        // pick random orientation
+
+        List<(int, int)> validTiles = GetValidTiles(featureData);
+
+        Feature feature = null;
+        if (validTiles.Count > 0){
+            (int, int) randomTile = validTiles[Random.Range(0, validTiles.Count)];
+            feature = new Feature(featureData, randomTile.Item1, randomTile.Item2);
+        }
+
+        return feature;
+    }
+
     public override string ToString() {
         string [,] ret_grid = new string[dimensions[0], dimensions[1]];
         string ret = "";
 
+
+        ret += string.Join(", ", features)  + "\n";
+
         foreach (Feature feat in features){
             List<int> furn_dims = feat.dimensions;
+
             for (int y = feat.position.y; y < feat.position.y + furn_dims[1]; y++){
                 for (int x = feat.position.x; x < feat.position.x + furn_dims[0]; x++){
                     ret_grid[y, x] = new string(feat.name[0], 1);

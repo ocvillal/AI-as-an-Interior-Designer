@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+using Feature = FurnitureFeature; // name of the furniture, x, y
+
 public class LevelGenerator : MonoBehaviour
 {
     public int MAX_LEVELS_PER_ROW = 5;
@@ -27,7 +29,7 @@ public class LevelGenerator : MonoBehaviour
             TopLeftCenter.y = -1;
             TopLeftCenter.x =
                 (_numLevels <= MAX_LEVELS_PER_ROW) ? - ((_numLevels - 1) * PLOT_SIZE)/2.0f : -((MAX_LEVELS_PER_ROW - 1) * PLOT_SIZE) / 2.0f;
-            Debug.Log(TopLeftCenter);
+            // Debug.Log(TopLeftCenter);
         }
     }
 
@@ -39,7 +41,6 @@ public class LevelGenerator : MonoBehaviour
 
     public void CreateLevel(Vector2Int dim, Vector3 pos){
         GameObject l = Instantiate(Level, pos, Quaternion.identity);
-        Debug.Log(l);
         Level gen_level = l.GetComponent<Level>();
 
         gen_level.Dimensions = dim;
@@ -57,21 +58,21 @@ public class LevelGenerator : MonoBehaviour
 
     }
 
-    public void CreateLevel(LevelGene gene){
+    public void CreateLevel(LevelGene gene, Vector3 pos){
         GameObject l = Instantiate(Level, pos, Quaternion.identity);
-        Debug.Log(l);
         Level gen_level = l.GetComponent<Level>();
+        // gen_level.Dimensions = _dimensions;
 
-        gen_level.Dimensions = dim;
+        gen_level.Gene = gene;
         gen_level.GetComponent<Level>().Position = pos;
 
-        gen_level.PlaceItemAtTile(0,0);
-        // gen_level.PlaceItemAtTile(4,4);
-        gen_level.PlaceItemAtTile(9,9);
-        gen_level.PlaceItemAtTile(0,9);
-        gen_level.PlaceItemAtTile(9,0);
+        // gen_level.PlaceItemAtTile(0,0);
+        // // gen_level.PlaceItemAtTile(4,4);
+        // gen_level.PlaceItemAtTile(9,9);
+        // gen_level.PlaceItemAtTile(0,9);
+        // gen_level.PlaceItemAtTile(9,0);
 
-        // Generation gets called here
+        // // Generation gets called here
 
         gen_level.GetComponent<Level>().Render();
     }
@@ -85,6 +86,39 @@ public class LevelGenerator : MonoBehaviour
         NumLevels = _numLevels;  // Population Size
 
         LevelGene g = new LevelGene(Dimensions);
+
+        // Feature feat1 = new Feature("bed_single", 0, 2);
+        // Feature feat2 = new Feature("door", 0, 2);
+        // Feature feat3 = new Feature("night_stand", 2, 2);
+        // Feature feat4 = new Feature("drawer_small", 4, 0);
+
+        // Debug.Log(feat1);
+        // Debug.Log(feat2);
+        // Debug.Log(feat3);
+        // Debug.Log(feat4);
+
+        // Debug.Log(feat1.OverlapsWith(feat1));
+        // Debug.Log(feat1.OverlapsWith(feat2));
+        // Debug.Log(feat1.OverlapsWith(feat3));
+        // Debug.Log(feat1.OverlapsWith(feat4));
+
+        // Debug.Log(ToString());
+
+        // LevelGene try1 = TryPlaceObject(feat1);
+        // Debug.Log(try1.ToString());
+
+        // LevelGene try2 = try1.TryPlaceObject(feat2);
+        // Debug.Log(try2.ToString());
+
+        // LevelGene try3 = try2.TryPlaceObject(feat3);
+        // Debug.Log(try3.ToString());
+
+        // LevelGene try4 = try3.TryPlaceObject(feat4);
+        // Debug.Log(try4.ToString());
+
+        LevelGene randlevel = LevelGene.GenerateRandomLevelGene(Dimensions, 100);
+        Debug.Log(randlevel.ToString());
+
 
     }
 
@@ -149,9 +183,12 @@ public class LevelGenerator : MonoBehaviour
                 count = 0;
             }
 
-            CreateLevel(new Vector2Int(10, 10), plot_pos);
+            CreateLevel(Dimensions, plot_pos);
             plot_pos.x += PLOT_SIZE;
             count += 1;
         }
     }
+
+
 }
+

@@ -5,13 +5,13 @@
             "curtains_double",
             "door_double",
             "door",
-            "drawer",
+            "drawer_small",
+            "drawer_medium",
             "lamp",
             "light_cube",
             "light_stand",
             "trashcan_small",
-            "trashcan",
-            "coat_rack"
+            "trashcan"
         ],
         "bathroom": [
             "toilet",
@@ -34,12 +34,8 @@
             "couch_small",
             "fireplace",
             "couch_L_shape",
-
             "glass_coffee_table",
-            "round_coffee_table",
-            "fireplace",
-            "bookshelf",
-            "tv"
+
         ],
         "kitchen": [
             "fridge",

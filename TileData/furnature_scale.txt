@@ -8,3 +8,6 @@ Furnature Pack 3:
 Computer Desk:
     Name in JSON: "Desk"
     Scaled to: 2,1,2
+
+
+Removed coat_rack, tv, fireplace, round_coffee_table, bookshelf

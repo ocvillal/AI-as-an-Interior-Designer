@@ -14,19 +14,23 @@ public class FurnitureFeature{
     public float orientation;
 
     static public bool operator ==(FurnitureFeature item1, FurnitureFeature item2){
-        return !object.ReferenceEquals(null, item1) &&
-                !object.ReferenceEquals(null, item2) &&
-                item1.name == item2.name &&
-                item1.position == item2.position &&
-                item1.dimensions == item2.dimensions &&
-                 item1.orientation == item2.orientation;
+        if (object.ReferenceEquals(null, item1)){
+            return object.ReferenceEquals(null, item2);
+        } else if (object.ReferenceEquals(null, item2)){
+            return object.ReferenceEquals(null, item1);
+        } else return item1.name == item2.name &&
+                        item1.position == item2.position &&
+                        item1.dimensions == item2.dimensions &&
+                        item1.orientation == item2.orientation;
     }
 
 
     static public bool operator !=(FurnitureFeature item1, FurnitureFeature item2){
-        return object.ReferenceEquals(null, item1) ||
-                object.ReferenceEquals(null, item2) ||
-                 item1.name != item2.name ||
+        if (object.ReferenceEquals(null, item1)){
+            return !object.ReferenceEquals(null, item2);
+        } else if (object.ReferenceEquals(null, item2)){
+            return !object.ReferenceEquals(null, item1);
+        } else return item1.name != item2.name ||
                 item1.position != item2.position ||
                 item1.dimensions != item2.dimensions ||
                  item1.orientation != item2.orientation;
@@ -44,6 +48,17 @@ public class FurnitureFeature{
                 dims[0],
                 dims[1]
             };
+    }
+
+    public FurnitureFeature(FurnitureData featData, int x, int z){
+        this.name = featData.name;
+        this.position = new Vector2Int(x, z);
+        this.orientation = 0;
+
+        this.dimensions = new List<int>() {
+                featData.dimensions[0],
+                featData.dimensions[1],
+        };
     }
 
     public FurnitureFeature(FurnitureFeature feat){
@@ -83,11 +98,11 @@ public class FurnitureFeature{
         Vector2Int other_tl = other.position;
         Vector2Int other_br = other.position + new Vector2Int(other.dimensions[0], other.dimensions[1]);
 
-        Debug.Log(string.Format("{0} vs {1}", name, other.name));
-        Debug.Log(string.Format("{0} < {1}", my_tl.x, other_br.x));
-        Debug.Log(string.Format("{0} > {1}", my_br.x, other_tl.x));
-        Debug.Log(string.Format("{0} < {1}", my_tl.y, other_br.y));
-        Debug.Log(string.Format("{0} > {1}", my_br.y, other_tl.y));
+        // Debug.Log(string.Format("{0} vs {1}", name, other.name));
+        // Debug.Log(string.Format("{0} < {1}", my_tl.x, other_br.x));
+        // Debug.Log(string.Format("{0} > {1}", my_br.x, other_tl.x));
+        // Debug.Log(string.Format("{0} < {1}", my_tl.y, other_br.y));
+        // Debug.Log(string.Format("{0} > {1}", my_br.y, other_tl.y));
 
 
 
@@ -108,8 +123,8 @@ public class FurnitureFeature{
 
 
     public override string ToString(){
-        return string.Format("{0} TL: {1} - BR: {2} ", name,
-                 this.position - new Vector2Int(this.dimensions[0], this.dimensions[1])/ 2,
-                 this.position + new Vector2Int(this.dimensions[0], this.dimensions[1])/ 2);
+        return string.Format("({0} TL: {1} - BR: {2}) ", name,
+                 this.position,
+                 this.position + new Vector2Int(this.dimensions[0] - 1, this.dimensions[1]- 1));
     }
 }

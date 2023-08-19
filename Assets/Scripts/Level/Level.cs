@@ -10,11 +10,24 @@ public class Level : MonoBehaviour
     public float TOTAL_HEIGHT;
     public Vector3 TopLeftCenter;
 
+    public int[,] Grid;
 
     public GameObject Toilet;
 
 
-    [SerializeField] private Vector2Int _dimensions = new Vector2Int(9, 9);
+
+    public LevelGene gene = null;
+    public LevelGene Gene {
+        get { return gene; }
+        set {
+            gene = value;
+            Dimensions = gene.dimensions;
+            Grid = gene.Grid;
+        }
+    }
+
+
+    [SerializeField] private Vector2Int _dimensions = new Vector2Int(10, 10);
     public Vector2Int Dimensions {
         get { return _dimensions; }
         set {
@@ -35,7 +48,6 @@ public class Level : MonoBehaviour
         }
     }
 
-    public int[,] Grid;
 
     // Start is called before the first frame update
     void Start()
@@ -74,6 +86,9 @@ public class Level : MonoBehaviour
         }
     }
 
+
+
+
     public void Render(){
         Vector3 tile_pos = TopLeftCenter;
         // Debug.Log(tile_pos);
@@ -86,6 +101,20 @@ public class Level : MonoBehaviour
                 }
                 tile_pos.x += TILE_SIZE;
 
+            }
+            tile_pos.z += TILE_SIZE;
+        }
+    }
+
+    public void RenderLevel(){
+        Vector3 tile_pos = TopLeftCenter;
+        for (int j = 0; j < Dimensions.y; j++){
+            tile_pos.x = TopLeftCenter.x;
+            for (int i = 0; i < Dimensions.x; i++){
+                if (!CheckTileEmpty(i, j)){
+                    Instantiate(Toilet, tile_pos, Quaternion.identity);
+                }
+                tile_pos.x += TILE_SIZE;
             }
             tile_pos.z += TILE_SIZE;
         }
