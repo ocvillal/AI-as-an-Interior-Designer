@@ -22,7 +22,7 @@ public class Level : MonoBehaviour
         set {
             gene = value;
             Dimensions = gene.dimensions;
-            Grid = gene.Grid;
+            Grid = value.Grid;
         }
     }
 
@@ -32,10 +32,11 @@ public class Level : MonoBehaviour
         get { return _dimensions; }
         set {
             _dimensions = value;
+            this.gameObject.transform.localScale = new Vector3(value.x, 1, value.y);
             TOTAL_WIDTH = _dimensions.x * TILE_SIZE;
             TOTAL_HEIGHT = _dimensions.y * TILE_SIZE;
             Grid = new int[(int) _dimensions.y, (int) _dimensions.x];
-            TopLeftCenter = _position - new Vector3((TOTAL_WIDTH - TILE_SIZE) / 2.0f, 0, (TOTAL_HEIGHT - TILE_SIZE) / 2.0f);
+            TopLeftCenter = _position + new Vector3(-(TOTAL_WIDTH - TILE_SIZE) / 2.0f, 0, (TOTAL_HEIGHT - TILE_SIZE) / 2.0f);
         }
     }
 
@@ -44,7 +45,7 @@ public class Level : MonoBehaviour
         get { return _position; }
         set {
             _position = value;
-            TopLeftCenter = _position - new Vector3((TOTAL_WIDTH - TILE_SIZE) / 2.0f, 0, (TOTAL_HEIGHT - TILE_SIZE) / 2.0f);
+            TopLeftCenter = _position + new Vector3(-(TOTAL_WIDTH - TILE_SIZE) / 2.0f, 0, (TOTAL_HEIGHT - TILE_SIZE) / 2.0f);
         }
     }
 
@@ -102,11 +103,21 @@ public class Level : MonoBehaviour
                 tile_pos.x += TILE_SIZE;
 
             }
-            tile_pos.z += TILE_SIZE;
+            tile_pos.z -= TILE_SIZE;
         }
     }
 
     public void RenderLevel(){
+        Debug.Log(gene.ToString());
+
+        string ret = "";
+        for (int j = 0; j < Dimensions.y; j++){
+            for (int i = 0; i < Dimensions.x; i++){
+                ret += (gene.Grid[j, i] != null) ? string.Format(" [{0}] ", gene.Grid[j, i]) : " [-] ";
+            }
+            ret += "\n";
+        }
+        Debug.Log(ret);
         Vector3 tile_pos = TopLeftCenter;
         for (int j = 0; j < Dimensions.y; j++){
             tile_pos.x = TopLeftCenter.x;
@@ -116,7 +127,7 @@ public class Level : MonoBehaviour
                 }
                 tile_pos.x += TILE_SIZE;
             }
-            tile_pos.z += TILE_SIZE;
+            tile_pos.z -= TILE_SIZE;
         }
     }
 

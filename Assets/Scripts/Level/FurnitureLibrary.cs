@@ -13,6 +13,7 @@ public class FurnitureLibrary{
     public Dictionary<string, FurnitureData> furniture_pack_2;
 
     public Dictionary<string, FurnitureData> library;
+    public Dictionary<string,
 
     // public static FurnitureLibrary CreateFromJSON(string jsonString)
     // {

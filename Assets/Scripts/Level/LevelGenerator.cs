@@ -74,7 +74,7 @@ public class LevelGenerator : MonoBehaviour
 
         // // Generation gets called here
 
-        gen_level.GetComponent<Level>().Render();
+        gen_level.GetComponent<Level>().RenderLevel();
     }
 
 
@@ -84,6 +84,7 @@ public class LevelGenerator : MonoBehaviour
     {
         Debug.Log(_numLevels);
         NumLevels = _numLevels;  // Population Size
+        population = new List<LevelGene>();
 
         LevelGene g = new LevelGene(Dimensions);
 
@@ -116,10 +117,12 @@ public class LevelGenerator : MonoBehaviour
         // LevelGene try4 = try3.TryPlaceObject(feat4);
         // Debug.Log(try4.ToString());
 
-        LevelGene randlevel = LevelGene.GenerateRandomLevelGene(Dimensions, 100);
+        LevelGene randlevel = LevelGene.GenerateRandomLevelGene(Dimensions, 10);
         Debug.Log(randlevel.ToString());
-
-
+        for (int i = 0; i < _numLevels; i++){
+            population.Add(randlevel);
+        }
+        RenderPopulation();
     }
 
     // Update is called once per frame
@@ -184,6 +187,23 @@ public class LevelGenerator : MonoBehaviour
             }
 
             CreateLevel(Dimensions, plot_pos);
+            plot_pos.x += PLOT_SIZE;
+            count += 1;
+        }
+    }
+
+    void RenderPopulation(){
+        int count = 0;
+        Vector3 plot_pos = TopLeftCenter;
+        for (int k = 0; k < _numLevels; k++){
+            if (count == 5){
+                Debug.Log(_numLevels - k );
+                plot_pos.x = (_numLevels - k  < MAX_LEVELS_PER_ROW) ? -(((_numLevels - k - 1) * PLOT_SIZE)/2.0f)  : TopLeftCenter.x;
+                plot_pos.z += PLOT_SIZE;
+                count = 0;
+            }
+
+            CreateLevel(population[k], plot_pos);
             plot_pos.x += PLOT_SIZE;
             count += 1;
         }

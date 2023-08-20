@@ -77,20 +77,23 @@ public class LevelGene {
 
     public static LevelGene GenerateRandomLevelGene(Vector2Int dims, int num_feat){
         LevelGene randomLevel = new LevelGene(dims);
-
+        int fail = 0;
         for (int i = 0; i < num_feat; i++){
             FurnitureData furnitureData = LevelGene.furnitureLibrary.GetRandomFurnitureByMultipleType("livingroom", "general");
             // Debug.Log(furnitureData.ToString());
             Feature feat = null;
             if (furnitureData != null)
                 feat = randomLevel.GenerateValidFeature(furnitureData);
-            // Debug.Log(feat);
-            // Debug.Log(feat != null);
+                // Debug.Log(feat);
+                // Debug.Log(feat != null);
 
             if (feat != null){
                 randomLevel = randomLevel.TryPlaceObject(feat);
+            } else {
+                fail += 1;
             }
         }
+        Debug.Log(string.Format("{0} fails out of {1}", fail, num_feat));
 
         return randomLevel;
     }
@@ -362,6 +365,7 @@ public class LevelGene {
         string [,] ret_grid = new string[dimensions[0], dimensions[1]];
         string ret = "";
 
+        ret += features.Count.ToString() + " features: ";
 
         ret += string.Join(", ", features)  + "\n";
 
@@ -399,7 +403,7 @@ public class LevelGene {
         int dim_y = dims[1];
         if (dims[0] != dims[1]) {
             dim_x = (feature.orientation == 0 || feature.orientation == 180) ? furn_dims[0] : furn_dims[1];
-            dim_y = (feature.orientation == 90 || feature.orientation == 270) ? furn_dims[1] : furn_dims[0];
+            dim_y = (feature.orientation == 0 || feature.orientation == 180) ? furn_dims[1] : furn_dims[0];
         }
 
         for (int y = feature.position.y; y < feature.position.y + dim_y; y++){
