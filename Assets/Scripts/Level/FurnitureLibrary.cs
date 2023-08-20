@@ -13,7 +13,7 @@ public class FurnitureLibrary{
     public Dictionary<string, FurnitureData> furniture_pack_2;
 
     public Dictionary<string, FurnitureData> library;
-    public Dictionary<string,
+    public Dictionary<string, GameObject> furniturePrefabs;
 
     // public static FurnitureLibrary CreateFromJSON(string jsonString)
     // {
@@ -54,7 +54,14 @@ public class FurnitureLibrary{
         return furniture_pack_1.TryGetValue(name, out var ret) ? ret.tags : furniture_pack_2.TryGetValue(name, out ret) ? ret.tags : new List<string>();
     }
 
-
+    public void LoadPrefabs(){
+        furniturePrefabs = new Dictionary<string, GameObject>();
+        foreach (KeyValuePair<string, List<string>> category in categories){
+            foreach (string name in category.Value){
+                furniturePrefabs[name] = (GameObject) Resources.Load(string.Format("Prefab/{0}/{1}", category.Key, name));
+            }
+        }
+    }
 
 
 }

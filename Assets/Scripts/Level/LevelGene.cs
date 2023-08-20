@@ -54,6 +54,7 @@ public class LevelGene {
 
     static void LoadAllFurniture(){ // Arrian
         LevelGene.furnitureLibrary = JsonConvert.DeserializeObject<FurnitureLibrary>(File.ReadAllText("./TileData/FurnitureData.json"));
+        LevelGene.furnitureLibrary.LoadPrefabs();
         Feature.furnitureLibrary = LevelGene.furnitureLibrary;
         // Debug.Log(string.Join(", ", LevelGene.furnitureLibrary.categories));
         // string val = "";

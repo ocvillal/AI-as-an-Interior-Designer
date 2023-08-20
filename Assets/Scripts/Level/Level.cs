@@ -113,7 +113,7 @@ public class Level : MonoBehaviour
         string ret = "";
         for (int j = 0; j < Dimensions.y; j++){
             for (int i = 0; i < Dimensions.x; i++){
-                ret += (gene.Grid[j, i] != null) ? string.Format(" [{0}] ", gene.Grid[j, i]) : " [-] ";
+                ret += (gene.Grid[j, i] != 0) ? string.Format(" [{0}] ", gene.Grid[j, i]) : " [-] ";
             }
             ret += "\n";
         }
