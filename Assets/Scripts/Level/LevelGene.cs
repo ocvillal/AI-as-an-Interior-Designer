@@ -407,6 +407,8 @@ public class LevelGene {
             dim_y = (feature.orientation == 0 || feature.orientation == 180) ? furn_dims[1] : furn_dims[0];
         }
 
+        Debug.Log(string.Format("{0} {1}", dim_x, dim_y));
+
         for (int y = feature.position.y; y < feature.position.y + dim_y; y++){
             for (int x = feature.position.x; x < feature.position.x + dim_x; x++){
                 ret.grid[y, x] = 1;
