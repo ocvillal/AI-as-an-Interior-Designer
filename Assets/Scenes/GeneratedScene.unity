@@ -511,6 +511,14 @@ PrefabInstance:
       propertyPath: _numLevels
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 1903218692280629627, guid: 11b7e3b98f79d94738e5b397ff308ba7, type: 3}
+      propertyPath: _dimensions.x
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 1903218692280629627, guid: 11b7e3b98f79d94738e5b397ff308ba7, type: 3}
+      propertyPath: _dimensions.y
+      value: 9
+      objectReference: {fileID: 0}
     - target: {fileID: 4939685945085128042, guid: 11b7e3b98f79d94738e5b397ff308ba7, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0

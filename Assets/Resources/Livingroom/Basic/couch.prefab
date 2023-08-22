@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 2893880780847343939}
   - component: {fileID: 8851314453879611585}
   m_Layer: 0
-  m_Name: Couch(Clone)
+  m_Name: couch
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -27,7 +27,7 @@ Transform:
   m_GameObject: {fileID: 7400592319888913553}
   serializedVersion: 2
   m_LocalRotation: {x: 0.000000021855694, y: 0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.36, y: -0.5, z: -4.19}
+  m_LocalPosition: {x: -0.221, y: 0, z: -0.47}
   m_LocalScale: {x: 2.5, y: 2, z: 1.5}
   m_ConstrainProportionsScale: 0
   m_Children: []

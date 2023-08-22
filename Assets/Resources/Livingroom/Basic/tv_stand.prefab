@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 2141131859508642326}
   - component: {fileID: 3590965002102214916}
   m_Layer: 0
-  m_Name: tvstand
+  m_Name: tv_stand
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -27,7 +27,7 @@ Transform:
   m_GameObject: {fileID: 2631164005110712027}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.383, y: -1.109, z: -0.427}
+  m_LocalPosition: {x: -0.939, y: 0, z: -0.213}
   m_LocalScale: {x: 2.5, y: 2, z: 2}
   m_ConstrainProportionsScale: 0
   m_Children: []

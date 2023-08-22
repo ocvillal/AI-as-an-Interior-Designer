@@ -14,7 +14,7 @@ using Feature = FurnitureFeature; // name of the furniture, x, y
 public class LevelGene {
 
     //static // What would the json load in?
-    static FurnitureLibrary furnitureLibrary = null;
+    public static FurnitureLibrary furnitureLibrary = null;
 
     public List<Feature> features;
     public Vector2Int dimensions;
@@ -53,7 +53,7 @@ public class LevelGene {
     }
 
     static void LoadAllFurniture(){ // Arrian
-        LevelGene.furnitureLibrary = JsonConvert.DeserializeObject<FurnitureLibrary>(File.ReadAllText("./TileData/FurnitureData.json"));
+        LevelGene.furnitureLibrary = JsonConvert.DeserializeObject<FurnitureLibrary>(File.ReadAllText("./TileData/FutureData(Octavio).json"));
         LevelGene.furnitureLibrary.LoadPrefabs();
         Feature.furnitureLibrary = LevelGene.furnitureLibrary;
         // Debug.Log(string.Join(", ", LevelGene.furnitureLibrary.categories));
@@ -80,7 +80,7 @@ public class LevelGene {
         LevelGene randomLevel = new LevelGene(dims);
         int fail = 0;
         for (int i = 0; i < num_feat; i++){
-            FurnitureData furnitureData = LevelGene.furnitureLibrary.GetRandomFurnitureByMultipleType("livingroom", "general");
+            FurnitureData furnitureData = LevelGene.furnitureLibrary.GetRandomFurnitureByMultipleType("Basic", "Minimalist");
             // Debug.Log(furnitureData.ToString());
             Feature feat = null;
             if (furnitureData != null)
@@ -334,10 +334,19 @@ public class LevelGene {
 
                     // Debug.Log(string.Format("{0} {1}", x, y));
                     isValid &= grid[y, x] == 0;
+
                     // Some extra validation needs to be done here... or maybe not...
 
                     // Constraints
-
+                    if((feat.constraints.Contains("back_against_wall")) || (feat.constraints.Contains("against_wall"))){
+                        if((x == 0 || x == dimensions.x) || (y == 0 || y == dimensions.y)){
+                            isValid = true;
+                        }
+                        else
+                        {
+                            isValid = false;
+                        }
+                    }
                     if (!isValid) break;
                 }
                 if (!isValid) break;
@@ -407,11 +416,20 @@ public class LevelGene {
             dim_y = (feature.orientation == 0 || feature.orientation == 180) ? furn_dims[1] : furn_dims[0];
         }
 
-        Debug.Log(string.Format("{0} {1}", dim_x, dim_y));
+        // Debug.Log(string.Format("{0} {1}", dim_x, dim_y));
 
         for (int y = feature.position.y; y < feature.position.y + dim_y; y++){
             for (int x = feature.position.x; x < feature.position.x + dim_x; x++){
-                ret.grid[y, x] = 1;
+                try{
+                    ret.grid[y, x] = 1;
+
+                } catch (System.IndexOutOfRangeException e){
+                    Debug.Log(ret);
+                    Debug.Log(y);
+                    Debug.Log(x);
+                    Debug.Log(ret.dimensions[0]);
+                    Debug.Log(ret.dimensions[1]);
+                }
             }
         }
 

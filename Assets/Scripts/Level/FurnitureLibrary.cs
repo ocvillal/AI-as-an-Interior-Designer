@@ -9,8 +9,8 @@ public class FurnitureLibrary{
     public Dictionary<string, List<string>> categories;
     public List<string> tags;
     public List<string> constraints;
-    public Dictionary<string, FurnitureData> furniture_pack_1;
-    public Dictionary<string, FurnitureData> furniture_pack_2;
+    public Dictionary<string, FurnitureData> Basic;
+    public Dictionary<string, FurnitureData> Minimalist;
 
     public Dictionary<string, FurnitureData> library;
     public Dictionary<string, GameObject> furniturePrefabs;
@@ -22,7 +22,7 @@ public class FurnitureLibrary{
     // }
 
     public FurnitureData GetFurniture(string name){
-        return furniture_pack_1.TryGetValue(name, out var ret) ? ret : furniture_pack_2.TryGetValue(name, out ret) ? ret: null;
+        return Basic.TryGetValue(name, out var ret) ? ret : Minimalist.TryGetValue(name, out ret) ? ret: null;
     }
 
     public FurnitureData GetRandomFurnitureByType(string type){
@@ -51,14 +51,21 @@ public class FurnitureLibrary{
     }
 
     public List<string> GetFurnitureTags(string name){
-        return furniture_pack_1.TryGetValue(name, out var ret) ? ret.tags : furniture_pack_2.TryGetValue(name, out ret) ? ret.tags : new List<string>();
+        return Basic.TryGetValue(name, out var ret) ? ret.tags : Minimalist.TryGetValue(name, out ret) ? ret.tags : new List<string>();
+    }
+
+    public GameObject GetPrefab(string name){
+        return furniturePrefabs[name];
     }
 
     public void LoadPrefabs(){
         furniturePrefabs = new Dictionary<string, GameObject>();
         foreach (KeyValuePair<string, List<string>> category in categories){
             foreach (string name in category.Value){
-                furniturePrefabs[name] = (GameObject) Resources.Load(string.Format("Prefab/{0}/{1}", category.Key, name));
+                // Debug.Log(string.Format("Livingroom/{0}/{1}", category.Key, name));
+                GameObject Hello = (GameObject) Resources.Load(string.Format("Livingroom/{0}/{1}", category.Key, name));
+                // Debug.Log(Hello);
+                furniturePrefabs[name] = Hello;
             }
         }
     }

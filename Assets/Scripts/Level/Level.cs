@@ -91,8 +91,16 @@ public class Level : MonoBehaviour
     }
 
 
-    public void RenderObject(Vector2 tlpos, Feature feature){
-        Vector2 centerTile = tlpos + TILE_SIZE * new Vector2(feature.dimensions[0] - 1, -feature.dimensions[1] - 1) / 2;
+    public void RenderObject(Vector3 tlpos, Feature feature){
+        Vector3 centerTile = tlpos + TILE_SIZE * new Vector3(feature.dimensions[0] - 1, 1, -(feature.dimensions[1] - 1)) / 2;
+        GameObject furniture = LevelGene.furnitureLibrary.GetPrefab(feature.name);
+        // Instantiate(furniture, centerTile, furniture.transform.rotation);
+        tlpos.y = 2;
+        Instantiate(Toilet, tlpos, Quaternion.identity);
+
+        // centerTile.y = 2;
+        Instantiate(furniture, centerTile, furniture.transform.rotation);
+
 
     }
 
@@ -124,7 +132,19 @@ public class Level : MonoBehaviour
             ret += "\n";
         }
         Debug.Log(ret);
+
         Vector3 tile_pos = TopLeftCenter;
+
+        foreach (Feature feature in gene.features){
+            // Calculate top left tile position
+            Debug.Log(feature.position);
+            Vector3 tlfurnpos= tile_pos +  new Vector3(TILE_SIZE * feature.position.x, 0, -TILE_SIZE * feature.position.y);
+            Debug.Log(tlfurnpos);
+
+            RenderObject(tlfurnpos, feature);
+        }
+
+
         for (int j = 0; j < Dimensions.y; j++){
             tile_pos.x = TopLeftCenter.x;
             for (int i = 0; i < Dimensions.x; i++){

@@ -2,10 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+using UnityEngine.InputSystem;
 using Feature = FurnitureFeature; // name of the furniture, x, y
 
 public class LevelGenerator : MonoBehaviour
 {
+    public int SUCCESSOR_ITERATIONS = 5;
     public int MAX_LEVELS_PER_ROW = 5;
     public float PLOT_SIZE = 14;
 
@@ -76,6 +78,48 @@ public class LevelGenerator : MonoBehaviour
 
         gen_level.GetComponent<Level>().RenderLevel();
     }
+
+
+    // public void OnSwitchLevel(InputAction.CallbackContext context)
+    // {
+    //     Vector2 curr_val = context.ReadValue<Vector2>();
+    //     switch (context.phase)
+    //     {
+    //         case InputActionPhase.Canceled:
+    //             break;
+
+    //         default:
+    //             // Call generate successors however many times
+    //             // Replace population with output of generate successors
+    //             for (int i =  0; i < SUCCESSOR_ITERATIONS; i++) {
+    //                 population = generateSuccessors();
+    //             }
+
+    //             // Disable player movement
+    //             GameObject player;
+    //             player = GameObject.Find("Player");
+
+    //             PlayerMovement movement = player.GetComponent<PlayerMovement>();
+    //             movement.isEnabled = false;
+
+    //             // Teleport player upwards
+    //             player.transform.position = new Vector3(0.0f, 3.0f, 0.0f);
+
+    //             // Delete some objects (?)
+    //             // Attach it all to a gameobject and delete THAT gameobject to recursively delete (maybe)
+    //             if (!other.gameObject.CompareTag("Player"))
+    //                 {
+    //                     Destroy(other.gameObject);
+    //                 }
+
+    //             // Then call RenderPopulation()
+    //             RenderPopulation();
+
+    //             // Re-enable player movement (PlayerMovement MovementEnabled/LookEnabled)
+    //             movement.isEnabled = true;
+    //             break;
+    //     }
+    // }
 
 
 

@@ -32,7 +32,7 @@
 
     "Basic" : {
         "armchair" : {
-                "name": "armchair_basic",
+                "name": "armchair",
                 "dimensions": [2, 2],
                 "constraints": [
                 ],
@@ -84,7 +84,7 @@
             ]
         }
     },
-    "minimalist" : {
+    "Minimalist" : {
         "armchair" : {
             "name": "armchair1",
             "dimensions": [2, 2],
