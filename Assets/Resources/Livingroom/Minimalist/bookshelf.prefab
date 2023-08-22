@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 2208147351669679443}
   - component: {fileID: 7110400067675171869}
   m_Layer: 0
-  m_Name: Bookshelf
+  m_Name: bookshelf
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

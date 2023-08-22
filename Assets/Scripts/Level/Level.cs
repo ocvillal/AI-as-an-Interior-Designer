@@ -88,7 +88,9 @@ public class Level : MonoBehaviour
     }
 
 
-
+    public void RenderObject(Vector2 tlpos, Feature feature){
+        Vector centerTile = tlpos + TILE_SIZE * feature.dimensions
+    }
 
     public void Render(){
         Vector3 tile_pos = TopLeftCenter;
