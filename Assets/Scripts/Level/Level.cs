@@ -2,6 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
+
+using Feature = FurnitureFeature; // name of the furniture, x, y
 public class Level : MonoBehaviour
 {
     public const float TILE_SIZE = 1.0f;
@@ -89,7 +92,7 @@ public class Level : MonoBehaviour
 
 
     public void RenderObject(Vector2 tlpos, Feature feature){
-        Vector centerTile = tlpos + TILE_SIZE * feature.dimensions
+        Vector2 centerTile = tlpos + TILE_SIZE * new Vector2(feature.dimensions[0] - 1, -feature.dimensions[1] - 1) / 2;
     }
 
     public void Render(){

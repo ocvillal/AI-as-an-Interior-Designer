@@ -136,16 +136,28 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3427546991922013218, guid: 8c9c5c3e1aec5f402811ce02efc8b128, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3427546991922013218, guid: 8c9c5c3e1aec5f402811ce02efc8b128, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3427546991922013218, guid: 8c9c5c3e1aec5f402811ce02efc8b128, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3427546991922013218, guid: 8c9c5c3e1aec5f402811ce02efc8b128, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: 1.95
       objectReference: {fileID: 0}
     - target: {fileID: 3427546991922013218, guid: 8c9c5c3e1aec5f402811ce02efc8b128, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 4
+      value: 1.66
       objectReference: {fileID: 0}
     - target: {fileID: 3427546991922013218, guid: 8c9c5c3e1aec5f402811ce02efc8b128, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: 1.17
       objectReference: {fileID: 0}
     - target: {fileID: 3427546991922013218, guid: 8c9c5c3e1aec5f402811ce02efc8b128, type: 3}
       propertyPath: m_LocalRotation.w
@@ -302,6 +314,22 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: 5670a8aa-2119-49a4-b429-34b1dd3f56e6
     m_ActionName: OnFoot/Jump[/Keyboard/space]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1993473761}
+        m_TargetAssemblyTypeName: PlayerMovement, Assembly-CSharp
+        m_MethodName: OnMovement
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 9f517d7c-cace-4ebc-8d56-692d7a790749
+    m_ActionName: OnFoot/SwitchLevel[/Keyboard/upArrow,/Keyboard/downArrow,/Keyboard/leftArrow,/Keyboard/rightArrow]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: OnFoot
