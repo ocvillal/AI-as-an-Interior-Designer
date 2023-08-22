@@ -67,7 +67,7 @@ public class LevelGenerator : MonoBehaviour
         gen_level.GetComponent<Level>().Position = pos;
 
         // gen_level.PlaceItemAtTile(0,0);
-        // // gen_level.PlaceItemAtTile(4,4);
+        // gen_level.PlaceItemAtTile(4,4);
         // gen_level.PlaceItemAtTile(9,9);
         // gen_level.PlaceItemAtTile(0,9);
         // gen_level.PlaceItemAtTile(9,0);
