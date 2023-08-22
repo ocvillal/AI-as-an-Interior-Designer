@@ -95,11 +95,11 @@ public class Level : MonoBehaviour
         Vector3 centerTile = tlpos + TILE_SIZE * new Vector3(feature.dimensions[0] - 1, 1, -(feature.dimensions[1] - 1)) / 2;
         GameObject furniture = LevelGene.furnitureLibrary.GetPrefab(feature.name);
         // Instantiate(furniture, centerTile, furniture.transform.rotation);
-        tlpos.y = 2;
-        Instantiate(Toilet, tlpos, Quaternion.identity);
+        // tlpos.y = 2;
+        // Instantiate(Toilet, tlpos, Quaternion.identity);
 
         // centerTile.y = 2;
-        Instantiate(furniture, centerTile, furniture.transform.rotation);
+        Instantiate(furniture, centerTile + furniture.transform.position, furniture.transform.rotation);
 
 
     }
@@ -137,24 +137,24 @@ public class Level : MonoBehaviour
 
         foreach (Feature feature in gene.features){
             // Calculate top left tile position
-            Debug.Log(feature.position);
+            // Debug.Log(feature.position);
             Vector3 tlfurnpos= tile_pos +  new Vector3(TILE_SIZE * feature.position.x, 0, -TILE_SIZE * feature.position.y);
-            Debug.Log(tlfurnpos);
+            // Debug.Log(tlfurnpos);
 
             RenderObject(tlfurnpos, feature);
         }
 
 
-        for (int j = 0; j < Dimensions.y; j++){
-            tile_pos.x = TopLeftCenter.x;
-            for (int i = 0; i < Dimensions.x; i++){
-                if (!CheckTileEmpty(i, j)){
-                    Instantiate(Toilet, tile_pos, Quaternion.identity);
-                }
-                tile_pos.x += TILE_SIZE;
-            }
-            tile_pos.z -= TILE_SIZE;
-        }
+        // for (int j = 0; j < Dimensions.y; j++){
+        //     tile_pos.x = TopLeftCenter.x;
+        //     for (int i = 0; i < Dimensions.x; i++){
+        //         if (!CheckTileEmpty(i, j)){
+        //             Instantiate(Toilet, tile_pos, Quaternion.identity);
+        //         }
+        //         tile_pos.x += TILE_SIZE;
+        //     }
+        //     tile_pos.z -= TILE_SIZE;
+        // }
     }
 
 }

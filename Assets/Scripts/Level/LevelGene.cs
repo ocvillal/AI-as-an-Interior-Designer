@@ -81,6 +81,7 @@ public class LevelGene {
         int fail = 0;
         for (int i = 0; i < num_feat; i++){
             FurnitureData furnitureData = LevelGene.furnitureLibrary.GetRandomFurnitureByMultipleType("Basic", "Minimalist");
+            // FurnitureData furnitureData = LevelGene.furnitureLibrary.GetFurniture("armchair");
             // Debug.Log(furnitureData.ToString());
             Feature feat = null;
             if (furnitureData != null)

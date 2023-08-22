@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 2405950712502626655}
   - component: {fileID: 5195891803610197499}
   - component: {fileID: 6811986013216145778}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: DebugFurniture
   m_TagString: Untagged
   m_Icon: {fileID: 0}

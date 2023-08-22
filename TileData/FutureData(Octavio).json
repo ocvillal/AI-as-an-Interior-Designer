@@ -67,7 +67,7 @@
         },
         "tv_stand" : {
             "name": "tv_stand",
-            "dimensions": [1, 4],
+            "dimensions": [4, 1],
             "constraints": [
                 "back_against_wall"
             ],
