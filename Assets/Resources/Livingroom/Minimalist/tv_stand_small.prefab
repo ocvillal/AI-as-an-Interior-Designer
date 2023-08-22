@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 2642580582835082600}
   - component: {fileID: 9055410437454483719}
   m_Layer: 0
-  m_Name: tvstand_small
+  m_Name: tv_stand_small
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

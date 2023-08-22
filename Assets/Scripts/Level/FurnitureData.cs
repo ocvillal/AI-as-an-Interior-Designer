@@ -18,3 +18,17 @@ public class FurnitureData{
         return name + string.Format(" ({0}, {1})", dimensions[0], dimensions[1]);
     }
 }
+
+        // "general": [
+        //     "chair",
+        //     "curtains_double",
+        //     "door_double",
+        //     "door",
+        //     "drawer_small",
+        //     "drawer_medium",
+        //     "lamp",
+        //     "light_cube",
+        //     "light_stand",
+        //     "trashcan_small",
+        //     "trashcan"
+        // ],

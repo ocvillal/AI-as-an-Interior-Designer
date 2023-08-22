@@ -1,31 +1,26 @@
 {
     "categories": {
-        "general": [
-            "chair",
-            "curtains_double",
-            "drawer_small",
-            "drawer_medium",
-            "lamp",
-            "light_cube",
-            "light_stand",
-            "trashcan_small"
-        ],
 
-        "livingroom": [
-            "couch_large",
-            "couch_medium",
-            "couch_small",
+        "Basic": [
+            "armchair",
+            "couch",
+            "end_table",
+            "ottoman",
+            "tv_stand",
+            "coffee_table"
+        ],
+        "Minimalist": [
+            "armchair1",
+            "armchair2",
+            "bookshelf",
+            "couch1",
+            "couch2",
             "fireplace",
-            "couch_L_shape",
-            "glass_coffee_table"
-        ],
-
-        "plants": [
-            "cactus",
-            "dead_houseplants",
-            "houseplant"
+            "tv_stand_small",
+            "tv_stand_medium"
         ]
     },
+
 
     "tags": [
         "essential"
@@ -35,229 +30,133 @@
         "against_wall", "back_against_wall", "must_face_out"
     ],
 
-    "furniture_pack_1" : {
-
-    "chair" : {
-        "name": "chair",
-        "dimensions": [1, 1],
-        "constraints": [
-
-        ],
-        "tags": [
-
-        ]
-    },
-
-    "curtains_double" : {
-        "name": "curtains_double",
-        "dimensions": [4, 1],
-        "constraints": [
-
-        ],
-        "tags": [
-
-        ]
-    },
-
-    "drawer_small" : {
-        "name": "drawer_small",
-        "dimensions": [3, 2],
-        "constraints": [
-            "back_against_wall"
-        ],
-        "tags": [
-
-        ]
-    },
-
-    "drawer_medium" : {
-        "name": "drawer_medium",
-        "dimensions": [5, 2],
-        "constraints": [
-            "back_against_wall"
-        ],
-        "tags": [
-
-        ]
-    },
-
-    "lamp" : {
-        "name": "lamp",
-        "dimensions": [1, 1],
-        "constraints": [
-
-        ],
-        "tags": [
-
-        ]
-    },
-
-    "light_cube" : {
-        "name": "light_cube",
-        "dimensions": [1, 1],
-        "constraints": [
-
-        ],
-        "tags": [
-
-        ]
-    },
-
-    "light_stand" : {
-        "name": "light_stand",
-        "dimensions": [1, 1],
-        "constraints": [
-
-        ],
-        "tags": [
-
-        ]
-    },
-
-    "trashcan_small":  {
-        "name": "trashcan_small",
-        "dimensions": [1, 1],
-        "constraints": [
-
-        ],
-        "tags" : [
-
-        ]
-    },
-
-
-    "couch_large": {
-        "name": "couch_large",
-        "dimensions": [6, 2],
-        "constraints": [
-            "must_face_out"
-        ],
-        "tags" : [
-
-        ]
-    },
-
-    "couch_medium": {
-        "name": "couch_medium",
-        "dimensions": [5, 2],
-        "constraints": [
-            "must_face_out"
-        ],
-        "tags" : [
-
-        ]
-    },
-
-    "couch_small": {
-        "name": "couch_small",
-        "dimensions": [3, 2],
-        "constraints": [
-            "must_face_out"
-        ],
-        "tags" : [
-
-        ]
-    },
-
-    "fireplace": {
-        "name": "fireplace",
-        "dimensions": [3, 1],
-        "constraints": [
-            "back_against_wall"
-        ],
-        "tags" : [
-
-        ]
-    },
-
-    "couch_L_shape": {
-        "name": "couch_L_shape",
-        "dimensions": [6, 5],
-        "constraints": [
-            "must_face_out"
-        ],
-        "tags" : [
-
-        ]
-    },
-
-    "stool": {
-        "name": "stool",
-        "dimensions": [1, 1],
-        "constraints": [
-
-        ],
-        "tags":[]
-    },
-
-    "table_round_small": {
-        "name": "table_round_small",
-        "dimensions": [2, 2],
-        "constraints": [
-
-        ],
-        "tags":[]
-    },
-
-    "table_round_large": {
-        "name": "table_round_large",
-        "dimensions": [4, 2],
-        "constraints": [
-
-        ],
-        "tags":[]
-    },
-
-
-    "cactus" : {
-        "name" : "cactus",
-        "dimensions" : [1, 1],
-        "constraints" : [],
-        "tags" : []
-    },
-
-    "dead_houseplants" : {
-        "name" : "dead_houseplants",
-        "dimensions" : [1, 1],
-        "constraints" : [],
-        "tags" : []
-    },
-
-    "houseplant" : {
-        "name" : "houseplant",
-        "dimensions" : [1, 1],
-        "constraints" : [],
-        "tags" : []
-    }
-
-    },
-
-
-    "furniture_pack_2" : {
-        "glass_coffee_table" : {
-            "name" : "glass_coffee_able",
-            "dimensions" : [2, 3],
-            "constraints" : [],
-            "tags" : []
+    "Basic" : {
+        "armchair" : {
+                "name": "armchair_basic",
+                "dimensions": [2, 2],
+                "constraints": [
+                ],
+                "tags": [
+                ]
         },
-
-        "file_cabinet" : {
-            "name" : "file_cabinet",
-            "dimensions" : [1, 1],
-            "constraints" : [
+        "couch" : {
+            "name": "couch",
+            "dimensions": [2, 4],
+            "constraints": [
                 "back_against_wall"
             ],
-            "tags" : []
+            "tags": [
+                "essential"
+            ]
         },
-
-        "desk" : {
-            "name" : "desk",
-            "dimensions" : [1, 1],
-            "constraints" : [
+        "end_table" : {
+            "name": "end_table",
+            "dimensions": [1, 1],
+            "constraints": [
+            ],
+            "tags": [
+            ]
+        },
+        "ottoman" : {
+            "name": "ottoman",
+            "dimensions": [2, 2],
+            "constraints": [
+            ],
+            "tags": [
+            ]
+        },
+        "tv_stand" : {
+            "name": "tv_stand",
+            "dimensions": [1, 4],
+            "constraints": [
                 "back_against_wall"
             ],
-            "tags" : []
+            "tags": [
+                "essential"
+            ]
+        },
+        "coffee_table" : {
+            "name": "coffee_table",
+            "dimensions": [2, 2],
+            "constraints": [
+            ],
+            "tags": [
+            ]
         }
+    },
+    "minimalist" : {
+        "armchair" : {
+            "name": "armchair1",
+            "dimensions": [2, 2],
+            "constraints": [
+            ],
+            "tags": [
+            ]
+        },
+        "armchair2" : {
+            "name": "armchair2",
+            "dimensions": [2, 2],
+            "constraints": [
+            ],
+            "tags": [
+            ]
+        },
+        "bookshelf" : {
+            "name": "bookshelf",
+            "dimensions": [2, 1],
+            "constraints": [
+            ],
+            "tags": [
+            ]
+        },
+        "couch" : {
+            "name": "couch1",
+            "dimensions": [2, 4],
+            "constraints": [
+                "back_against_wall"
+            ],
+            "tags": [
+                "essential"
+            ]
+        },
+        "couch2" : {
+            "name": "couch2",
+            "dimensions": [2, 4],
+            "constraints": [
+                "back_against_wall"
+            ],
+            "tags": [
+                "essential"
+            ]
+        },
+        "fireplace" : {
+            "name": "fireplace",
+            "dimensions": [3,1],
+            "constraints": [
+                "back_against_wall"
+            ],
+            "tags": [
+            ]
+        },
+        "tv_stand_small" : {
+            "name": "tv_stand_small",
+            "dimensions": [3,1],
+            "constraints": [
+                "back_against_wall"
+            ],
+            "tags": [
+            ]
+        },
+        "tv_stand_medium" : {
+            "name": "tv_stand_medium",
+            "dimensions": [3,1],
+            "constraints": [
+                "back_against_wall"
+            ],
+            "tags": [
+            ]
+        }
+
     }
 
 }
