@@ -93,6 +93,7 @@ public class Level : MonoBehaviour
 
     public void RenderObject(Vector2 tlpos, Feature feature){
         Vector2 centerTile = tlpos + TILE_SIZE * new Vector2(feature.dimensions[0] - 1, -feature.dimensions[1] - 1) / 2;
+
     }
 
     public void Render(){
