@@ -10,6 +10,7 @@ public class LevelGenerator : MonoBehaviour
     public int SUCCESSOR_ITERATIONS = 5;
     public int MAX_LEVELS_PER_ROW = 5;
     public float PLOT_SIZE = 14;
+    public List<Color> COLORS = new List<Color>();
 
     public List<LevelGene> population;
 
