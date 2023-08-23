@@ -92,14 +92,27 @@ public class Level : MonoBehaviour
 
 
     public void RenderObject(Vector3 tlpos, Feature feature){
-        Vector3 centerTile = tlpos + TILE_SIZE * new Vector3(feature.dimensions[0] - 1, 1, -(feature.dimensions[1] - 1)) / 2;
+        List<int> furn_dims = feature.dimensions;
+
+        int dim_x = (feature.orientation == 0 || feature.orientation == 180) ? furn_dims[0] : furn_dims[1];
+        int dim_y = (feature.orientation == 0 || feature.orientation == 180) ? furn_dims[1] : furn_dims[0];
+
+        Vector3 centerTile = tlpos + TILE_SIZE * new Vector3(dim_x - 1, 1, -(dim_y - 1)) / 2;
         GameObject furniture = LevelGene.furnitureLibrary.GetPrefab(feature.name);
         // Instantiate(furniture, centerTile, furniture.transform.rotation);
         // tlpos.y = 2;
         // Instantiate(Toilet, tlpos, Quaternion.identity);
 
         // centerTile.y = 2;
-        Instantiate(furniture, centerTile + furniture.transform.position, furniture.transform.rotation);
+        // Instantiate(furniture, centerTile + furniture.transform.position, furniture.transform.rotation);
+
+
+        GameObject spawned = Instantiate(furniture, centerTile + furniture.transform.position, furniture.transform.rotation);
+        spawned.transform.RotateAround(centerTile, Vector3.up, feature.orientation);
+        // Debug.Log();
+        Instantiate(Toilet, spawned.transform.GetComponent<Renderer>().bounds.center, Quaternion.identity);
+
+        // Instantiate(furniture, centerTile, furniture.transform.rotation * Quaternion.Euler(0, feature.orientation, 0)).transform.position += furniture.transform.position;
 
 
     }
@@ -122,7 +135,7 @@ public class Level : MonoBehaviour
     }
 
     public void RenderLevel(){
-        Debug.Log(gene.ToString());
+        // Debug.Log(gene.ToString());
 
         string ret = "";
         for (int j = 0; j < Dimensions.y; j++){
@@ -131,7 +144,7 @@ public class Level : MonoBehaviour
             }
             ret += "\n";
         }
-        Debug.Log(ret);
+        // Debug.Log(ret);
 
         Vector3 tile_pos = TopLeftCenter;
 

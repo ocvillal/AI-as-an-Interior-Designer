@@ -97,7 +97,7 @@ public class LevelGene {
                 fail += 1;
             }
         }
-        Debug.Log(string.Format("{0} fails out of {1}", fail, num_feat));
+        // Debug.Log(string.Format("{0} fails out of {1}", fail, num_feat));
 
         return randomLevel;
     }
@@ -344,7 +344,7 @@ public class LevelGene {
                 if (feat != null)
                     mutatedGene = mutatedGene.TryPlaceObject(feat);
                 else {
-                    Debug.Log("Failure to add");
+                    // Debug.Log("Failure to add");
                     fails += 1;
                     // if (fails >= )
                 }
@@ -415,19 +415,19 @@ public class LevelGene {
             // Check if within bounds
             isValid &= (tlx + dim_x <= dimensions.x && tly + dim_y <= dimensions.y);
             if (!isValid) {
-                ret_grid[tile.Item1, tile.Item2] = "0";
+                ret_grid[tly, tlx] = "0";
                 continue;
             }
 
             // Checking against every tile of furniture
-            for (int y = tile.Item2; y < tile.Item2 + dim_y; y++){
+            for (int y = tly; y < tly + dim_y; y++){
                 if (y >= dimensions.y){
                     isValid = false;
                     break;
                 }
-                for (int x = tile.Item1; x < tile.Item1 + dim_x; x++){
+                for (int x = tlx; x < tlx + dim_x; x++){
                     if (x >= dimensions.x){
-                        Debug.Log(string.Format("IM HERE ({0}, {1}) Tile: ({2}, {3})", x,y, tile.Item1, tile.Item2));
+                        // Debug.Log(string.Format("IM HERE ({0}, {1}) Tile: ({2}, {3})", x,y, tlx, tly));
                         isValid = false;
                         break;
                     }
@@ -440,16 +440,17 @@ public class LevelGene {
                     // Constraints
                     if (!isValid) break;
                 }
-                Debug.Log(isValid == false);
+                // Debug.Log(isValid == false);
                 if (!isValid) break;
             }
 
             if (isValid) {
-                ret_grid[tile.Item1, tile.Item2] = "A";
+
+                ret_grid[tly, tlx] = "A";
                 // Debug.Log(string.Format("IM sss Tile: ({0}, {1})", tile.Item1, tile.Item2));
                 validTiles.Add(tile);
             }else {
-                ret_grid[tile.Item1, tile.Item2] = "0";
+                ret_grid[tly, tlx] = "0";
             };
         }
 
@@ -461,21 +462,24 @@ public class LevelGene {
             }
             ret += "\n";
         }
-        Debug.Log(availableTiles.Count);
-        Debug.Log(ret);
+        // Debug.Log(availableTiles.Count);
+        // Debug.Log(ret);
+        // Debug.Log(string.Join(", ", validTiles));
 
         return validTiles;
     }
 
     public Feature GenerateValidFeature(FurnitureData featureData){
         // pick random orientation
+        float orientation = Random.Range(0, 4) * 90;
 
-        List<(int, int)> validTiles = GetValidTiles(featureData);
+        List<(int, int)> validTiles = GetValidTiles(featureData, orientation);
 
         Feature feature = null;
         if (validTiles.Count > 0){
             (int, int) randomTile = validTiles[Random.Range(0, validTiles.Count)];
-            feature = new Feature(featureData, randomTile.Item1, randomTile.Item2);
+            // Debug.Log(randomTile);
+            feature = new Feature(featureData, randomTile.Item1, randomTile.Item2, orientation);// );
         }
 
         return feature;
@@ -491,9 +495,12 @@ public class LevelGene {
 
         foreach (Feature feat in features){
             List<int> furn_dims = feat.dimensions;
+            int dim_x = (feat.orientation == 0 || feat.orientation == 180) ? furn_dims[0] : furn_dims[1];
+            int dim_y = (feat.orientation == 0 || feat.orientation == 180) ? furn_dims[1] : furn_dims[0];
 
-            for (int y = feat.position.y; y < feat.position.y + furn_dims[1]; y++){
-                for (int x = feat.position.x; x < feat.position.x + furn_dims[0]; x++){
+
+            for (int y = feat.position.y; y < feat.position.y + dim_y; y++){
+                for (int x = feat.position.x; x < feat.position.x + dim_x; x++){
                     ret_grid[y, x] = new string(feat.name[0], 1);
                 }
             }

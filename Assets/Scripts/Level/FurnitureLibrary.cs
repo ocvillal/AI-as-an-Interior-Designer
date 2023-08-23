@@ -64,7 +64,7 @@ public class FurnitureLibrary{
             foreach (string name in category.Value){
                 // Debug.Log(string.Format("Livingroom/{0}/{1}", category.Key, name));
                 GameObject Hello = (GameObject) Resources.Load(string.Format("Livingroom/{0}/{1}", category.Key, name));
-                Debug.Log(string.Format("{0} {1}", name, Hello.transform.position));
+                // Debug.Log(string.Format("{0} {1}", name, Hello.transform.position));
                 furniturePrefabs[name] = Hello;
             }
         }

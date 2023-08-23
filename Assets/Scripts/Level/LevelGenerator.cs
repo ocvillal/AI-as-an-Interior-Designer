@@ -162,7 +162,7 @@ public class LevelGenerator : MonoBehaviour
         // LevelGene try4 = try3.TryPlaceObject(feat4);
         // Debug.Log(try4.ToString());
 
-        LevelGene randlevel = LevelGene.GenerateRandomLevelGene(Dimensions, 10);
+        LevelGene randlevel = LevelGene.GenerateRandomLevelGene(Dimensions, 1);
         Debug.Log(randlevel.ToString());
         for (int i = 0; i < _numLevels; i++){
             population.Add(randlevel);
