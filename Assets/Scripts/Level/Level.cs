@@ -145,16 +145,16 @@ public class Level : MonoBehaviour
         }
 
 
-        // for (int j = 0; j < Dimensions.y; j++){
-        //     tile_pos.x = TopLeftCenter.x;
-        //     for (int i = 0; i < Dimensions.x; i++){
-        //         if (!CheckTileEmpty(i, j)){
-        //             Instantiate(Toilet, tile_pos, Quaternion.identity);
-        //         }
-        //         tile_pos.x += TILE_SIZE;
-        //     }
-        //     tile_pos.z -= TILE_SIZE;
-        // }
+        for (int j = 0; j < Dimensions.y; j++){
+            tile_pos.x = TopLeftCenter.x;
+            for (int i = 0; i < Dimensions.x; i++){
+                if (!CheckTileEmpty(i, j)){
+                    Instantiate(Toilet, tile_pos, Quaternion.identity);
+                }
+                tile_pos.x += TILE_SIZE;
+            }
+            tile_pos.z -= TILE_SIZE;
+        }
     }
 
 }

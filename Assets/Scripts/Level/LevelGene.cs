@@ -80,8 +80,8 @@ public class LevelGene {
         LevelGene randomLevel = new LevelGene(dims);
         int fail = 0;
         for (int i = 0; i < num_feat; i++){
-            FurnitureData furnitureData = LevelGene.furnitureLibrary.GetRandomFurnitureByMultipleType("Basic", "Minimalist");
-            // FurnitureData furnitureData = LevelGene.furnitureLibrary.GetFurniture("armchair");
+            // FurnitureData furnitureData = LevelGene.furnitureLibrary.GetRandomFurnitureByMultipleType("Basic", "Minimalist");
+            FurnitureData furnitureData = LevelGene.furnitureLibrary.GetFurniture("couch");
             // Debug.Log(furnitureData.ToString());
             Feature feat = null;
             if (furnitureData != null)
@@ -316,6 +316,7 @@ public class LevelGene {
     // Returns where the top left corner an object can be  in
     List<(int, int)> GetValidTiles(FurnitureData feat, float orientation=0){
         List<int> furn_dims = feat.dimensions;
+        string [,] ret_grid = new string[dimensions[0], dimensions[1]];
 
 
         List<(int, int)> availableTiles = GetAvailableTiles();
@@ -323,12 +324,37 @@ public class LevelGene {
         List<(int, int)> validTiles = new List<(int, int)>();
 
         int dim_x = (orientation == 0 || orientation == 180) ? furn_dims[0] : furn_dims[1];
-        int dim_y = (orientation == 90 || orientation == 270) ? furn_dims[1] : furn_dims[0];
+        int dim_y = (orientation == 0 || orientation == 180) ? furn_dims[1] : furn_dims[0];
+
         foreach((int, int) tile in availableTiles){
             bool isValid = true;
+            int tlx = tile.Item1;
+            int tly = tile.Item2;
+
+
+            // Prechecks
+
+            // Check if against wall
+            if((feat.constraints.Contains("back_against_wall")) || (feat.constraints.Contains("against_wall"))){
+                isValid &= ((tlx == 0 || tlx + dim_x == dimensions.x) || (tly == 0 || tly + dim_y == dimensions.y));
+            }
+
+            // Check if within bounds
+            isValid &= (tlx + dim_x <= dimensions.x && tly + dim_y <= dimensions.y);
+            if (!isValid) {
+                ret_grid[tile.Item1, tile.Item2] = "0";
+                continue;
+            }
+
+            // Checking against every tile of furniture
             for (int y = tile.Item2; y < tile.Item2 + dim_y; y++){
+                if (y >= dimensions.y){
+                    isValid = false;
+                    break;
+                }
                 for (int x = tile.Item1; x < tile.Item1 + dim_x; x++){
-                    if (x >= dimensions.x || y >= dimensions.y){
+                    if (x >= dimensions.x){
+                        Debug.Log(string.Format("IM HERE ({0}, {1}) Tile: ({2}, {3})", x,y, tile.Item1, tile.Item2));
                         isValid = false;
                         break;
                     }
@@ -339,21 +365,31 @@ public class LevelGene {
                     // Some extra validation needs to be done here... or maybe not...
 
                     // Constraints
-                    if((feat.constraints.Contains("back_against_wall")) || (feat.constraints.Contains("against_wall"))){
-                        if((x == 0 || x == dimensions.x) || (y == 0 || y == dimensions.y)){
-                            isValid = true;
-                        }
-                        else
-                        {
-                            isValid = false;
-                        }
-                    }
                     if (!isValid) break;
                 }
+                Debug.Log(isValid == false);
                 if (!isValid) break;
             }
-            if (isValid) validTiles.Add(tile);
+
+            if (isValid) {
+                ret_grid[tile.Item1, tile.Item2] = "A";
+                // Debug.Log(string.Format("IM sss Tile: ({0}, {1})", tile.Item1, tile.Item2));
+                validTiles.Add(tile);
+            }else {
+                ret_grid[tile.Item1, tile.Item2] = "0";
+            };
         }
+
+
+        string ret = "";
+        for (int j = 0; j < dimensions.y; j++){
+            for (int i = 0; i < dimensions.x; i++){
+                ret += string.Format(" [{0}] ", ret_grid[j, i]);
+            }
+            ret += "\n";
+        }
+        Debug.Log(availableTiles.Count);
+        Debug.Log(ret);
 
         return validTiles;
     }
@@ -425,6 +461,7 @@ public class LevelGene {
                     ret.grid[y, x] = 1;
 
                 } catch (System.IndexOutOfRangeException e){
+                    Debug.Log(feature);
                     Debug.Log(ret);
                     Debug.Log(y);
                     Debug.Log(x);
@@ -457,7 +494,7 @@ public class LevelGene {
         int dim_y = dims[1];
         if (dims[0] != dims[1]) {
             dim_x = (feature.orientation == 0 || feature.orientation == 180) ? furn_dims[0] : furn_dims[1];
-            dim_y = (feature.orientation == 90 || feature.orientation == 270) ? furn_dims[1] : furn_dims[0];
+            dim_y = (feature.orientation == 0 || feature.orientation == 180) ? furn_dims[1] : furn_dims[0];
         }
 
         for (int y = feature.position.y; y < feature.position.y + dim_y; y++){

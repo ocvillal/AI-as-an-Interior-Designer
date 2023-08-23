@@ -41,7 +41,7 @@
         },
         "couch" : {
             "name": "couch",
-            "dimensions": [2, 4],
+            "dimensions": [4, 2],
             "constraints": [
                 "back_against_wall"
             ],
