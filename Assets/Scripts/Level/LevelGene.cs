@@ -297,31 +297,32 @@ public class LevelGene {
                     List<(int, int)> validTiles = GetValidTiles(data, selected.orientation);
                     List<(int, int)> destinations = new List<(int, int)>();
 
-                    var val = new (selected.position.x + 1, selected.position.y + 1);
+                    (int, int) val = new (selected.position.x + 1, selected.position.y + 1);
                     if (validTiles.Contains(val)) destinations.Add(val);
 
-                    var val = new (selected.position.x - 1, selected.position.y + 1);
+                    val = new (selected.position.x - 1, selected.position.y + 1);
                     if (validTiles.Contains(val)) destinations.Add(val);
 
-                    var val = new (selected.position.x + 1, selected.position.y - 1);
+                    val = new (selected.position.x + 1, selected.position.y - 1);
                     if (validTiles.Contains(val)) destinations.Add(val);
 
-                    var val = new (selected.position.x - 1, selected.position.y - 1);
+                    val = new (selected.position.x - 1, selected.position.y - 1);
                     if (validTiles.Contains(val)) destinations.Add(val);
 
                     if (destinations.Count > 0){
-                        int randomIndex = Random.Range(0, destinations.Count);
-                        (int, int) randomTile = destinations[randomIndex];
+                        int randomDest = Random.Range(0, destinations.Count);
+                        (int, int) randomTile = destinations[randomDest];
                         Feature newFeature = new Feature(data, randomTile.Item1, randomTile.Item2);
                         removed = removed.TryPlaceObject(newFeature);
 
-                        if (removed.features.Count = mutatedGene.features.Count)
+                        if (removed.features.Count == mutatedGene.features.Count)
                             mutatedGene = removed;
                     }
 
                 } else if (moveOrRotate == ROTATE){ // Move
 
                     List<(int, int)> validTiles = GetValidTiles(data, (selected.orientation + 90) % 360);
+
 
 
                 }
