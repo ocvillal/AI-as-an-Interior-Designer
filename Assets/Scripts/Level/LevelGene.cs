@@ -28,7 +28,9 @@ public class LevelGene {
     }
 
 
-    bool isValid;
+    // bool isValid = true;
+    int fails = 0;
+    bool isFull = false;
 
     public LevelGene(Vector2Int dimensions){
         if (furnitureLibrary == null){
@@ -266,15 +268,63 @@ public class LevelGene {
 
     LevelGene Mutate(){ // A mutate function // Angela
         // Either
+        LevelGene mutatedGene = new LevelGene(this);
         int actions = Random.Range(0, 4);
-        int[,] occupiedSpace = new int[10, 10];
-        foreach (var feature in features){
-                // Set to 1 if the space is occupied
-            }
+        // int[,] occupiedSpace = new int[10, 10];
+        // foreach (var feature in mutatedGene.features){
+        //         // Set to 1 if the space is occupied
+        // }
         switch (actions)
         {
         // Modifies the placement of an item
             case 0:
+                // Select a random feature
+                int randomIndex = Random.Range(0, mutatedGene.features.Count);
+
+                Feature selected = mutatedGene.features[randomIndex];
+                FurnitureData data = LevelGene.furnitureLibrary.GetFurniture(selected.name);
+
+                // Remove it
+                LevelGene removed = mutatedGene.RemoveObject(selected);
+
+                // Generate a new feature?
+                int MOVE = 0;
+                int ROTATE = 1;
+                int moveOrRotate = MOVE; // Random.Range(0, 2);
+
+                // Mutate and add it back
+                if (moveOrRotate == MOVE){ // Move
+                    List<(int, int)> validTiles = GetValidTiles(data, selected.orientation);
+                    List<(int, int)> destinations = new List<(int, int)>();
+
+                    var val = new (selected.position.x + 1, selected.position.y + 1);
+                    if (validTiles.Contains(val)) destinations.Add(val);
+
+                    var val = new (selected.position.x - 1, selected.position.y + 1);
+                    if (validTiles.Contains(val)) destinations.Add(val);
+
+                    var val = new (selected.position.x + 1, selected.position.y - 1);
+                    if (validTiles.Contains(val)) destinations.Add(val);
+
+                    var val = new (selected.position.x - 1, selected.position.y - 1);
+                    if (validTiles.Contains(val)) destinations.Add(val);
+
+                    if (destinations.Count > 0){
+                        int randomIndex = Random.Range(0, destinations.Count);
+                        (int, int) randomTile = destinations[randomIndex];
+                        Feature newFeature = new Feature(data, randomTile.Item1, randomTile.Item2);
+                        removed = removed.TryPlaceObject(newFeature);
+
+                        if (removed.features.Count = mutatedGene.features.Count)
+                            mutatedGene = removed;
+                    }
+
+                } else if (moveOrRotate == ROTATE){ // Move
+
+                    List<(int, int)> validTiles = GetValidTiles(data, (selected.orientation + 90) % 360);
+
+
+                }
 
 
                 // Rotate or move? A; Both
@@ -282,20 +332,37 @@ public class LevelGene {
 
         // Adds a new item
             case 1:
-                string randomItem = "";
+                FurnitureData furnitureData = LevelGene.furnitureLibrary.GetRandomFurnitureByMultipleType("Basic", "Minimalist");
+                // FurnitureData furnitureData = LevelGene.furnitureLibrary.GetFurniture("couch");
+                // Debug.Log(furnitureData.ToString());
+                Feature feat = null;
+                if (furnitureData != null)
+                    feat = mutatedGene.GenerateValidFeature(furnitureData);
+                    // Debug.Log(feat);
+                    // Debug.Log(feat != null);
+                if (feat != null)
+                    mutatedGene = mutatedGene.TryPlaceObject(feat);
+                else {
+                    Debug.Log("Failure to add");
+                    fails += 1;
+                    // if (fails >= )
+                }
+
                 break;
 
         // Removes an item
             case 2:
-                var removableFeatureList = new List<string>();
-                foreach(var feature in features) {
+                var removableFeatureList = new List<int>();
+                for(int i = 0; i < mutatedGene.features.Count; i++) {
+                    Feature feature = mutatedGene.features[i];
                     if (!feature.HasTag("essential")) {
-                        removableFeatureList.Add(feature.name);
+                        removableFeatureList.Add(i);
                     }
                 }
+
                 if (removableFeatureList.Count > 0) {
-                    int removeIndex = Random.Range(0, removableFeatureList.Count);
-                    features.RemoveAt(removeIndex);
+                    int removeIndex = removableFeatureList[Random.Range(0, removableFeatureList.Count)];
+                    mutatedGene.RemoveObject(mutatedGene.features[removeIndex]);
                 }
                 break;
 
