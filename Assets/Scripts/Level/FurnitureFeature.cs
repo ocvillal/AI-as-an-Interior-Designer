@@ -9,6 +9,7 @@ public class FurnitureFeature{
     public static FurnitureLibrary furnitureLibrary = null;
 
     public string name;
+    public string color;
     public Vector2Int position; // this is the top left tile position (0,0) is top left and (n, n) bottom right
     public List<int> dimensions;
     public float orientation;
@@ -38,8 +39,9 @@ public class FurnitureFeature{
 
     // Position is the top left tile of furniture
 
-    public FurnitureFeature(string name, int x,  int z){
+    public FurnitureFeature(string name, int x,  int z, string color = null){
         this.name = name;
+        this.color = color;
         this.position = new Vector2Int(x, z);
         this.orientation = 0;
 
@@ -50,8 +52,10 @@ public class FurnitureFeature{
             };
     }
 
-    public FurnitureFeature(FurnitureData featData, int x, int z){
+    public FurnitureFeature(FurnitureData featData, int x, int z)
+    {
         this.name = featData.name;
+        this.color = null;
         this.position = new Vector2Int(x, z);
         this.orientation = 0;
 
@@ -63,6 +67,7 @@ public class FurnitureFeature{
 
     public FurnitureFeature(FurnitureFeature feat){
         this.name = feat.name;
+        this.color = feat.color;
         this.position = new Vector2Int(feat.position.x, feat.position.y);
         this.orientation = feat.orientation;
         this.dimensions = new List<int>() {
@@ -123,7 +128,7 @@ public class FurnitureFeature{
 
 
     public override string ToString(){
-        return string.Format("({0} TL: {1} - BR: {2}) ", name,
+        return string.Format("({0} TL: {1} - BR: {2})", name,
                  this.position,
                  this.position + new Vector2Int(this.dimensions[0] - 1, this.dimensions[1]- 1));
     }

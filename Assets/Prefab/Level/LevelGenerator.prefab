@@ -44,4 +44,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 611af95875f174750b98fbbf99f68b1b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  level: {fileID: 2699532437363415002, guid: ee26af7b112084624a253f984aed7d6d, type: 3}
+  SUCCESSOR_ITERATIONS: 5
+  MAX_LEVELS_PER_ROW: 5
+  PLOT_SIZE: 14
+  COLORS:
+  - {r: 0.14150941, g: 0.14150941, b: 0.14150941, a: 0}
+  - {r: 0.3018868, g: 0.3018868, b: 0.3018868, a: 0}
+  - {r: 1, g: 1, b: 1, a: 0}
+  - {r: 0.8584906, g: 0.34420612, b: 0.34420612, a: 0}
+  - {r: 0.9622642, g: 0.63182294, b: 0.44028127, a: 0}
+  - {r: 0.9135333, g: 0.9339623, b: 0.5771182, a: 0}
+  - {r: 0.4567462, g: 0.754717, b: 0.4236383, a: 0}
+  - {r: 0.37767, g: 0.38102305, b: 0.6509434, a: 0}
+  - {r: 0.69280124, g: 0.54427737, b: 0.764151, a: 0}
+  _dimensions: {x: 10, y: 10}
+  _numLevels: 3
+  Level: {fileID: 0}
+  TopLeftCenter: {x: 0, y: 0, z: 0}

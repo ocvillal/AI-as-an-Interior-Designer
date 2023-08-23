@@ -133,6 +133,7 @@ public class LevelGene {
         bool hasSmall = false;
         bool hasLarge = false;
 
+        var colorList = new List<string>();
         var rhythmList = new List<string>();
 
         foreach (var feature in features)
@@ -150,10 +151,14 @@ public class LevelGene {
             }
 
             // Harmony
-            // This uses the color of the furniture
+            // Common colors in furniture
+            if (!colorList.Contains(feature.color)) {
+                colorList.Add(feature.color);
+            } else {
+                harmony += 1.0f;
+            }
 
             // Emphasis
-            // This may also use the color of the furniture
             if (isCategory(feature, "general")){
                 emphasisCount++;
             }
@@ -210,13 +215,13 @@ public class LevelGene {
         float fitness = 0.0f;
 
         // How heavily each category should affect overall fitness
-        float balance   = 0.0f;
-        float harmony   = 0.0f;
-        float emphasis  = 0.0f;
-        float contrast  = 0.0f;
-        float scale     = 0.0f;
-        float details   = 0.0f;
-        float rhythm    = 0.0f;
+        float balance   = 1.0f;
+        float harmony   = 2.0f;
+        float emphasis  = 2.0f;
+        float contrast  = 1.0f;
+        float scale     = 0.5f;
+        float details   = 0.5f;
+        float rhythm    = 0.5f;
 
         fitness += tileMetrics["Balance"]   * balance;
         fitness += tileMetrics["harmony"]   * harmony;
