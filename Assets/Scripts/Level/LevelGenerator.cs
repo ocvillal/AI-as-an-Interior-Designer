@@ -81,46 +81,52 @@ public class LevelGenerator : MonoBehaviour
     }
 
 
-    // public void OnSwitchLevel(InputAction.CallbackContext context)
-    // {
-    //     Vector2 curr_val = context.ReadValue<Vector2>();
-    //     switch (context.phase)
-    //     {
-    //         case InputActionPhase.Canceled:
-    //             break;
+    public void OnSwitchLevel(InputAction.CallbackContext context)
+    {
+        Vector2 curr_val = context.ReadValue<Vector2>();
+        switch (context.phase)
+        {
+            case InputActionPhase.Canceled:
+                break;
 
-    //         default:
-    //             // Call generate successors however many times
-    //             // Replace population with output of generate successors
-    //             for (int i =  0; i < SUCCESSOR_ITERATIONS; i++) {
-    //                 population = generateSuccessors();
-    //             }
+            default:
+                // Call generate successors however many times
+                // Replace population with output of generate successors
+                for (int i =  0; i < SUCCESSOR_ITERATIONS; i++) {
+                    population = generateSuccessors();
+                }
 
-    //             // Disable player movement
-    //             GameObject player;
-    //             player = GameObject.Find("Player");
+                // Disable player movement
+                GameObject player;
+                player = GameObject.Find("Player");
 
-    //             PlayerMovement movement = player.GetComponent<PlayerMovement>();
-    //             movement.isEnabled = false;
+                PlayerMovement movement = player.GetComponent<PlayerMovement>();
+                movement.isEnabled = false;
 
-    //             // Teleport player upwards
-    //             player.transform.position = new Vector3(0.0f, 3.0f, 0.0f);
+                // Teleport player upwards
+                player.transform.position = new Vector3(0.0f, 3.0f, 0.0f);
 
-    //             // Delete some objects (?)
-    //             // Attach it all to a gameobject and delete THAT gameobject to recursively delete (maybe)
-    //             if (!other.gameObject.CompareTag("Player"))
-    //                 {
-    //                     Destroy(other.gameObject);
-    //                 }
+                // Delete some objects (?)
+                // Attach it all to a gameobject and delete THAT gameobject to recursively delete (maybe)
+                GameObject[] allObjects = UnityEngine.Object.FindObjectsOfType<GameObject>();
 
-    //             // Then call RenderPopulation()
-    //             RenderPopulation();
+                foreach (GameObject obj in allObjects)
+                {
+                    if (obj.CompareTag("Player"))
+                    {
+                        continue;
+                    }
+                UnityEngine.Object.Destroy(obj);
+                }
 
-    //             // Re-enable player movement (PlayerMovement MovementEnabled/LookEnabled)
-    //             movement.isEnabled = true;
-    //             break;
-    //     }
-    // }
+                // Then call RenderPopulation()
+                RenderPopulation();
+
+                // Re-enable player movement (PlayerMovement MovementEnabled/LookEnabled)
+                movement.isEnabled = true;
+                break;
+        }
+    }
 
 
 
