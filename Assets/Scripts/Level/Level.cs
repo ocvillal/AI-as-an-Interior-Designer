@@ -112,6 +112,10 @@ public class Level : MonoBehaviour
         // Debug.Log();
         Instantiate(Toilet, spawned.transform.GetComponent<Renderer>().bounds.center, Quaternion.identity);
 
+        // Create a temporary material // or use one already made?
+
+        // apply material to spawned object
+
         // Instantiate(furniture, centerTile, furniture.transform.rotation * Quaternion.Euler(0, feature.orientation, 0)).transform.position += furniture.transform.position;
 
 
