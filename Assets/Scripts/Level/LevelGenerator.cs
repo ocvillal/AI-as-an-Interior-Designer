@@ -104,12 +104,15 @@ public class LevelGenerator : MonoBehaviour
                 break;
 
             case InputActionPhase.Started:
-
+                List<LevelGene> pop = generateSuccessors();
                 // Call generate successors however many times
                 // Replace population with output of generate successors
-                for (int i =  0; i < SUCCESSOR_ITERATIONS; i++) {
-                    population = generateSuccessors();
+                for (int i =  0; i < SUCCESSOR_ITERATIONS - 1; i++) {
+                    pop = generateSuccessors();
                 }
+                population.Clear();
+                population.AddRange(pop);
+
                 // Debug.Log(population.Count);
                 // Debug.Log("Hello");
                 // // Disable player movement
@@ -187,7 +190,7 @@ public class LevelGenerator : MonoBehaviour
 
         // Debug.Log(randlevel.ToString());
         for (int i = 0; i < _numLevels; i++){
-            population.Add(LevelGene.GenerateRandomLevelGene(Dimensions, 2));
+            population.Add(LevelGene.GenerateRandomLevelGene(Dimensions, 4));
         }
 
         for(int i = 0; i < population.Count; i++){
@@ -195,9 +198,10 @@ public class LevelGenerator : MonoBehaviour
         }
         RenderPopulation();
 
-        for (int i =  0; i < SUCCESSOR_ITERATIONS; i++) {
-            population = new List<LevelGene>(generateSuccessors());
-        }
+
+        // for (int i =  0; i < SUCCESSOR_ITERATIONS; i++) {
+        //     population = new List<LevelGene>(generateSuccessors());
+        // }
     }
 
     // Update is called once per frame
@@ -210,17 +214,13 @@ public class LevelGenerator : MonoBehaviour
     List<LevelGene> elitestSelection(){
         Debug.Log("CALLED");
         List<LevelGene> results = new List<LevelGene>();
+
         // Sort from Biggest to smallest
         List<LevelGene> randPop = new List<LevelGene>();
-        Debug.Log(population.Count);
-        for(int i = 0; i < population.Count; i++){
-            Debug.Log(i);
-            Debug.Log(population[i].ToString());
-        }
-        Debug.Log("Hello");
+
         randPop = population.OrderBy(x => x.Fitness()).ToList();
         for(int i = 0; i < population.Count / 2; i++){
-            results.Add(population[i]);
+            results.Add(randPop[i]);
         }
         return results;
     }
@@ -244,13 +244,21 @@ public class LevelGenerator : MonoBehaviour
 
     List<LevelGene> generateSuccessors(){ // Octavio
         List<LevelGene> results = new List<LevelGene>();
-        List<LevelGene> selectList = elitestSelection();
+
+
+        List<LevelGene> selectList = new List<LevelGene>();
+        selectList.AddRange(elitestSelection());
         selectList.AddRange(tourneySelection());
+
+        Debug.Log(string.Format("PARENTS: {0}", selectList.Count));
+
+        // Note... I think we may not want our generator to choose the same parents
+
+
         for(int i = 0; i < selectList.Count / 2; i++){
             LevelGene parentFirst = selectList[i];
-            LevelGene parentSecond = selectList[population.Count - i - 1];
+            LevelGene parentSecond = selectList[selectList.Count - i - 1];
             results.AddRange(parentFirst.GenerateChildren(parentSecond));
-            // results.Add(parentSecond.generateChildren);
         }
         return results;
     }
@@ -260,7 +268,7 @@ public class LevelGenerator : MonoBehaviour
         int count = 0;
         Vector3 plot_pos = TopLeftCenter;
         for (int k = 0; k < _numLevels; k++){
-            if (count == 5){
+            if (count == MAX_LEVELS_PER_ROW){
                 Debug.Log("HELLO");
                 Debug.Log(_numLevels - k );
                 plot_pos.x = (_numLevels - k  < MAX_LEVELS_PER_ROW) ? -(((_numLevels - k - 1) * PLOT_SIZE)/2.0f)  : TopLeftCenter.x;
@@ -278,7 +286,7 @@ public class LevelGenerator : MonoBehaviour
         int count = 0;
         Vector3 plot_pos = TopLeftCenter;
         for (int k = 0; k < _numLevels; k++){
-            if (count == 5){
+            if (count == MAX_LEVELS_PER_ROW){
                 Debug.Log(_numLevels - k );
                 plot_pos.x = (_numLevels - k  < MAX_LEVELS_PER_ROW) ? -(((_numLevels - k - 1) * PLOT_SIZE)/2.0f)  : TopLeftCenter.x;
                 plot_pos.z += PLOT_SIZE;
