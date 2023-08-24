@@ -1,9 +1,11 @@
 
 using Newtonsoft.Json;
+using System.Linq;
 using System.IO;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+
 
 // Finish by Thursday
 
@@ -262,6 +264,12 @@ public class LevelGene {
         bool ret =  true;
 
         FurnitureData featData = furnitureLibrary.GetFurniture(feat.name);
+
+        if (feat.HasTag("unique")){
+            ret &= features.All(f => f.name != feat.name);
+        }
+
+        // More intensive computation
         ret &= GetValidTiles(featData, feat.orientation).Contains(new (feat.position.x, feat.position.y));
 
         // ret &= CheckNoOverlaps(feat);
@@ -275,10 +283,6 @@ public class LevelGene {
         // Either
         LevelGene mutatedGene = new LevelGene(this);
         int actions = Random.Range(0, 4);
-        // int[,] occupiedSpace = new int[10, 10];
-        // foreach (var feature in mutatedGene.features){
-        //         // Set to 1 if the space is occupied
-        // }
         switch (actions)
         {
         // Modifies the placement of an item
@@ -417,7 +421,6 @@ public class LevelGene {
         List<int> furn_dims = feat.dimensions;
         string [,] ret_grid = new string[dimensions[0], dimensions[1]];
 
-
         List<(int, int)> availableTiles = GetAvailableTiles();
 
         List<(int, int)> validTiles = new List<(int, int)>();
@@ -434,11 +437,14 @@ public class LevelGene {
             // Prechecks
 
             // Check if against wall
-            if (feat.constraints.Contains("against_wall")){
+            if (feat.HasConstraint("against_wall")){
                 isValid &= ((tlx == 0 || tlx + dim_x == dimensions.x) || (tly == 0 || tly + dim_y == dimensions.y));
             }
-            if((feat.constraints.Contains("back_against_wall"))){
-                isValid &= ((tlx == 0 || tlx + dim_x == dimensions.x));
+            if((feat.HasConstraint("back_against_wall"))){
+                isValid &= (orientation == 0 && tly + dim_y == dimensions.y) ||
+                            (orientation == 90 && tlx == 0) ||
+                            (orientation == 180 && tly == 0) ||
+                            (orientation == 270 && tlx + dim_x == dimensions.x);
             }
             // Check if within bounds
             isValid &= (tlx + dim_x <= dimensions.x && tly + dim_y <= dimensions.y);

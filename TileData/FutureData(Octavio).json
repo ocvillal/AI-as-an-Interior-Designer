@@ -19,7 +19,7 @@
 
 
     "tags": [
-        "essential"
+        "essential", "unique"
     ],
 
     "constraints" : [
@@ -132,6 +132,7 @@
                 "back_against_wall"
             ],
             "tags": [
+                "unique", "essential"
             ]
         },
         "tv_stand_small" : {

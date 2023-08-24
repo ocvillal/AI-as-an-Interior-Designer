@@ -17,6 +17,17 @@ public class FurnitureData{
     public override string ToString(){
         return name + string.Format(" ({0}, {1})", dimensions[0], dimensions[1]);
     }
+
+    public bool HasTag(string tag){
+        return tags.Contains(tag);
+    }
+
+    public bool HasConstraint(string constraint){
+        return constraints.Contains(constraint);
+    }
+
+
+
 }
 
         // "general": [

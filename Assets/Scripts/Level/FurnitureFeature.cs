@@ -128,6 +128,12 @@ public class FurnitureFeature{
         return furnitureLibrary.GetFurnitureTags(name).Contains(tag);
     }
 
+    public bool HasConstraint(string constraint){
+        return furnitureLibrary.GetFurnitureConstraints(name).Contains(constraint);
+    }
+
+
+
 
     public override string ToString(){
         List<int> furn_dims = this.dimensions;

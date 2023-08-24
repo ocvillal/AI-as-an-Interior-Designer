@@ -54,6 +54,11 @@ public class FurnitureLibrary{
         return Basic.TryGetValue(name, out var ret) ? ret.tags : (Minimalist.TryGetValue(name, out ret) ? ret.tags : new List<string>());
     }
 
+    public List<string> GetFurnitureConstraints(string name){
+        return Basic.TryGetValue(name, out var ret) ? ret.constraints : (Minimalist.TryGetValue(name, out ret) ? ret.constraints : new List<string>());
+    }
+
+
     public GameObject GetPrefab(string name){
         return furniturePrefabs[name];
     }

@@ -133,12 +133,14 @@ public class LevelGenerator : MonoBehaviour
                     }
                 UnityEngine.Object.Destroy(obj);
                 }
+                renderedObjects.Clear();
 
                 // // Then call RenderPopulation()
                 RenderPopulation();
 
                 // // Re-enable player movement (PlayerMovement MovementEnabled/LookEnabled)
                 // movement.isEnabled = true;
+
 
                 break;
         }
@@ -226,9 +228,6 @@ public class LevelGenerator : MonoBehaviour
 
         // // Teleport player upwards
 
-        // for(int i = 0; i < population.Count; i++){
-        //     Debug.Log(population[i].ToString());
-        // }
         RenderPopulation();
 
 
@@ -333,6 +332,9 @@ public class LevelGenerator : MonoBehaviour
             CreateLevel(population[k], plot_pos);
             plot_pos.x += PLOT_SIZE;
             count += 1;
+        }
+        for(int i = 0; i < population.Count; i++){
+            Debug.Log(population[i].ToString());
         }
     }
 
