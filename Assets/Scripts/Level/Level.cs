@@ -114,6 +114,7 @@ public class Level : MonoBehaviour
 
         GameObject spawned = Instantiate(furniture, centerTile + furniture.transform.position, furniture.transform.rotation);
         spawned.transform.RotateAround(centerTile, Vector3.up, feature.orientation);
+        spawned.transform.SetParent(this.gameObject.transform);
         // Debug.Log();
         // Instantiate(Toilet, spawned.transform.GetComponent<Renderer>().bounds.center, Quaternion.identity);
 
@@ -128,10 +129,10 @@ public class Level : MonoBehaviour
 
         // This causes a NullReferenceException error
         // spawned.AddComponent<FurnitureColor>();
-        
+
         renderedObjects.Add(spawned);
         // apply material to spawned object
-        
+
         // Instantiate(furniture, centerTile, furniture.transform.rotation * Quaternion.Euler(0, feature.orientation, 0)).transform.position += furniture.transform.position;
 
 
@@ -184,6 +185,7 @@ public class Level : MonoBehaviour
                 if (!CheckTileEmpty(i, j)){
                     GameObject deb = Instantiate(Toilet, tile_pos, Quaternion.identity);
                     renderedObjects.Add(deb);
+                    deb.transform.SetParent(this.gameObject.transform);
                 }
                 tile_pos.x += TILE_SIZE;
             }

@@ -71,6 +71,15 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""MoveToLevel"",
+                    ""type"": ""Value"",
+                    ""id"": ""4f8d009f-f555-4d58-9f76-dd16d6f89a4f"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
                 }
             ],
             ""bindings"": [
@@ -205,6 +214,61 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""action"": ""SwitchLevel"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""2D Vector"",
+                    ""id"": ""cfba9aad-54eb-4af2-9cfe-72edbe831e57"",
+                    ""path"": ""2DVector"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MoveToLevel"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""up"",
+                    ""id"": ""a2b6dadb-de13-46bb-aa3e-218e24732012"",
+                    ""path"": ""<Keyboard>/upArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MoveToLevel"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""down"",
+                    ""id"": ""7714524c-cafd-4bc9-8a6a-1f982b94e1ae"",
+                    ""path"": ""<Keyboard>/downArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MoveToLevel"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""left"",
+                    ""id"": ""39b7a946-52f3-4ac5-91e5-040b4a6e2a96"",
+                    ""path"": ""<Keyboard>/leftArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MoveToLevel"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""right"",
+                    ""id"": ""6837a0bf-471c-45c4-9f49-3e9a2b768df8"",
+                    ""path"": ""<Keyboard>/rightArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MoveToLevel"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
                 }
             ]
         }
@@ -218,6 +282,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         m_OnFoot_Swing = m_OnFoot.FindAction("Swing", throwIfNotFound: true);
         m_OnFoot_Jump = m_OnFoot.FindAction("Jump", throwIfNotFound: true);
         m_OnFoot_SwitchLevel = m_OnFoot.FindAction("SwitchLevel", throwIfNotFound: true);
+        m_OnFoot_MoveToLevel = m_OnFoot.FindAction("MoveToLevel", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -284,6 +349,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     private readonly InputAction m_OnFoot_Swing;
     private readonly InputAction m_OnFoot_Jump;
     private readonly InputAction m_OnFoot_SwitchLevel;
+    private readonly InputAction m_OnFoot_MoveToLevel;
     public struct OnFootActions
     {
         private @PlayerControls m_Wrapper;
@@ -293,6 +359,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         public InputAction @Swing => m_Wrapper.m_OnFoot_Swing;
         public InputAction @Jump => m_Wrapper.m_OnFoot_Jump;
         public InputAction @SwitchLevel => m_Wrapper.m_OnFoot_SwitchLevel;
+        public InputAction @MoveToLevel => m_Wrapper.m_OnFoot_MoveToLevel;
         public InputActionMap Get() { return m_Wrapper.m_OnFoot; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -317,6 +384,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @SwitchLevel.started += instance.OnSwitchLevel;
             @SwitchLevel.performed += instance.OnSwitchLevel;
             @SwitchLevel.canceled += instance.OnSwitchLevel;
+            @MoveToLevel.started += instance.OnMoveToLevel;
+            @MoveToLevel.performed += instance.OnMoveToLevel;
+            @MoveToLevel.canceled += instance.OnMoveToLevel;
         }
 
         private void UnregisterCallbacks(IOnFootActions instance)
@@ -336,6 +406,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @SwitchLevel.started -= instance.OnSwitchLevel;
             @SwitchLevel.performed -= instance.OnSwitchLevel;
             @SwitchLevel.canceled -= instance.OnSwitchLevel;
+            @MoveToLevel.started -= instance.OnMoveToLevel;
+            @MoveToLevel.performed -= instance.OnMoveToLevel;
+            @MoveToLevel.canceled -= instance.OnMoveToLevel;
         }
 
         public void RemoveCallbacks(IOnFootActions instance)
@@ -360,5 +433,6 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         void OnSwing(InputAction.CallbackContext context);
         void OnJump(InputAction.CallbackContext context);
         void OnSwitchLevel(InputAction.CallbackContext context);
+        void OnMoveToLevel(InputAction.CallbackContext context);
     }
 }

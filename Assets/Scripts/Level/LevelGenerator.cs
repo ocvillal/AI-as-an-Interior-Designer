@@ -9,6 +9,9 @@ using Feature = FurnitureFeature; // name of the furniture, x, y
 
 public class LevelGenerator : MonoBehaviour
 {
+    GameObject player;
+    int currPlot;
+
     public int SUCCESSOR_ITERATIONS = 1;
     public int MAX_LEVELS_PER_ROW = 5;
     public float PLOT_SIZE = 14;
@@ -116,14 +119,7 @@ public class LevelGenerator : MonoBehaviour
                 // Debug.Log(population.Count);
                 // Debug.Log("Hello");
                 // // Disable player movement
-                GameObject player;
-                player = GameObject.Find("Player");
 
-                PlayerMovement movement = player.GetComponent<PlayerMovement>();
-                movement.isEnabled = false;
-
-                // // Teleport player upwards
-                player.transform.position = new Vector3(0.0f, 3.0f, 0.0f);
 
                 // // Delete some objects (?)
                 // // Attach it all to a gameobject and delete THAT gameobject to recursively delete (maybe)
@@ -149,6 +145,36 @@ public class LevelGenerator : MonoBehaviour
     }
 
 
+    public void OnMoveToLevel(InputAction.CallbackContext context){
+
+        Vector2 curr_val = context.ReadValue<Vector2>();
+        Debug.Log(curr_val);
+        switch (context.phase)
+        {
+            case InputActionPhase.Started:
+                if (curr_val.x > 0){
+                    int currRow = currPlot / MAX_LEVELS_PER_ROW;
+                    currPlot = (((currPlot + 1)% MAX_LEVELS_PER_ROW) + currRow * MAX_LEVELS_PER_ROW) % NumLevels;
+
+                }
+                if (curr_val.x < 0){
+                    int currRow = currPlot / MAX_LEVELS_PER_ROW;
+                    currPlot = (((currPlot - 1 + MAX_LEVELS_PER_ROW) % MAX_LEVELS_PER_ROW) + currRow * MAX_LEVELS_PER_ROW) % NumLevels;
+                }
+                if (curr_val.y > 0){
+                    currPlot = (currPlot + MAX_LEVELS_PER_ROW) % NumLevels;
+                }
+                if (curr_val.y < 0){
+                    currPlot = (currPlot - MAX_LEVELS_PER_ROW + NumLevels) % NumLevels;
+                }
+
+
+                player.transform.position = renderedObjects[currPlot].transform.position + Vector3.up * 2.0f;
+
+                break;
+        }
+    }
+
 
     // Start is called before the first frame update
     void Start()
@@ -157,7 +183,12 @@ public class LevelGenerator : MonoBehaviour
         NumLevels = _numLevels;  // Population Size
         population = new List<LevelGene>();
 
-        LevelGene g = new LevelGene(Dimensions);
+        player = GameObject.Find("Player");
+
+        PlayerMovement movement = player.GetComponent<PlayerMovement>();
+        movement.isEnabled = false;
+
+
 
         // Feature feat1 = new Feature("bed_single", 0, 2);
         // Feature feat2 = new Feature("door", 0, 2);
@@ -193,12 +224,17 @@ public class LevelGenerator : MonoBehaviour
             population.Add(LevelGene.GenerateRandomLevelGene(Dimensions, 4));
         }
 
+        // // Teleport player upwards
+
         // for(int i = 0; i < population.Count; i++){
         //     Debug.Log(population[i].ToString());
         // }
         RenderPopulation();
 
 
+        player.transform.position = renderedObjects[0].transform.position + Vector3.up * 2.0f;
+
+        currPlot = 0;
         // for (int i =  0; i < SUCCESSOR_ITERATIONS; i++) {
         //     population = new List<LevelGene>(generateSuccessors());
         // }

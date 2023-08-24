@@ -51,7 +51,7 @@ public class PlayerLook : MonoBehaviour
         RaycastHit hit;
         int mask = LayerMask.GetMask("Walls") + LayerMask.GetMask("MapInvisibleWalls");
 
-        Vector3 cameraDirection = (-_camera.transform.forward * 2.0f + _camera.transform.up * 0.7f).normalized;
+        Vector3 cameraDirection = (-_camera.transform.forward * 2.0f + _camera.transform.up * 0.0f).normalized;
 
         if (Physics.Raycast(transform.position,  cameraDirection, out hit, _targetDistance, mask))
         {
