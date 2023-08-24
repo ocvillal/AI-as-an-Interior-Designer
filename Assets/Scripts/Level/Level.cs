@@ -117,10 +117,21 @@ public class Level : MonoBehaviour
         // Debug.Log();
         // Instantiate(Toilet, spawned.transform.GetComponent<Renderer>().bounds.center, Quaternion.identity);
 
-        // Create a temporary material // or use one already made?
+        // Create a temporary material
+        //spawned.GetComponent<MeshRenderer>().material.color = Color.red;
+
+        // Or use a material already made?
+        string[] availableColors = { "blue", "purple", "red", "yellow" };
+        string randomColor = availableColors[Random.Range(0, availableColors.Length)];
+        Material newMat = Resources.Load(randomColor, typeof(Material)) as Material;
+        spawned.GetComponent<MeshRenderer>().material = newMat;
+
+        // This causes a NullReferenceException error
+        // spawned.AddComponent<FurnitureColor>();
+        
         renderedObjects.Add(spawned);
         // apply material to spawned object
-
+        
         // Instantiate(furniture, centerTile, furniture.transform.rotation * Quaternion.Euler(0, feature.orientation, 0)).transform.position += furniture.transform.position;
 
 
