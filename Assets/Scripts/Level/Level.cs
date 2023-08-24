@@ -18,8 +18,8 @@ public class Level : MonoBehaviour
     public GameObject Toilet;
 
     public List<GameObject> renderedObjects;
-
-
+    public List<string> availableColors;
+    public List<string> selectedColors;
 
     public LevelGene gene = null;
     public LevelGene Gene {
@@ -96,7 +96,7 @@ public class Level : MonoBehaviour
 
 
 
-    public void RenderObject(Vector3 tlpos, Feature feature){
+    public void RenderObject(Vector3 tlpos, Feature feature, List<string> selectedColors){
         List<int> furn_dims = feature.dimensions;
 
         int dim_x = (feature.orientation == 0 || feature.orientation == 180) ? furn_dims[0] : furn_dims[1];
@@ -122,9 +122,16 @@ public class Level : MonoBehaviour
         //spawned.GetComponent<MeshRenderer>().material.color = Color.red;
 
         // Or use a material already made?
-        string[] availableColors = { "blue", "purple", "red", "yellow" };
-        string randomColor = availableColors[Random.Range(0, availableColors.Length)];
-        Material newMat = Resources.Load(randomColor, typeof(Material)) as Material;
+        // Debug.Log(selectedColors.Count);
+        Material newMat;
+        int randomSelection = Random.Range(0, 10);
+        if (randomSelection > 4) {
+            newMat = Resources.Load(selectedColors[0], typeof(Material)) as Material;
+        } else if (randomSelection > 3) {
+            newMat = Resources.Load(selectedColors[1], typeof(Material)) as Material;
+        } else {
+            newMat = Resources.Load(selectedColors[2], typeof(Material)) as Material;
+        }
         spawned.GetComponent<MeshRenderer>().material = newMat;
 
         // This causes a NullReferenceException error
@@ -167,6 +174,13 @@ public class Level : MonoBehaviour
         }
         // Debug.Log(ret);
 
+        availableColors = new List<string> { "black", "grey", "white", "red", "orange", "yellow", "green", "blue", "purple" };
+        for (int i = 0; i < 3; i++)
+        {
+            selectedColors.Add(availableColors[Random.Range(0, availableColors.Count - 1)]);
+        }
+        Debug.Log(selectedColors.Count);
+
         Vector3 tile_pos = TopLeftCenter;
 
         foreach (Feature feature in gene.features){
@@ -175,7 +189,7 @@ public class Level : MonoBehaviour
             Vector3 tlfurnpos= tile_pos +  new Vector3(TILE_SIZE * feature.position.x, 0, -TILE_SIZE * feature.position.y);
             // Debug.Log(tlfurnpos);
 
-            RenderObject(tlfurnpos, feature);
+            RenderObject(tlfurnpos, feature, selectedColors);
         }
 
 
