@@ -97,12 +97,12 @@ public class LevelGene {
                 fail += 1;
             }
         }
-        Debug.Log(string.Format("{0} fails out of {1}", fail, num_feat));
+        // Debug.Log(string.Format("{0} fails out of {1}", fail, num_feat));
 
         return randomLevel;
     }
 
-    public static LevelGene GenerateEmptyLevelData(Vector2Int dims){
+    public static LevelGene GenerateEmptyLevelGene(Vector2Int dims){
         LevelGene emptyLevel = new LevelGene(dims);
         // for (int i = 0; i < 10; i++)
         // {
@@ -225,7 +225,7 @@ public class LevelGene {
         float details   = 0.5f;
         float rhythm    = 0.5f;
 
-        fitness += tileMetrics["Balance"]   * balance;
+        fitness += tileMetrics["balance"]   * balance;
         fitness += tileMetrics["harmony"]   * harmony;
         fitness += tileMetrics["emphasis"]  * emphasis;
         fitness += tileMetrics["contrast"]  * contrast;
@@ -321,33 +321,37 @@ public class LevelGene {
 
                 } else if (moveOrRotate == ROTATE){ // Move
 
-                    List<(int, int)> validTiles = GetValidTiles(data, (selected.orientation + 90) % 360);
-                    List<(int, int)> destinations = new List<(int, int)>();
+                    // List<(int, int)> validTiles = GetValidTiles(data, (selected.orientation + 90) % 360);
+                    // List<(int, int)> destinations = new List<(int, int)>();
 
-                    // Get dimensions of furniture
-                    int dims = data.Dimensions
+                    // // Get dimensions of furniture
+                    // int dims = data.Dimensions
 
-                    (int, int) val = new (selected.position.x + (dims[0] - dims[1]), selected.position.y + (dims[0] - dims[1]));
-                    if (validTiles.Contains(val)) destinations.Add(val);
+                    // // // Rotate 0 degrees
+                    // // (int, int) val = new (selected.position.x , selected.position.y);
+                    // // if (validTiles.Contains(val)) destinations.Add(val);
 
-                    val = new (selected.position.x - (dims[0] - dims[1]), selected.position.y + (dims[0] - dims[1]));
-                    if (validTiles.Contains(val)) destinations.Add(val);
+                    // // Rotate 270 degrees
+                    // val = new (selected.position.x - (dims[0]), selected.position.y);
+                    // if (validTiles.Contains(val)) destinations.Add(val);
 
-                    val = new (selected.position.x + (dims[0] - dims[1]), selected.position.y - (dims[0] - dims[1]));
-                    if (validTiles.Contains(val)) destinations.Add(val);
+                    // // Rotate 180 degrees
+                    // val = new (selected.position.x - (dims[0]), selected.position.y - (dims[1]));
+                    // if (validTiles.Contains(val)) destinations.Add(val);
 
-                    val = new (selected.position.x - (dims[0] - dims[1]), selected.position.y - (dims[0] - dims[1]));
-                    if (validTiles.Contains(val)) destinations.Add(val);
+                    // // Rotate 90 degrees
+                    // val = new (selected.position.x, selected.position.y - (dims[1]));
+                    // if (validTiles.Contains(val)) destinations.Add(val);
 
-                    if (destinations.Count > 0){
-                        int randomDest = Random.Range(0, destinations.Count);
-                        (int, int) randomTile = destinations[randomDest];
-                        Feature newFeature = new Feature(data, randomTile.Item1, randomTile.Item2);
-                        removed = removed.TryPlaceObject(newFeature);
+                    // if (destinations.Count > 0){
+                    //     int randomDest = Random.Range(0, destinations.Count);
+                    //     (int, int) randomTile = destinations[randomDest];
+                    //     Feature newFeature = new Feature(data, randomTile.Item1, randomTile.Item2);
+                    //     removed = removed.TryPlaceObject(newFeature);
 
-                        if (removed.features.Count == mutatedGene.features.Count)
-                            mutatedGene = removed;
-                    }
+                    //     if (removed.features.Count == mutatedGene.features.Count)
+                    //         mutatedGene = removed;
+                    // }
                 }
 
 
@@ -368,7 +372,7 @@ public class LevelGene {
                 if (feat != null)
                     mutatedGene = mutatedGene.TryPlaceObject(feat);
                 else {
-                    Debug.Log("Failure to add");
+                    // Debug.Log("Failure to add");
                     fails += 1;
                     // if (fails >= )
                 }
@@ -451,7 +455,7 @@ public class LevelGene {
                 }
                 for (int x = tile.Item1; x < tile.Item1 + dim_x; x++){
                     if (x >= dimensions.x){
-                        Debug.Log(string.Format("IM HERE ({0}, {1}) Tile: ({2}, {3})", x,y, tile.Item1, tile.Item2));
+                        // Debug.Log(string.Format("IM HERE ({0}, {1}) Tile: ({2}, {3})", x,y, tile.Item1, tile.Item2));
                         isValid = false;
                         break;
                     }
@@ -464,7 +468,7 @@ public class LevelGene {
                     // Constraints
                     if (!isValid) break;
                 }
-                Debug.Log(isValid == false);
+                // Debug.Log(isValid == false);
                 if (!isValid) break;
             }
 
@@ -485,8 +489,8 @@ public class LevelGene {
             }
             ret += "\n";
         }
-        Debug.Log(availableTiles.Count);
-        Debug.Log(ret);
+        // Debug.Log(availableTiles.Count);
+        // Debug.Log(ret);
 
         return validTiles;
     }
@@ -558,12 +562,12 @@ public class LevelGene {
                     ret.grid[y, x] = 1;
 
                 } catch (System.IndexOutOfRangeException e){
-                    Debug.Log(feature);
-                    Debug.Log(ret);
-                    Debug.Log(y);
-                    Debug.Log(x);
-                    Debug.Log(ret.dimensions[0]);
-                    Debug.Log(ret.dimensions[1]);
+                    // Debug.Log(feature);
+                    // Debug.Log(ret);
+                    // Debug.Log(y);
+                    // Debug.Log(x);
+                    // Debug.Log(ret.dimensions[0]);
+                    // Debug.Log(ret.dimensions[1]);
                 }
             }
         }
@@ -608,30 +612,34 @@ public class LevelGene {
         // crossover
         List<LevelGene> children = new List<LevelGene>();
 
-        int crossoverPoint = Random.Range(0, features.Count); // Choose a random crossover point
+        int crossoverPoint = Random.Range(0, Mathf.Min(features.Count, other.features.Count)); // Choose a random crossover point
 
         // Create the first child by combining the features from the two parents
-        LevelGene child1 = new LevelGene(this);
+        LevelGene child1 = LevelGene.GenerateEmptyLevelGene(dimensions);
+        LevelGene child2 = LevelGene.GenerateEmptyLevelGene(dimensions);
+
         for (int i = 0; i < crossoverPoint; i++)
         {
-            Feature featureToAdd = other.features[i]; // Take feature from the other parent
-            if (child1.ValidateFeatureAddition(featureToAdd, true))
-            {
-                child1 = child1.PlaceObject(featureToAdd); // Add the feature to the child if valid
-            }
+            child1 = child1.TryPlaceObject(features[i]);
+            child2 = child2.TryPlaceObject(other.features[i]);
         }
-        children.Add(child1);
 
-        // Create the second child by combining the features from the two parents
-        LevelGene child2 = new LevelGene(other);
+        for (int i = crossoverPoint; i < features.Count; i++)
+        {
+            child2 = child2.TryPlaceObject(features[i]);
+        }
+
         for (int i = crossoverPoint; i < other.features.Count; i++)
         {
-            Feature featureToAdd = features[i]; // Take feature from this parent
-            if (child2.ValidateFeatureAddition(featureToAdd, true))
-            {
-                child2 = child2.PlaceObject(featureToAdd); // Add the feature to the child if valid
-            }
+            child1 = child1.TryPlaceObject(other.features[i]);
         }
+
+
+
+        child1 = child1.Mutate();
+        children.Add(child1);
+
+        child2 = child2.Mutate();
         children.Add(child2);
 
         return children;

@@ -1,3 +1,5 @@
+
+using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,12 +9,13 @@ using Feature = FurnitureFeature; // name of the furniture, x, y
 
 public class LevelGenerator : MonoBehaviour
 {
-    public int SUCCESSOR_ITERATIONS = 5;
+    public int SUCCESSOR_ITERATIONS = 1;
     public int MAX_LEVELS_PER_ROW = 5;
     public float PLOT_SIZE = 14;
     public List<Color> COLORS = new List<Color>();
 
     public List<LevelGene> population;
+    public List<GameObject> renderedObjects;
 
 
     [SerializeField] private Vector2Int _dimensions = new Vector2Int(10, 10);
@@ -44,6 +47,7 @@ public class LevelGenerator : MonoBehaviour
 
     public void CreateLevel(Vector2Int dim, Vector3 pos){
         GameObject l = Instantiate(Level, pos, Quaternion.identity);
+        renderedObjects.Add(l);
         Level gen_level = l.GetComponent<Level>();
 
         gen_level.Dimensions = dim;
@@ -63,6 +67,7 @@ public class LevelGenerator : MonoBehaviour
 
     public void CreateLevel(LevelGene gene, Vector3 pos){
         GameObject l = Instantiate(Level, pos, Quaternion.identity);
+        renderedObjects.Add(l);
         Level gen_level = l.GetComponent<Level>();
         // gen_level.Dimensions = _dimensions;
 
@@ -81,33 +86,44 @@ public class LevelGenerator : MonoBehaviour
     }
 
 
+    // public void DestroyLevel(){
+    //     while (renderedObjects.Count > 0){
+    //         Level l = renderedObjects[renderedObjects.Count - 1].GetComponent<Level>();
+    //         // l.DestroyLevel();
+    //         // Destroy(renderedObjects[renderedObjects.Count - 1]);
+    //         // renderedObjects.RemoveAt(renderedObjects.Count - 1);
+    //     }
+    // }
+
     public void OnSwitchLevel(InputAction.CallbackContext context)
     {
-        Vector2 curr_val = context.ReadValue<Vector2>();
+        // Vector2 curr_val = context.ReadValue<Vector2>();
         switch (context.phase)
         {
             case InputActionPhase.Canceled:
                 break;
 
-            default:
+            case InputActionPhase.Started:
+
                 // Call generate successors however many times
                 // Replace population with output of generate successors
                 for (int i =  0; i < SUCCESSOR_ITERATIONS; i++) {
                     population = generateSuccessors();
                 }
-
-                // Disable player movement
+                // Debug.Log(population.Count);
+                // Debug.Log("Hello");
+                // // Disable player movement
                 GameObject player;
                 player = GameObject.Find("Player");
 
                 PlayerMovement movement = player.GetComponent<PlayerMovement>();
                 movement.isEnabled = false;
 
-                // Teleport player upwards
+                // // Teleport player upwards
                 player.transform.position = new Vector3(0.0f, 3.0f, 0.0f);
 
-                // Delete some objects (?)
-                // Attach it all to a gameobject and delete THAT gameobject to recursively delete (maybe)
+                // // Delete some objects (?)
+                // // Attach it all to a gameobject and delete THAT gameobject to recursively delete (maybe)
                 GameObject[] allObjects = UnityEngine.Object.FindObjectsOfType<GameObject>();
 
                 foreach (GameObject obj in allObjects)
@@ -119,11 +135,12 @@ public class LevelGenerator : MonoBehaviour
                 UnityEngine.Object.Destroy(obj);
                 }
 
-                // Then call RenderPopulation()
+                // // Then call RenderPopulation()
                 RenderPopulation();
 
-                // Re-enable player movement (PlayerMovement MovementEnabled/LookEnabled)
-                movement.isEnabled = true;
+                // // Re-enable player movement (PlayerMovement MovementEnabled/LookEnabled)
+                // movement.isEnabled = true;
+
                 break;
         }
     }
@@ -133,7 +150,7 @@ public class LevelGenerator : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        Debug.Log(_numLevels);
+        // Debug.Log(_numLevels);
         NumLevels = _numLevels;  // Population Size
         population = new List<LevelGene>();
 
@@ -168,12 +185,19 @@ public class LevelGenerator : MonoBehaviour
         // LevelGene try4 = try3.TryPlaceObject(feat4);
         // Debug.Log(try4.ToString());
 
-        LevelGene randlevel = LevelGene.GenerateRandomLevelGene(Dimensions, 1);
-        Debug.Log(randlevel.ToString());
+        // Debug.Log(randlevel.ToString());
         for (int i = 0; i < _numLevels; i++){
-            population.Add(randlevel);
+            population.Add(LevelGene.GenerateRandomLevelGene(Dimensions, 2));
+        }
+
+        for(int i = 0; i < population.Count; i++){
+            Debug.Log(population[i].ToString());
         }
         RenderPopulation();
+
+        for (int i =  0; i < SUCCESSOR_ITERATIONS; i++) {
+            population = new List<LevelGene>(generateSuccessors());
+        }
     }
 
     // Update is called once per frame
@@ -184,11 +208,18 @@ public class LevelGenerator : MonoBehaviour
 
 
     List<LevelGene> elitestSelection(){
+        Debug.Log("CALLED");
         List<LevelGene> results = new List<LevelGene>();
         // Sort from Biggest to smallest
         List<LevelGene> randPop = new List<LevelGene>();
-        // randPop = populations.OrderBy(x => x.count).ToList();
-        for(int i = 0; i < population.Count % 2; i++){
+        Debug.Log(population.Count);
+        for(int i = 0; i < population.Count; i++){
+            Debug.Log(i);
+            Debug.Log(population[i].ToString());
+        }
+        Debug.Log("Hello");
+        randPop = population.OrderBy(x => x.Fitness()).ToList();
+        for(int i = 0; i < population.Count / 2; i++){
             results.Add(population[i]);
         }
         return results;
@@ -197,10 +228,10 @@ public class LevelGenerator : MonoBehaviour
     List<LevelGene> tourneySelection(){
         List<LevelGene> results = new List<LevelGene>();
         List<LevelGene> randPop = new List<LevelGene>();
-        // randPop = populations.OrderBy(x=> Random.Shared.Next()).ToList();
-        for(int i = 0; population.Count < results.Count % 2; i++){
+        randPop = population.OrderBy(x=> Random.Range(0, population.Count - 1)).ToList();
+        for(int i = 0; results.Count < population.Count / 2; i++){
             LevelGene contestantA = randPop[i];
-            LevelGene contestantB = randPop[population.Count - i];
+            LevelGene contestantB = randPop[population.Count - i-1];
             if (contestantB.Fitness() > contestantA.Fitness()){
                 results.Add(contestantB);
             }
@@ -215,9 +246,9 @@ public class LevelGenerator : MonoBehaviour
         List<LevelGene> results = new List<LevelGene>();
         List<LevelGene> selectList = elitestSelection();
         selectList.AddRange(tourneySelection());
-        for(int i = 0; i < selectList.Count % 2; i++){
+        for(int i = 0; i < selectList.Count / 2; i++){
             LevelGene parentFirst = selectList[i];
-            LevelGene parentSecond = selectList[-(i+1)];
+            LevelGene parentSecond = selectList[population.Count - i - 1];
             results.AddRange(parentFirst.GenerateChildren(parentSecond));
             // results.Add(parentSecond.generateChildren);
         }

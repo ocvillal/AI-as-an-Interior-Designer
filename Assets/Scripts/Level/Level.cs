@@ -17,6 +17,8 @@ public class Level : MonoBehaviour
 
     public GameObject Toilet;
 
+    public List<GameObject> renderedObjects;
+
 
 
     public LevelGene gene = null;
@@ -58,6 +60,7 @@ public class Level : MonoBehaviour
     {
         Dimensions = _dimensions;
         Position = _position;
+        renderedObjects = new List<GameObject>();
     }
 
     // Update is called once per frame
@@ -91,6 +94,8 @@ public class Level : MonoBehaviour
     }
 
 
+
+
     public void RenderObject(Vector3 tlpos, Feature feature){
         List<int> furn_dims = feature.dimensions;
 
@@ -110,10 +115,10 @@ public class Level : MonoBehaviour
         GameObject spawned = Instantiate(furniture, centerTile + furniture.transform.position, furniture.transform.rotation);
         spawned.transform.RotateAround(centerTile, Vector3.up, feature.orientation);
         // Debug.Log();
-        Instantiate(Toilet, spawned.transform.GetComponent<Renderer>().bounds.center, Quaternion.identity);
+        // Instantiate(Toilet, spawned.transform.GetComponent<Renderer>().bounds.center, Quaternion.identity);
 
         // Create a temporary material // or use one already made?
-
+        renderedObjects.Add(spawned);
         // apply material to spawned object
 
         // Instantiate(furniture, centerTile, furniture.transform.rotation * Quaternion.Euler(0, feature.orientation, 0)).transform.position += furniture.transform.position;
@@ -128,7 +133,7 @@ public class Level : MonoBehaviour
             tile_pos.x = TopLeftCenter.x;
             for (int i = 0; i < Dimensions.x; i++){
                 if (!CheckTileEmpty(i, j)){
-                    Instantiate(Toilet, tile_pos, Quaternion.identity);
+                    renderedObjects.Add(Instantiate(Toilet, tile_pos, Quaternion.identity));
                     // Debug.Log(tile_pos);
                 }
                 tile_pos.x += TILE_SIZE;
@@ -166,12 +171,26 @@ public class Level : MonoBehaviour
             tile_pos.x = TopLeftCenter.x;
             for (int i = 0; i < Dimensions.x; i++){
                 if (!CheckTileEmpty(i, j)){
-                    Instantiate(Toilet, tile_pos, Quaternion.identity);
+                    GameObject deb = Instantiate(Toilet, tile_pos, Quaternion.identity);
+                    renderedObjects.Add(deb);
                 }
                 tile_pos.x += TILE_SIZE;
             }
             tile_pos.z -= TILE_SIZE;
         }
+        // Debug.Log(renderedObjects.Count);
     }
+
+    // public void DestroyLevel(){
+    //     Debug.Log(renderedObjects.Count);
+    //     Debug.Log("HALLO");
+    //     Destroy(renderedObjects[renderedObjects.Count - 1]);
+    //     renderedObjects.RemoveAt(renderedObjects.Count - 1);
+    //     // while (renderedObjects.Count > 0){
+    //     //     Debug.Log(renderedObjects.Count);
+    //     //     Destroy(renderedObjects[renderedObjects.Count - 1]);
+    //     //     renderedObjects.RemoveAt(renderedObjects.Count - 1);
+    //     // }
+    // }
 
 }

@@ -107,7 +107,7 @@ public class PlayerMovement : MonoBehaviour
         switch (context.phase)
         {
             case InputActionPhase.Started:
-                
+
                 if (IsGrounded) //Might be checking the wrong type of grounded...
                 {
                     // doJump = true;
@@ -121,7 +121,7 @@ public class PlayerMovement : MonoBehaviour
                     IsJumping = true;
                     _playerJumps--;
                 }
-            
+
                 break;
         }
     }
@@ -214,7 +214,7 @@ public class PlayerMovement : MonoBehaviour
 
         _moveVelocity.y += Physics.gravity.y * Time.deltaTime;
         _moveVelocity.y = Mathf.Max(terminalFallSpeed, _moveVelocity.y);
-    
+
 
         _controller.Move(_moveVelocity * Time.deltaTime);
     }
