@@ -58,6 +58,7 @@ public class LevelGene {
         LevelGene.furnitureLibrary = JsonConvert.DeserializeObject<FurnitureLibrary>(File.ReadAllText("./TileData/FutureData(Octavio).json"));
         LevelGene.furnitureLibrary.LoadPrefabs();
         Feature.furnitureLibrary = LevelGene.furnitureLibrary;
+        Debug.Log(LevelGene.furnitureLibrary.ToString());
         // Debug.Log(string.Join(", ", LevelGene.furnitureLibrary.categories));
         // string val = "";
         // foreach (KeyValuePair<string, List<string>> kvp in LevelGene.furnitureLibrary.categories)
@@ -82,8 +83,9 @@ public class LevelGene {
         LevelGene randomLevel = new LevelGene(dims);
         int fail = 0;
         for (int i = 0; i < num_feat; i++){
-            // FurnitureData furnitureData = LevelGene.furnitureLibrary.GetRandomFurnitureByMultipleType("Basic", "Minimalist");
-            FurnitureData furnitureData = LevelGene.furnitureLibrary.GetFurniture("couch");
+            FurnitureData furnitureData = LevelGene.furnitureLibrary.GetRandomFurnitureByMultipleType("Basic", "Minimalist");
+            // FurnitureData furnitureData = LevelGene.furnitureLibrary.GetFurniture("tv_stand_medium");
+            // Debug.Log(furnitureData);
             // Debug.Log(furnitureData.ToString());
             Feature feat = null;
             if (furnitureData != null)
@@ -316,6 +318,7 @@ public class LevelGene {
                         int randomDest = Random.Range(0, destinations.Count);
                         (int, int) randomTile = destinations[randomDest];
                         Feature newFeature = new Feature(data, randomTile.Item1, randomTile.Item2);
+
                         removed = removed.TryPlaceObject(newFeature);
 
                         if (removed.features.Count == mutatedGene.features.Count)
@@ -350,16 +353,14 @@ public class LevelGene {
                             mutatedGene = removed;
                     }
                 }
-
-
-                // Rotate or move? A; Both
+        //         // Rotate or move? A; Both
 
                 break;
 
         // Adds a new item
             case 1:
-                // FurnitureData furnitureData = LevelGene.furnitureLibrary.GetRandomFurnitureByMultipleType("Basic", "Minimalist");
-                FurnitureData furnitureData = LevelGene.furnitureLibrary.GetFurniture("couch");
+                FurnitureData furnitureData = LevelGene.furnitureLibrary.GetRandomFurnitureByMultipleType("Basic", "Minimalist");
+                // FurnitureData furnitureData = LevelGene.furnitureLibrary.GetFurniture("couch");
                 // Debug.Log(furnitureData.ToString());
                 Feature feat = null;
                 if (furnitureData != null)
@@ -584,7 +585,9 @@ public class LevelGene {
 
         // Update grid
         if(!(ret.features.Contains(feature))) {
-            return null;
+            Debug.Log(string.Format("{0} does not contain {1}", ToString(), feature.ToString()));
+            // Debug.Log("Came here");
+            return ret;
         }
 
         // Rectangular features
@@ -600,21 +603,22 @@ public class LevelGene {
         }
 
         ret.features.Remove(feature);
+
         return ret;
     }
 
     public List<LevelGene> GenerateChildren(LevelGene other) { // Alan
         // crossover
         List<LevelGene> children = new List<LevelGene>();
-        Debug.Log("parent 1: " + ToString());
-        Debug.Log("parent 2: " + other.ToString());
+        // Debug.Log("parent 1: " + ToString());
+        // Debug.Log("parent 2: " + other.ToString());
 
         // // Create the first child by combining the features from the two parents
         LevelGene child1 = LevelGene.GenerateEmptyLevelGene(dimensions);
         LevelGene child2 = LevelGene.GenerateEmptyLevelGene(dimensions);
 
         int crossoverPoint = Random.Range(0, Mathf.Min(features.Count / 2, other.features.Count / 2)); // Choose a random crossover point
-        Debug.Log(crossoverPoint);
+        // Debug.Log(crossoverPoint);
 
         // child1 = child1.TryPlaceObject(features[0]);
         // child2 = child2.TryPlaceObject(features[1]);
@@ -643,10 +647,10 @@ public class LevelGene {
         children.Add(child1);
         children.Add(child2);
 
-        Debug.Log(string.Format("C Count: {0}", children.Count));
-        for(int i = 0; i < children.Count; i++){
-            Debug.Log(children[i].ToString());
-        }
+        // Debug.Log(string.Format("C Count: {0}", children.Count));
+        // for(int i = 0; i < children.Count; i++){
+        //     Debug.Log(children[i].ToString());
+        // }
 
 
 

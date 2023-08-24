@@ -11,3 +11,23 @@ Computer Desk:
 
 
 Removed coat_rack, tv, fireplace, round_coffee_table, bookshelf
+
+
+            "armchair1",
+
+            causing ssome problems...
+
+            "armchair",
+            "couch",
+            "tv_stand",
+            "coffee_table"
+
+
+
+
+            "bookshelf",
+            "couch1",
+            "couch2",
+            "fireplace",
+            "tv_stand_small",
+            "tv_stand_medium"

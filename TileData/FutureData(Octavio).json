@@ -4,16 +4,12 @@
         "Basic": [
             "armchair",
             "couch",
-            "end_table",
-            "ottoman",
             "tv_stand",
-            "coffee_table"
+            "coffee_table",
+            "ottoman"
         ],
         "Minimalist": [
-            "armchair1",
-            "armchair2",
             "bookshelf",
-            "couch1",
             "couch2",
             "fireplace",
             "tv_stand_small",
@@ -111,7 +107,7 @@
         },
         "couch" : {
             "name": "couch1",
-            "dimensions": [2, 4],
+            "dimensions": [4, 2],
             "constraints": [
                 "back_against_wall"
             ],
@@ -121,7 +117,7 @@
         },
         "couch2" : {
             "name": "couch2",
-            "dimensions": [2, 4],
+            "dimensions": [4, 2],
             "constraints": [
                 "back_against_wall"
             ],

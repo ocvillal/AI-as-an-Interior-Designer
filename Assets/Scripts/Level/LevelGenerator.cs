@@ -193,9 +193,9 @@ public class LevelGenerator : MonoBehaviour
             population.Add(LevelGene.GenerateRandomLevelGene(Dimensions, 4));
         }
 
-        for(int i = 0; i < population.Count; i++){
-            Debug.Log(population[i].ToString());
-        }
+        // for(int i = 0; i < population.Count; i++){
+        //     Debug.Log(population[i].ToString());
+        // }
         RenderPopulation();
 
 
@@ -250,7 +250,7 @@ public class LevelGenerator : MonoBehaviour
         selectList.AddRange(elitestSelection());
         selectList.AddRange(tourneySelection());
 
-        Debug.Log(string.Format("PARENTS: {0}", selectList.Count));
+        // Debug.Log(string.Format("PARENTS: {0}", selectList.Count));
 
         // Note... I think we may not want our generator to choose the same parents
 
@@ -260,6 +260,7 @@ public class LevelGenerator : MonoBehaviour
             LevelGene parentSecond = selectList[selectList.Count - i - 1];
             results.AddRange(parentFirst.GenerateChildren(parentSecond));
         }
+
         return results;
     }
 
@@ -287,7 +288,7 @@ public class LevelGenerator : MonoBehaviour
         Vector3 plot_pos = TopLeftCenter;
         for (int k = 0; k < _numLevels; k++){
             if (count == MAX_LEVELS_PER_ROW){
-                Debug.Log(_numLevels - k );
+                // Debug.Log(_numLevels - k );
                 plot_pos.x = (_numLevels - k  < MAX_LEVELS_PER_ROW) ? -(((_numLevels - k - 1) * PLOT_SIZE)/2.0f)  : TopLeftCenter.x;
                 plot_pos.z += PLOT_SIZE;
                 count = 0;

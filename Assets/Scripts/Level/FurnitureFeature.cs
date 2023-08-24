@@ -21,7 +21,8 @@ public class FurnitureFeature{
             return object.ReferenceEquals(null, item1);
         } else return item1.name == item2.name &&
                         item1.position == item2.position &&
-                        item1.dimensions == item2.dimensions &&
+                        item1.dimensions[0] == item2.dimensions[0] &&
+                        item1.dimensions[1] == item2.dimensions[1] &&
                         item1.orientation == item2.orientation;
     }
 
@@ -33,8 +34,9 @@ public class FurnitureFeature{
             return !object.ReferenceEquals(null, item1);
         } else return item1.name != item2.name ||
                 item1.position != item2.position ||
-                item1.dimensions != item2.dimensions ||
-                 item1.orientation != item2.orientation;
+                item1.dimensions[0] != item2.dimensions[0] ||
+                item1.dimensions[1] != item2.dimensions[1] ||
+                item1.orientation != item2.orientation;
     }
 
     // Position is the top left tile of furniture
