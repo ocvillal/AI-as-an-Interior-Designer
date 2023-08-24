@@ -22,7 +22,7 @@ public class FurnitureLibrary{
     // }
 
     public FurnitureData GetFurniture(string name){
-        return Basic.TryGetValue(name, out var ret) ? ret : Minimalist.TryGetValue(name, out ret) ? ret: null;
+        return Basic.TryGetValue(name, out var ret) ? ret : (Minimalist.TryGetValue(name, out ret) ? ret: null);
     }
 
     public FurnitureData GetRandomFurnitureByType(string type){
@@ -51,7 +51,7 @@ public class FurnitureLibrary{
     }
 
     public List<string> GetFurnitureTags(string name){
-        return Basic.TryGetValue(name, out var ret) ? ret.tags : Minimalist.TryGetValue(name, out ret) ? ret.tags : new List<string>();
+        return Basic.TryGetValue(name, out var ret) ? ret.tags : (Minimalist.TryGetValue(name, out ret) ? ret.tags : new List<string>());
     }
 
     public GameObject GetPrefab(string name){
@@ -65,9 +65,24 @@ public class FurnitureLibrary{
                 // Debug.Log(string.Format("Livingroom/{0}/{1}", category.Key, name));
                 GameObject Hello = (GameObject) Resources.Load(string.Format("Livingroom/{0}/{1}", category.Key, name));
                 // Debug.Log(string.Format("{0} {1}", name, Hello.transform.position));
+                // Debug.Log(name);
+                if (Hello.Equals(null))
+                    Debug.Log(string.Format("Livingroom/{0}/{1}", category.Key, name));
                 furniturePrefabs[name] = Hello;
             }
         }
+    }
+
+    public override string ToString(){
+        string ret = "";
+        foreach (KeyValuePair<string, FurnitureData> entry in Basic){
+            ret += string.Format("{0} : {1}\n", entry.Key, !entry.Value.Equals(null));
+        }
+        foreach (KeyValuePair<string, FurnitureData> entry in Minimalist){
+            ret += string.Format("{0} : {1}\n", entry.Key, !entry.Value.Equals(null));
+        }
+
+        return ret;
     }
 
 
