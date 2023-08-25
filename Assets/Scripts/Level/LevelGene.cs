@@ -237,6 +237,8 @@ public class LevelGene {
         fitness += tileMetrics["details"]   * details;
         fitness += tileMetrics["rhythm"]    * rhythm;
 
+        fitness += (features.Any(f => f.HasTag("seat"))) ? 3f : 0f;
+
         return fitness;
     }
 

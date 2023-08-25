@@ -34,6 +34,7 @@
                     "face_far_from_wall"
                 ],
                 "tags": [
+                    "seat"
                 ]
         },
         "couch" : {
@@ -43,7 +44,8 @@
                 "back_against_wall"
             ],
             "tags": [
-                "essential"
+                "essential",
+                "seat"
             ]
         },
         "end_table" : {
@@ -89,6 +91,7 @@
                 "face_far_from_wall"
             ],
             "tags": [
+                "seat"
             ]
         },
         "armchair2" : {
@@ -98,6 +101,7 @@
                 "face_far_from_wall"
             ],
             "tags": [
+                "seat"
             ]
         },
         "bookshelf" : {
@@ -115,7 +119,8 @@
                 "back_against_wall"
             ],
             "tags": [
-                "essential"
+                "essential",
+                "seat"
             ]
         },
         "couch2" : {
@@ -125,7 +130,8 @@
                 "back_against_wall"
             ],
             "tags": [
-                "essential"
+                "essential",
+                "seat"
             ]
         },
         "fireplace" : {
