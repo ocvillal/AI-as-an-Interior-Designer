@@ -86,7 +86,7 @@ public class LevelGene {
         int fail = 0;
         for (int i = 0; i < num_feat; i++){
             FurnitureData furnitureData = LevelGene.furnitureLibrary.GetRandomFurnitureByMultipleType("Basic", "Minimalist");
-            // FurnitureData furnitureData = LevelGene.furnitureLibrary.GetFurniture("tv_stand_medium");
+            // FurnitureData furnitureData = LevelGene.furnitureLibrary.GetFurniture("armchair");
             // Debug.Log(furnitureData);
             // Debug.Log(furnitureData.ToString());
             Feature feat = null;
@@ -446,8 +446,17 @@ public class LevelGene {
                             (orientation == 180 && tly == 0) ||
                             (orientation == 270 && tlx + dim_x == dimensions.x);
             }
+            if (feat.HasConstraint("face_far_from_wall")){
+                isValid &= (orientation == 0 && tly > 4) ||
+                            (orientation == 90 && tlx < 4) ||
+                            (orientation == 180 && tly + dim_y  - 1 < 4) ||
+                            (orientation == 270 && tlx + dim_x - 1 > 4);
+            }
+
             // Check if within bounds
             isValid &= (tlx + dim_x <= dimensions.x && tly + dim_y <= dimensions.y);
+
+            // Check if there is a need to do tilebased checks
             if (!isValid) {
                 ret_grid[tile.Item1, tile.Item2] = "0";
                 continue;

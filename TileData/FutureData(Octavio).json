@@ -23,7 +23,7 @@
     ],
 
     "constraints" : [
-        "against_wall", "back_against_wall", "must_face_out"
+        "against_wall", "back_against_wall", "must_face_out", "face_far_from_wall"
     ],
 
     "Basic" : {
@@ -31,6 +31,7 @@
                 "name": "armchair",
                 "dimensions": [2, 2],
                 "constraints": [
+                    "face_far_from_wall"
                 ],
                 "tags": [
                 ]
@@ -85,6 +86,7 @@
             "name": "armchair1",
             "dimensions": [2, 2],
             "constraints": [
+                "face_far_from_wall"
             ],
             "tags": [
             ]
@@ -93,6 +95,7 @@
             "name": "armchair2",
             "dimensions": [2, 2],
             "constraints": [
+                "face_far_from_wall"
             ],
             "tags": [
             ]
