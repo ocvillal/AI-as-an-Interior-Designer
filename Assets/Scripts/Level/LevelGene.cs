@@ -142,19 +142,53 @@ public class LevelGene {
         var colorList = new List<string>();
         var rhythmList = new List<string>();
 
+
+        // Balance
+        var top = new List<Feature>();
+        var bot = new List<Feature>();
+        var lef = new List<Feature>();
+        var rig = new List<Feature>();
+
+        foreach (var feature in features)
+        {
+            if (feature.position.x + feature.dimensions[0] <= 4) lef.Add(feature);
+            if (feature.position.y + feature.dimensions[1] <= 4) top.Add(feature);
+            if (feature.position.x >= 4) rig.Add(feature);
+            if (feature.position.y >= 4) bot.Add(feature);
+
+        }
+
+        foreach (Feature topfeat in top){
+            foreach(Feature botfeat in bot){
+                balance += (Mathf.Abs(topfeat.GetArea() - botfeat.GetArea()) < 2) ? 1 : 0;
+            }
+        }
+
+        foreach (Feature leffeat in lef){
+            foreach(Feature rigfeat in rig){
+                balance += (Mathf.Abs(leffeat.GetArea() - rigfeat.GetArea()) < 2) ? 1 : 0;
+
+            }
+        }
+
+
         foreach (var feature in features)
         {
             float area = feature.GetArea();
 
             // Balance
             // May check if furniture of the same size are on opposite sides of the room
-            if (area > 8.0f){
-                if (hasLarge) {
-                    balance = -1.0f;
-                } else {
-                    hasLarge = true;
-                }
-            }
+
+
+            // For every feature, organize it into quadrants
+
+            // if (area > 8.0f){
+            //     if (hasLarge) {
+            //         balance = -1.0f;
+            //     } else {
+            //         hasLarge = true;
+            //     }
+            // }
 
             // Harmony
             // Common colors in furniture
