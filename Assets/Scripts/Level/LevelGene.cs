@@ -305,6 +305,31 @@ public class LevelGene {
             ret &= features.All(f => f.name != feat.name);
         }
 
+        // Checks if it is of similar model stylistic purpose or checks if there is already a furniture piece of the same style just different size
+        if(feat.HasTag("first") || feat.HasTag("second") || feat.HasTag("third")){
+            foreach (Feature f in features){
+                // model 1
+                if((!f.HasTag("first")) && (feat.HasTag("first"))){
+                    ret = false;
+                }
+                else if((!f.HasTag("second")) && (feat.HasTag("second"))){
+                    ret = false;
+                }
+                else if((!f.HasTag("third")) && (feat.HasTag("third"))){
+                    ret = false;
+                }
+
+            }
+        }
+
+        // Checks if there is already a different type of furniture (Ex if we have a coffee table no need for an ottoman)
+        if(feat.HasTag("middle_table")){
+            foreach (Feature f in features){
+                if((f.HasTag("middle_table")) && (feat.HasTag("middle_table"))){
+                    ret = false;
+                }
+            }
+        }
         // More intensive computation
         ret &= GetValidTiles(featData, feat.orientation).Contains(new (feat.position.x, feat.position.y));
 

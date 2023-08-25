@@ -22,6 +22,10 @@
         "essential", "unique"
     ],
 
+    "models": [
+        "first", "second", "third", "middle_table"
+    ],
+
     "constraints" : [
         "against_wall", "back_against_wall", "must_face_out", "face_far_from_wall"
     ],
@@ -35,6 +39,9 @@
                 ],
                 "tags": [
                     "seat"
+                ],
+                "models":[
+                    "first"
                 ]
         },
         "couch" : {
@@ -46,7 +53,11 @@
             "tags": [
                 "essential",
                 "seat"
+            ],
+            "models":[
+                "first"
             ]
+            
         },
         "end_table" : {
             "name": "end_table",
@@ -54,6 +65,9 @@
             "constraints": [
             ],
             "tags": [
+            ],
+            "models":[
+                "first"
             ]
         },
         "ottoman" : {
@@ -62,6 +76,10 @@
             "constraints": [
             ],
             "tags": [
+                "unique"
+            ],
+            "models":[
+                "middle_table"
             ]
         },
         "tv_stand" : {
@@ -71,7 +89,11 @@
                 "back_against_wall"
             ],
             "tags": [
-                "essential"
+                "essential",
+                "unique"
+            ],
+            "models":[
+             
             ]
         },
         "coffee_table" : {
@@ -80,6 +102,10 @@
             "constraints": [
             ],
             "tags": [
+                "unique"
+            ],
+            "models":[
+                "middle_table"
             ]
         }
     },
@@ -92,6 +118,9 @@
             ],
             "tags": [
                 "seat"
+            ],
+            "models":[
+                "first"
             ]
         },
         "armchair2" : {
@@ -102,17 +131,22 @@
             ],
             "tags": [
                 "seat"
+            ],
+            "models":[
+                "second"
             ]
         },
         "bookshelf" : {
             "name": "bookshelf",
             "dimensions": [2, 1],
             "constraints": [
+                "back_against_wall"
             ],
             "tags": [
             ]
+
         },
-        "couch" : {
+        "couch1" : {
             "name": "couch1",
             "dimensions": [4, 2],
             "constraints": [
@@ -121,6 +155,9 @@
             "tags": [
                 "essential",
                 "seat"
+            ],
+            "models":[
+                "first"
             ]
         },
         "couch2" : {
@@ -132,6 +169,9 @@
             "tags": [
                 "essential",
                 "seat"
+            ],
+            "models":[
+                "second"
             ]
         },
         "fireplace" : {
@@ -142,6 +182,8 @@
             ],
             "tags": [
                 "unique", "essential"
+            ],
+            "models":[
             ]
         },
         "tv_stand_small" : {
@@ -151,6 +193,10 @@
                 "back_against_wall"
             ],
             "tags": [
+                "unique"
+            ],
+            "models":[
+                "first"
             ]
         },
         "tv_stand_medium" : {
@@ -160,6 +206,10 @@
                 "back_against_wall"
             ],
             "tags": [
+                "unique"
+            ],
+            "models":[
+                "second"
             ]
         }
 
