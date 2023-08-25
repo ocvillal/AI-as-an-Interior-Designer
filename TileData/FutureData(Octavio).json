@@ -188,7 +188,7 @@
         },
         "tv_stand_small" : {
             "name": "tv_stand_small",
-            "dimensions": [3,1],
+            "dimensions": [5,1],
             "constraints": [
                 "back_against_wall"
             ],
@@ -201,7 +201,7 @@
         },
         "tv_stand_medium" : {
             "name": "tv_stand_medium",
-            "dimensions": [3,1],
+            "dimensions": [5,1],
             "constraints": [
                 "back_against_wall"
             ],
