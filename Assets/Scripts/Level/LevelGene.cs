@@ -158,18 +158,25 @@ public class LevelGene {
 
         }
 
-        foreach (Feature topfeat in top){
-            foreach(Feature botfeat in bot){
-                balance += (Mathf.Abs(topfeat.GetArea() - botfeat.GetArea()) < 2) ? 1 : 0;
-            }
-        }
+        float topArea = top.Sum(x => x.GetArea());
+        float botArea = bot.Sum(x => x.GetArea());
+        float lefArea = lef.Sum(x => x.GetArea());
+        float rigArea = rig.Sum(x => x.GetArea());
 
-        foreach (Feature leffeat in lef){
-            foreach(Feature rigfeat in rig){
-                balance += (Mathf.Abs(leffeat.GetArea() - rigfeat.GetArea()) < 2) ? 1 : 0;
+        balance += (botArea > topArea) ? topArea / botArea : botArea / topArea;
+        balance += (rigArea > lefArea) ? lefArea / rigArea : rigArea / lefArea;
+        // foreach (Feature topfeat in top){
+        //     foreach(Feature botfeat in bot){
+        //         balance += (Mathf.Abs(topfeat.GetArea() - botfeat.GetArea()) < 2) ? 1 : 0;
+        //     }
+        // }
 
-            }
-        }
+        // foreach (Feature leffeat in lef){
+        //     foreach(Feature rigfeat in rig){
+        //         balance += (Mathf.Abs(leffeat.GetArea() - rigfeat.GetArea()) < 2) ? 1 : 0;
+
+        //     }
+        // }
 
 
         foreach (var feature in features)
@@ -256,20 +263,20 @@ public class LevelGene {
 
         // How heavily each category should affect overall fitness
         float balance   = 1.0f;
-        float harmony   = 2.0f;
-        float emphasis  = 2.0f;
-        float contrast  = 1.0f;
-        float scale     = 0.5f;
-        float details   = 0.5f;
-        float rhythm    = 0.5f;
+        // float harmony   = 2.0f;
+        // float emphasis  = 2.0f;
+        // float contrast  = 1.0f;
+        // float scale     = 0.5f;
+        // float details   = 0.5f;
+        // float rhythm    = 0.5f;
 
         fitness += tileMetrics["balance"]   * balance;
-        fitness += tileMetrics["harmony"]   * harmony;
-        fitness += tileMetrics["emphasis"]  * emphasis;
-        fitness += tileMetrics["contrast"]  * contrast;
-        fitness += tileMetrics["scale"]     * scale;
-        fitness += tileMetrics["details"]   * details;
-        fitness += tileMetrics["rhythm"]    * rhythm;
+        // fitness += tileMetrics["harmony"]   * harmony;
+        // fitness += tileMetrics["emphasis"]  * emphasis;
+        // fitness += tileMetrics["contrast"]  * contrast;
+        // fitness += tileMetrics["scale"]     * scale;
+        // fitness += tileMetrics["details"]   * details;
+        // fitness += tileMetrics["rhythm"]    * rhythm;
 
         fitness += (features.Any(f => f.HasTag("seat"))) ? 3f : 0f;
 
