@@ -338,9 +338,9 @@ public class LevelGenerator : MonoBehaviour
             plot_pos.x += PLOT_SIZE;
             count += 1;
         }
-        for(int i = 0; i < population.Count; i++){
-            Debug.Log(population[i].ToString());
-        }
+        // for(int i = 0; i < population.Count; i++){
+        //     Debug.Log(population[i].ToString());
+        // }
     }
 
 
