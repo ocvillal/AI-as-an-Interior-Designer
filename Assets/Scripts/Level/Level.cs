@@ -18,7 +18,7 @@ public class Level : MonoBehaviour
     public GameObject Toilet;
 
     public List<GameObject> renderedObjects;
-    public List<string> availableColors;
+    public List<List<string>> availableColors;
     public List<string> selectedColors;
 
     public LevelGene gene = null;
@@ -124,14 +124,15 @@ public class Level : MonoBehaviour
         // Or use a material already made?
         // Debug.Log(selectedColors.Count);
         Material newMat;
-        int randomSelection = Random.Range(0, 10);
-        if (randomSelection > 4) {
-            newMat = Resources.Load(selectedColors[0], typeof(Material)) as Material;
-        } else if (randomSelection > 3) {
-            newMat = Resources.Load(selectedColors[1], typeof(Material)) as Material;
-        } else {
-            newMat = Resources.Load(selectedColors[2], typeof(Material)) as Material;
-        }
+        // int randomSelection = Random.Range(0, 10);
+        // if (randomSelection > 4) {
+        //     newMat = Resources.Load(selectedColors[0], typeof(Material)) as Material;
+        // } else if (randomSelection > 3) {
+        //     newMat = Resources.Load(selectedColors[1], typeof(Material)) as Material;
+        // } else {
+        //     newMat = Resources.Load(selectedColors[2], typeof(Material)) as Material;
+        // }
+        newMat = Resources.Load(selectedColors[Random.Range(0, selectedColors.Count)], typeof(Material)) as Material;
         spawned.GetComponent<MeshRenderer>().material = newMat;
 
         // This causes a NullReferenceException error
@@ -174,11 +175,32 @@ public class Level : MonoBehaviour
         }
         // Debug.Log(ret);
 
-        availableColors = new List<string> { "black", "grey", "white", "red", "orange", "yellow", "green", "blue", "purple" };
-        for (int i = 0; i < 3; i++)
+        availableColors = new List<List<string>>
         {
-            selectedColors.Add(availableColors[Random.Range(0, availableColors.Count - 1)]);
-        }
+            // Source: https://www.mydomaine.com/interior-color-schemes-5187778
+            new List<string> { "greenMoss", "orange", "white" },
+            new List<string> { "blueSky", "orangeTan" },
+            new List<string> { "greenDark", "redCandy" },
+            new List<string> { "blueNavy", "pink", "orange" },
+            new List<string> { "greenDark", "greyLight" },
+            new List<string> { "blueNavy", "white" },
+            new List<string> { "pinkPale", "greenBlue" },
+            new List<string> { "blueSky", "greenEmerald" },
+            new List<string> { "blueNavy", "blueBlack", "yellow" },
+            new List<string> { "blueNavy", "greenGrass" },
+            new List<string> { "greyGreen", "white", "blackDark" },
+            new List<string> { "blackDark", "red" },
+            new List<string> { "orangeTan", "blueNavy", "grey" },
+            new List<string> { "pinkBlush", "blackDark" },
+            new List<string> { "yellow", "blackGrey" },
+            new List<string> { "greyLight", "orange" },
+            new List<string> { "greenMoss", "orange", "white" },
+            new List<string> { "white", "redPastel", "orange" },
+            new List<string> { "blueSky", "blackGrey", "orangeTan" },
+            new List<string> { "greenEmerald", "orange" },
+            new List<string> { "blackDark", "white" }
+        };
+        selectedColors = availableColors[UnityEngine.Random.Range(0, availableColors.Count)];
         Debug.Log(selectedColors.Count);
 
         Vector3 tile_pos = TopLeftCenter;
