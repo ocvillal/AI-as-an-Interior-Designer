@@ -6,6 +6,7 @@ using UnityEngine;
 
 using UnityEngine.InputSystem;
 using Feature = FurnitureFeature; // name of the furniture, x, y
+using System;
 
 public class LevelGenerator : MonoBehaviour
 {
@@ -263,7 +264,7 @@ public class LevelGenerator : MonoBehaviour
     List<LevelGene> tourneySelection(){
         List<LevelGene> results = new List<LevelGene>();
         List<LevelGene> randPop = new List<LevelGene>();
-        randPop = population.OrderBy(x=> Random.Range(0, population.Count - 1)).ToList();
+        randPop = population.OrderBy(x=> UnityEngine.Random.Range(0, population.Count - 1)).ToList();
         for(int i = 0; results.Count < population.Count / 2; i++){
             LevelGene contestantA = randPop[i];
             LevelGene contestantB = randPop[population.Count - i-1];
@@ -319,6 +320,10 @@ public class LevelGenerator : MonoBehaviour
     }
 
     void RenderPopulation(){
+        // Copying population in case it would drastically affect outcomes
+        population.OrderBy(x => x.Fitness()).ToList();
+        Debug.Log(string.Format("FITNESS: {0}\nBest individual: {1}", population[0].Fitness(), population[0].ToString()));
+
         int count = 0;
         Vector3 plot_pos = TopLeftCenter;
         for (int k = 0; k < _numLevels; k++){
