@@ -158,14 +158,14 @@ public class LevelGene {
 
             // Harmony
             // Common colors in furniture
-            if (!colorList.Contains(feature.color)) {
-                colorList.Add(feature.color);
-            } else {
-                harmony += 1.0f;
-            }
+            // if (!colorList.Contains(feature.color)) {
+            //     colorList.Add(feature.color);
+            // } else {
+            //     harmony += 1.0f;
+            // }
 
             // Emphasis
-            if (isCategory(feature, "general")){
+            if (feature.HasTag("essential")){
                 emphasisCount++;
             }
 
