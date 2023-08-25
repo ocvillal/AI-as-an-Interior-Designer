@@ -322,7 +322,7 @@ public class LevelGenerator : MonoBehaviour
     void RenderPopulation(){
         // Copying population in case it would drastically affect outcomes
         population.OrderBy(x => x.Fitness()).ToList();
-        Debug.Log(string.Format("Best individual: \n{0}\nFitness: {1}", population[0].ToString(), population[0].Fitness()));
+        Debug.Log(string.Format("FITNESS: {0}\nBest individual: {1}", population[0].Fitness(), population[0].ToString()));
 
         int count = 0;
         Vector3 plot_pos = TopLeftCenter;
