@@ -298,7 +298,8 @@ public class LevelGene {
         float emphasis  = 2.0f;
         float contrast  = 1.0f;
         float scale     = 0.5f;
-        // float details   = 0.5f;
+        // float details  if (features.Count == 0) end = 1;
+         = 0.5f;
         // float rhythm    = 0.5f;
 
         fitness += tileMetrics["balance"]   * balance;
@@ -401,13 +402,27 @@ public class LevelGene {
         return ret;
     }
 
-    LevelGene Mutate(){ // A mutate function // Angela
+    LevelGene Mutate(){ // A mutate function
         // Either
         LevelGene mutatedGene = new LevelGene(this);
-        int actions = Random.Range(0, 4);
-        if (features.Count > 9) actions = actions % 1;
 
-        if (features.Count > 8) actions = actions % 2;
+
+        int start = 0;
+        int end = 4;
+
+
+        // Annealing based off feature count
+        if (features.Count == 0) start = 3;
+        if (features.Count >= 10) end = 2;
+        // if (features.Count == 0) end = 1;
+        // if (features.Count == 0) end = 1;
+
+
+        // if (features.Count > 9) actions = actions % 1;
+
+        // if (features.Count > 8) actions = actions % 2;
+
+        int actions = Random.Range(start, end);
         switch (actions)
         {
         // // Removes an item
@@ -419,86 +434,90 @@ public class LevelGene {
                         removableFeatureList.Add(i);
                     // }
                 }
-
+                // Debug.Log(removableFeatureList.Count);
                 if (removableFeatureList.Count > 0) {
+                    // Debug.Log("Before " + mutatedGene.features.Count.ToString());
                     int removeIndex = removableFeatureList[Random.Range(0, removableFeatureList.Count)];
-                    mutatedGene.RemoveObject(mutatedGene.features[removeIndex]);
+                    mutatedGene = mutatedGene.RemoveObject(mutatedGene.features[removeIndex]);
+                    // Debug.Log("After " + mutatedGene.features.Count.ToString());
                 }
                 break;
 
         // Modifies the placement of an item
             case 1:
-                // Select a random feature
-                int randomIndex = Random.Range(0, mutatedGene.features.Count);
+                if (mutatedGene.features.Count > 0){
+                    // Select a random feature
+                    int randomIndex = Random.Range(0, mutatedGene.features.Count);
 
-                Feature selected = mutatedGene.features[randomIndex];
-                FurnitureData data = LevelGene.furnitureLibrary.GetFurniture(selected.name);
+                    Feature selected = mutatedGene.features[randomIndex];
+                    FurnitureData data = LevelGene.furnitureLibrary.GetFurniture(selected.name);
 
-                // Remove it
-                LevelGene removed = mutatedGene.RemoveObject(selected);
+                    // Remove it
+                    LevelGene removed = mutatedGene.RemoveObject(selected);
 
-                // Generate a new feature?
-                int MOVE = 0;
-                int ROTATE = 1;
-                int moveOrRotate = Random.Range(0, 2);
+                    // Generate a new feature?
+                    int MOVE = 0;
+                    int ROTATE = 1;
+                    int moveOrRotate = Random.Range(0, 2);
 
-                // Mutate and add it back
-                if (moveOrRotate == MOVE){ // Move
-                    List<(int, int)> validTiles = removed.GetValidTiles(data, selected.orientation);
-                    List<(int, int)> destinations = new List<(int, int)>();
+                    // Mutate and add it back
+                    if (moveOrRotate == MOVE){ // Move
+                        List<(int, int)> validTiles = removed.GetValidTiles(data, selected.orientation);
+                        List<(int, int)> destinations = new List<(int, int)>();
 
-                    (int, int) val = new (selected.position.x + 1, selected.position.y + 1);
-                    if (validTiles.Contains(val)) destinations.Add(val);
+                        (int, int) val = new (selected.position.x + 1, selected.position.y + 1);
+                        if (validTiles.Contains(val)) destinations.Add(val);
 
-                    val = new (selected.position.x - 1, selected.position.y + 1);
-                    if (validTiles.Contains(val)) destinations.Add(val);
+                        val = new (selected.position.x - 1, selected.position.y + 1);
+                        if (validTiles.Contains(val)) destinations.Add(val);
 
-                    val = new (selected.position.x + 1, selected.position.y - 1);
-                    if (validTiles.Contains(val)) destinations.Add(val);
+                        val = new (selected.position.x + 1, selected.position.y - 1);
+                        if (validTiles.Contains(val)) destinations.Add(val);
 
-                    val = new (selected.position.x - 1, selected.position.y - 1);
-                    if (validTiles.Contains(val)) destinations.Add(val);
-
-
-                    if (destinations.Count > 0){
-                        int randomDest = Random.Range(0, destinations.Count);
-                        (int, int) randomTile = destinations[randomDest];
-                        Feature newFeature = new Feature(data, randomTile.Item1, randomTile.Item2);
-
-                        removed = removed.TryPlaceObject(newFeature);
-
-                        if (removed.features.Count == mutatedGene.features.Count)
-                            mutatedGene = removed;
-                    }
-
-                } else if (moveOrRotate == ROTATE){ // Move
-                    List<float> destinations = new List<float>();
-
-                    // We check if we may place the feature in the same location, but rotated
-                    (int, int) val = new (selected.position.x, selected.position.y);
-
-                    // // Rotate 90 degrees counter
-                    List<(int, int)> validTiles = removed.GetValidTiles(data, (selected.orientation + 90) % 360);
-                    if (validTiles.Contains(val)) destinations.Add((selected.orientation + 90) % 360);
-
-                    // // Rotate 180 degrees
-                    validTiles = removed.GetValidTiles(data, (selected.orientation + 180) % 360);
-                    if (validTiles.Contains(val)) destinations.Add((selected.orientation + 180) % 360);
-
-                    // // Rotate 270 degrees
-                    validTiles = removed.GetValidTiles(data, (selected.orientation + 270) % 360);
-                    if (validTiles.Contains(val)) destinations.Add((selected.orientation + 270) % 360);
-                    Debug.Log(destinations.Count);
+                        val = new (selected.position.x - 1, selected.position.y - 1);
+                        if (validTiles.Contains(val)) destinations.Add(val);
 
 
-                    if (destinations.Count > 0){
-                        int randomDest = Random.Range(0, destinations.Count);
-                        float randomOri = destinations[randomDest];
-                        Feature newFeature = new Feature(data, val.Item1, val.Item2, randomOri);
-                        removed = removed.TryPlaceObject(newFeature);
+                        if (destinations.Count > 0){
+                            int randomDest = Random.Range(0, destinations.Count);
+                            (int, int) randomTile = destinations[randomDest];
+                            Feature newFeature = new Feature(data, randomTile.Item1, randomTile.Item2);
 
-                        if (removed.features.Count == mutatedGene.features.Count)
-                            mutatedGene = removed;
+                            removed = removed.TryPlaceObject(newFeature);
+
+                            if (removed.features.Count == mutatedGene.features.Count)
+                                mutatedGene = removed;
+                        }
+
+                    } else if (moveOrRotate == ROTATE){ // Move
+                        List<float> destinations = new List<float>();
+
+                        // We check if we may place the feature in the same location, but rotated
+                        (int, int) val = new (selected.position.x, selected.position.y);
+
+                        // // Rotate 90 degrees counter
+                        List<(int, int)> validTiles = removed.GetValidTiles(data, (selected.orientation + 90) % 360);
+                        if (validTiles.Contains(val)) destinations.Add((selected.orientation + 90) % 360);
+
+                        // // Rotate 180 degrees
+                        validTiles = removed.GetValidTiles(data, (selected.orientation + 180) % 360);
+                        if (validTiles.Contains(val)) destinations.Add((selected.orientation + 180) % 360);
+
+                        // // Rotate 270 degrees
+                        validTiles = removed.GetValidTiles(data, (selected.orientation + 270) % 360);
+                        if (validTiles.Contains(val)) destinations.Add((selected.orientation + 270) % 360);
+                        Debug.Log(destinations.Count);
+
+
+                        if (destinations.Count > 0){
+                            int randomDest = Random.Range(0, destinations.Count);
+                            float randomOri = destinations[randomDest];
+                            Feature newFeature = new Feature(data, val.Item1, val.Item2, randomOri);
+                            removed = removed.TryPlaceObject(newFeature);
+
+                            if (removed.features.Count == mutatedGene.features.Count)
+                                mutatedGene = removed;
+                        }
                     }
                 }
 
@@ -577,9 +596,9 @@ public class LevelGene {
             }
             if (feat.HasConstraint("face_far_from_wall")){
                 isValid &= (orientation == 0 && tly > 4) ||
-                            (orientation == 90 && tlx < 4) ||
+                            (orientation == 90 && tlx + dim_x - 1 < 4) ||
                             (orientation == 180 && tly + dim_y  - 1 < 4) ||
-                            (orientation == 270 && tlx + dim_x - 1 > 4);
+                            (orientation == 270 && tlx > 4);
             }
             if (feat.HasConstraint("not_against_wall")){
                 isValid &= ((tlx > 0 && tlx + dim_x < dimensions.x) && (tly > 0 && tly + dim_y < dimensions.y));
@@ -595,12 +614,28 @@ public class LevelGene {
             }
 
             // Checking against every tile of furniture
-            for (int y = tile.Item2; y < tile.Item2 + dim_y; y++){
+
+            int y_start = tile.Item2;
+            int y_end = tile.Item2 + dim_y;
+
+            int x_start = tile.Item1;
+            int x_end = tile.Item1 + dim_x;
+
+            // space in front constraint # Can I place it here?
+            if (feat.HasConstraint("space_in_front")){
+                y_start = (orientation == 0 && y_start - 1 > 0) ? y_start - 1; 0;
+                y_end = (orientation == 180 && y_end + 1 < dimensions.y) ? y_end : dimensions.y;
+                x_end = (orientation == 90 && x_end + 1 < dimensions.x) ? x_end : dimensions.x;
+                x_start = (orientation == 270 && x_start - 1 > 0) ? x_start - 1; 0;
+            }
+
+
+            for (int y = y_start; y < y_end; y++){
                 if (y >= dimensions.y){
                     isValid = false;
                     break;
                 }
-                for (int x = tile.Item1; x < tile.Item1 + dim_x; x++){
+                for (int x = x_start; x < x_end; x++){
                     if (x >= dimensions.x){
                         // Debug.Log(string.Format("IM HERE ({0}, {1}) Tile: ({2}, {3})", x,y, tile.Item1, tile.Item2));
                         isValid = false;
@@ -700,6 +735,20 @@ public class LevelGene {
         int dim_y = (feature.orientation == 0 || feature.orientation == 180) ? furn_dims[1] : furn_dims[0];
 
 
+        // int y_start = feature.position;
+        // int y_end = tile.Item2 + dim_y;
+
+        // int x_start = tile.Item1;
+        // int x_end = tile.Item1 + dim_x;
+
+        // // space in front constraint # Can I be placed here?
+        // if (feat.HasConstraint("space_in_front")){
+        //     y_start = (orientation == 0 && y_start - 1 > 0) ? y_start - 1; 0;
+        //     y_end = (orientation == 180 && y_end + 1 < dimensions.y) ? y_end : dimensions.y;
+        //     x_end = (orientation == 90 && x_end + 1 < dimensions.x) ? x_end : dimensions.x;
+        //     x_start = (orientation == 270 && x_start - 1 > 0) ? x_start - 1; 0;
+        // }
+
         // Debug.Log(string.Format("{0} {1}", dim_x, dim_y));
 
         for (int y = feature.position.y; y < feature.position.y + dim_y; y++){
@@ -743,11 +792,33 @@ public class LevelGene {
         int dim_y = (feature.orientation == 0 || feature.orientation == 180) ? furn_dims[1] : furn_dims[0];
 
 
+
+
         for (int y = feature.position.y; y < feature.position.y + dim_y; y++){
             for (int x = feature.position.x; x < feature.position.x + dim_x; x++){
                 ret.grid[y, x] = 0;
             }
         }
+
+
+        // // space in front constraint # Can I be placed here?
+        // if (feat.HasConstraint("space_in_front")){
+
+        //     int y_start = feature.position.y;
+        //     int y_end = feature.position.y + dim_y;
+
+        //     int x_start = feature.position.x;
+        //     int x_end = feature.position.x + dim_x;
+
+        //     if (orientation == 0 && y_start - 1 > 0){
+
+        //     } ? y_start - 1; 0;
+        //     y_end = (orientation == 180 && y_end + 1 < dimensions.y) ? y_end : dimensions.y;
+        //     x_end = (orientation == 90 && x_end + 1 < dimensions.x) ? x_end : dimensions.x;
+        //     x_start = (orientation == 270 && x_start - 1 > 0) ? x_start - 1; 0;
+        // }
+
+        // for (int j = y_start; j < y_end; j++)
 
         ret.features.Remove(feature);
 
