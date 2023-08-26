@@ -247,24 +247,25 @@ public class LevelGenerator : MonoBehaviour
     }
 
 
-    List<LevelGene> elitestSelection(ref List<LevelGene> results){
+    List<LevelGene> elitestSelection(){
         Debug.Log("CALLED");
+        List<LevelGene> results = new List<LevelGene>();
 
         // Sort from Biggest to smallest
         List<LevelGene> randPop = new List<LevelGene>();
 
         randPop = population.OrderBy(x => -x.Fitness()).ToList();
-        for(int i = 0; i < population.Count / 4; i++){
+        for(int i = 0; i < population.Count / 2; i++){
             results.Add(randPop[i]);
         }
         return results;
     }
 
-    List<LevelGene> tourneySelection(ref List<LevelGene> results){
-        // List<LevelGene> results = new List<LevelGene>();
+    List<LevelGene> tourneySelection(){
+        List<LevelGene> results = new List<LevelGene>();
         List<LevelGene> randPop = new List<LevelGene>();
         randPop = population.OrderBy(x=> UnityEngine.Random.Range(0, population.Count - 1)).ToList();
-        for(int i = 0; results.Count < 3* population.Count / 4; i++){
+        for(int i = 0; results.Count < population.Count / 2; i++){
             LevelGene contestantA = randPop[i];
             LevelGene contestantB = randPop[population.Count - i-1];
             if (contestantB.Fitness() > contestantA.Fitness()){
@@ -282,8 +283,8 @@ public class LevelGenerator : MonoBehaviour
 
 
         List<LevelGene> selectList = new List<LevelGene>();
-        elitestSelection(ref selectList);
-        tourneySelection(ref selectList);
+        selectList.AddRange(elitestSelection());
+        selectList.AddRange(tourneySelection());
 
         // Debug.Log(string.Format("PARENTS: {0}", selectList.Count));
 
