@@ -224,7 +224,7 @@ public class LevelGenerator : MonoBehaviour
 
         // Debug.Log(randlevel.ToString());
         for (int i = 0; i < _numLevels; i++){
-            population.Add(LevelGene.GenerateRandomLevelGene(Dimensions, 6));
+            population.Add(LevelGene.GenerateRandomLevelGene(Dimensions, 10));
         }
 
         // // Teleport player upwards

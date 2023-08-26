@@ -299,7 +299,7 @@ public class LevelGene {
         float contrast  = 1.0f;
         float scale     = 0.5f;
         // float details  if (features.Count == 0) end = 1;
-         = 0.5f;
+        //  = 0.5f;
         // float rhythm    = 0.5f;
 
         fitness += tileMetrics["balance"]   * balance;
@@ -333,7 +333,7 @@ public class LevelGene {
 
         fitness += 0.3f * edges / TOTAL_EDGES;
 
-        fitness += 0.2f*(1 - emptyArea /dimensions.x * dimensions.y);
+        // fitness += 0.2f*(1 - emptyArea /dimensions.x * dimensions.y);
 
         return fitness;
     }
@@ -607,11 +607,7 @@ public class LevelGene {
             // Check if within bounds
             isValid &= (tlx + dim_x <= dimensions.x && tly + dim_y <= dimensions.y);
 
-            // Check if there is a need to do tilebased checks
-            if (!isValid) {
-                ret_grid[tile.Item1, tile.Item2] = "0";
-                continue;
-            }
+
 
             // Checking against every tile of furniture
 
@@ -623,12 +619,19 @@ public class LevelGene {
 
             // space in front constraint # Can I place it here?
             if (feat.HasConstraint("space_in_front")){
-                y_start = (orientation == 0 && y_start - 1 > 0) ? y_start - 1; 0;
-                y_end = (orientation == 180 && y_end + 1 < dimensions.y) ? y_end : dimensions.y;
-                x_end = (orientation == 90 && x_end + 1 < dimensions.x) ? x_end : dimensions.x;
-                x_start = (orientation == 270 && x_start - 1 > 0) ? x_start - 1; 0;
+                y_start = (orientation == 0) ? y_start - 1: 0;
+                y_end = (orientation == 180) ? y_end + 1: dimensions.y;
+                x_end = (orientation == 90) ? x_end + 1: dimensions.x;
+                x_start = (orientation == 270) ? x_start - 1: 0;
+
+                isValid &= (y_start >= 0 && x_start >= 0 && y_end <= dimensions.y && x_end <= dimensions.x);
             }
 
+            // Check if there is a need to do tilebased checks
+            if (!isValid) {
+                ret_grid[tile.Item1, tile.Item2] = "0";
+                continue;
+            }
 
             for (int y = y_start; y < y_end; y++){
                 if (y >= dimensions.y){
@@ -735,24 +738,37 @@ public class LevelGene {
         int dim_y = (feature.orientation == 0 || feature.orientation == 180) ? furn_dims[1] : furn_dims[0];
 
 
-        // int y_start = feature.position;
-        // int y_end = tile.Item2 + dim_y;
+        int y_start = feature.position.y;
+        int y_end = feature.position.y + dim_y;
 
-        // int x_start = tile.Item1;
-        // int x_end = tile.Item1 + dim_x;
+        int x_start = feature.position.x;
+        int x_end = feature.position.x + dim_x;
 
-        // // space in front constraint # Can I be placed here?
-        // if (feat.HasConstraint("space_in_front")){
-        //     y_start = (orientation == 0 && y_start - 1 > 0) ? y_start - 1; 0;
-        //     y_end = (orientation == 180 && y_end + 1 < dimensions.y) ? y_end : dimensions.y;
-        //     x_end = (orientation == 90 && x_end + 1 < dimensions.x) ? x_end : dimensions.x;
-        //     x_start = (orientation == 270 && x_start - 1 > 0) ? x_start - 1; 0;
-        // }
+
+
+
+
+        // space in front constraint # Can I be placed here?
+        if (feature.HasConstraint("space_in_front")){
+            if (feature.orientation == 0 || feature.orientation == 180){
+                int front = (feature.orientation == 0) ? y_start - 1 : y_end + 1;
+                for (int i = x_start; i < x_end; i++)
+                    ret.grid[front, i] = 2;
+            }
+
+            if (feature.orientation == 90 || feature.orientation == 270){
+                int front = (feature.orientation == 270) ? x_start - 1 : x_end + 1;
+                for (int i = y_start; i < y_end; i++)
+                    ret.grid[i, front] = 2;
+            }
+        }
+
+
 
         // Debug.Log(string.Format("{0} {1}", dim_x, dim_y));
 
-        for (int y = feature.position.y; y < feature.position.y + dim_y; y++){
-            for (int x = feature.position.x; x < feature.position.x + dim_x; x++){
+        for (int y = y_start; y < y_end; y++){
+            for (int x = x_start; x < x_end; x++){
                 try{
                     ret.grid[y, x] = 1;
 
@@ -791,32 +807,29 @@ public class LevelGene {
         int dim_x = (feature.orientation == 0 || feature.orientation == 180) ? furn_dims[0] : furn_dims[1];
         int dim_y = (feature.orientation == 0 || feature.orientation == 180) ? furn_dims[1] : furn_dims[0];
 
+        int y_start = feature.position.y;
+        int y_end = feature.position.y + dim_y;
+
+        int x_start = feature.position.x;
+        int x_end = feature.position.x + dim_x;
+
+        if (feature.HasConstraint("space_in_front")){
+            y_start = (feature.orientation == 0 && y_start - 1 > 0) ? y_start - 1: 0;
+            y_end = (feature.orientation == 180 && y_end + 1 < dimensions.y) ? y_end : dimensions.y;
+            x_end = (feature.orientation == 90 && x_end + 1 < dimensions.x) ? x_end : dimensions.x;
+            x_start = (feature.orientation == 270 && x_start - 1 > 0) ? x_start - 1: 0;
+        }
 
 
-
-        for (int y = feature.position.y; y < feature.position.y + dim_y; y++){
-            for (int x = feature.position.x; x < feature.position.x + dim_x; x++){
+        for (int y = y_start; y < y_end; y++){
+            for (int x = x_start; x < x_end; x++){
                 ret.grid[y, x] = 0;
             }
         }
 
 
         // // space in front constraint # Can I be placed here?
-        // if (feat.HasConstraint("space_in_front")){
 
-        //     int y_start = feature.position.y;
-        //     int y_end = feature.position.y + dim_y;
-
-        //     int x_start = feature.position.x;
-        //     int x_end = feature.position.x + dim_x;
-
-        //     if (orientation == 0 && y_start - 1 > 0){
-
-        //     } ? y_start - 1; 0;
-        //     y_end = (orientation == 180 && y_end + 1 < dimensions.y) ? y_end : dimensions.y;
-        //     x_end = (orientation == 90 && x_end + 1 < dimensions.x) ? x_end : dimensions.x;
-        //     x_start = (orientation == 270 && x_start - 1 > 0) ? x_start - 1; 0;
-        // }
 
         // for (int j = y_start; j < y_end; j++)
 
