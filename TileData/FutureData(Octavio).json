@@ -19,7 +19,7 @@
 
 
     "tags": [
-        "essential", "unique"
+        "essential", "unique", 
     ],
 
     "models": [
@@ -27,7 +27,8 @@
     ],
 
     "constraints" : [
-        "against_wall", "back_against_wall", "must_face_out", "face_far_from_wall", "not_against_wall"
+        "against_wall", "back_against_wall", "must_face_out", "face_far_from_wall", "not_against_wall",
+        "infront_of_couch"
     ],
 
     "Basic" : {
@@ -145,6 +146,9 @@
                 "back_against_wall"
             ],
             "tags": [
+            ],
+            "models":[
+                
             ]
 
         },

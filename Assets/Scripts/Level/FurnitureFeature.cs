@@ -132,7 +132,7 @@ public class FurnitureFeature{
         return furnitureLibrary.GetFurnitureConstraints(name).Contains(constraint);
     }
 
-
+    public bool HasModel(string model) => furnitureLibrary.GetFurnitureModels(name).Contains(model);
 
 
     public override string ToString(){

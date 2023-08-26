@@ -10,6 +10,7 @@ public class FurnitureData{
     public List<int> dimensions;
     public List<string> constraints;
     public List<string> tags;
+    public List<string> models;
     // public static FurnitureData CreateFromJSON(string jsonString)
     // {
     //     return JsonUtility.FromJson<FurnitureData>(jsonString);
@@ -24,6 +25,9 @@ public class FurnitureData{
 
     public bool HasConstraint(string constraint){
         return constraints.Contains(constraint);
+    }
+    public bool HasModel(string model){
+        return models.Contains(model);
     }
 
 

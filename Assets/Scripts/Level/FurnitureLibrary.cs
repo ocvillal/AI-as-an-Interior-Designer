@@ -9,6 +9,7 @@ public class FurnitureLibrary{
     public Dictionary<string, List<string>> categories;
     public List<string> tags;
     public List<string> constraints;
+    public List<string> models;
     public Dictionary<string, FurnitureData> Basic;
     public Dictionary<string, FurnitureData> Minimalist;
 
@@ -56,6 +57,10 @@ public class FurnitureLibrary{
 
     public List<string> GetFurnitureConstraints(string name){
         return Basic.TryGetValue(name, out var ret) ? ret.constraints : (Minimalist.TryGetValue(name, out ret) ? ret.constraints : new List<string>());
+    }
+    
+    public List<string> GetFurnitureModels(string name){
+        return Basic.TryGetValue(name, out var ret) ? ret.models : (Minimalist.TryGetValue(name, out ret) ? ret.models : new List<string>());
     }
 
 

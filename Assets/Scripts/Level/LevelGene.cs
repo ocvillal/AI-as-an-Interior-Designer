@@ -368,16 +368,16 @@ public class LevelGene {
         }
 
         // Checks if it is of similar model stylistic purpose or checks if there is already a furniture piece of the same style just different size
-        if(feat.HasTag("first") || feat.HasTag("second") || feat.HasTag("third")){
+        if(feat.HasModel("first") || feat.HasModel("second") || feat.HasModel("third")){
             foreach (Feature f in features){
                 // model 1
-                if((!f.HasTag("first")) && (feat.HasTag("first"))){
+                if((!f.HasModel("first")) && (feat.HasModel("first"))){
                     ret = false;
                 }
-                else if((!f.HasTag("second")) && (feat.HasTag("second"))){
+                else if((!f.HasModel("second")) && (feat.HasModel("second"))){
                     ret = false;
                 }
-                else if((!f.HasTag("third")) && (feat.HasTag("third"))){
+                else if((!f.HasModel("third")) && (feat.HasModel("third"))){
                     ret = false;
                 }
 
@@ -385,9 +385,9 @@ public class LevelGene {
         }
 
         // Checks if there is already a different type of furniture (Ex if we have a coffee table no need for an ottoman)
-        if(feat.HasTag("middle_table")){
-            foreach (Feature f in features){
-                if((f.HasTag("middle_table")) && (feat.HasTag("middle_table"))){
+        if (feat.HasModel("middle_table")) {
+            foreach (var f in features){
+                if(f.HasModel("middle_table")){
                     ret = false;
                 }
             }
@@ -603,7 +603,7 @@ public class LevelGene {
             if (feat.HasConstraint("not_against_wall")){
                 isValid &= ((tlx > 0 && tlx + dim_x < dimensions.x) && (tly > 0 && tly + dim_y < dimensions.y));
             }
-
+            // if (feat.)
             // Check if within bounds
             isValid &= (tlx + dim_x <= dimensions.x && tly + dim_y <= dimensions.y);
 
