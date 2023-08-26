@@ -199,7 +199,7 @@ public class LevelGene {
         //     }
         // }
 
-
+        float totArea = 0;
         foreach (var feature in features)
         {
             float area = feature.GetArea();
@@ -245,7 +245,7 @@ public class LevelGene {
 
             // Scale and Proportion
 
-            scale += area;
+            totArea += area;
 
             // Deatils - Decorative furniture
             if (feature.HasTag("decorative")){
@@ -270,7 +270,7 @@ public class LevelGene {
         emphasis = -((emphasisCount - 2) * (emphasisCount - 2)) + 4;
 
         // Total “footprint” of furniture pieces should not exceed half of the available space
-        scale = (scale > dimensions.x*dimensions.y * 0.5) ? -10 : 0;
+        scale = (totArea > dimensions.x*dimensions.y * 0.5) ? -10 : 0;
 
         var metrics = new Dictionary<string, float>(){
             {"balance", balance},
@@ -295,8 +295,8 @@ public class LevelGene {
         // How heavily each category should affect overall fitness
         float balance   = 1.0f;
         // float harmony   = 2.0f;
-        // float emphasis  = 2.0f;
-        // float contrast  = 1.0f;
+        float emphasis  = 2.0f;
+        float contrast  = 1.0f;
         float scale     = 0.5f;
         // float details   = 0.5f;
         // float rhythm    = 0.5f;
@@ -311,6 +311,28 @@ public class LevelGene {
 
         // fitness += (features.Any(f => f.HasTag("seat"))) ? 3f : 0f;
 
+        // Connectability
+        int TOTAL_EDGES = 2* dimensions.x * dimensions.y - dimensions.y - dimensions.x;
+        int edges = 0;
+        int emptyArea = 0;
+
+        for (int j = 0; j < dimensions.y; j++){
+            for (int i = 0; i < dimensions.x; i++){
+                emptyArea += (grid[j, i] == 1) ? 0 : 1;
+                // Check right and down
+                if (i + 1 < dimensions.x){
+                    edges += (grid[j, i+1] == 1) ? 0 : 1;
+                }
+                if (j + 1 < dimensions.y){
+                    edges += (grid[j+1, i] == 1) ? 0 : 1;
+                }
+
+            }
+        }
+
+        fitness += 0.3f * edges / TOTAL_EDGES;
+
+        fitness += 0.2f*(1 - emptyArea /dimensions.x * dimensions.y);
 
         return fitness;
     }
@@ -383,10 +405,29 @@ public class LevelGene {
         // Either
         LevelGene mutatedGene = new LevelGene(this);
         int actions = Random.Range(0, 4);
+        if (features.Count > 9) actions = actions % 1;
+
+        if (features.Count > 8) actions = actions % 2;
         switch (actions)
         {
-        // Modifies the placement of an item
+        // // Removes an item
             case 0:
+                var removableFeatureList = new List<int>();
+                for(int i = 0; i < mutatedGene.features.Count; i++) {
+                    Feature feature = mutatedGene.features[i];
+                    // if (!feature.HasTag("essential")) {
+                        removableFeatureList.Add(i);
+                    // }
+                }
+
+                if (removableFeatureList.Count > 0) {
+                    int removeIndex = removableFeatureList[Random.Range(0, removableFeatureList.Count)];
+                    mutatedGene.RemoveObject(mutatedGene.features[removeIndex]);
+                }
+                break;
+
+        // Modifies the placement of an item
+            case 1:
                 // Select a random feature
                 int randomIndex = Random.Range(0, mutatedGene.features.Count);
 
@@ -399,11 +440,11 @@ public class LevelGene {
                 // Generate a new feature?
                 int MOVE = 0;
                 int ROTATE = 1;
-                int moveOrRotate = MOVE; // Random.Range(0, 2);
+                int moveOrRotate = Random.Range(0, 2);
 
                 // Mutate and add it back
                 if (moveOrRotate == MOVE){ // Move
-                    List<(int, int)> validTiles = GetValidTiles(data, selected.orientation);
+                    List<(int, int)> validTiles = removed.GetValidTiles(data, selected.orientation);
                     List<(int, int)> destinations = new List<(int, int)>();
 
                     (int, int) val = new (selected.position.x + 1, selected.position.y + 1);
@@ -417,6 +458,7 @@ public class LevelGene {
 
                     val = new (selected.position.x - 1, selected.position.y - 1);
                     if (validTiles.Contains(val)) destinations.Add(val);
+
 
                     if (destinations.Count > 0){
                         int randomDest = Random.Range(0, destinations.Count);
@@ -436,16 +478,18 @@ public class LevelGene {
                     (int, int) val = new (selected.position.x, selected.position.y);
 
                     // // Rotate 90 degrees counter
-                    List<(int, int)> validTiles = GetValidTiles(data, (selected.orientation + 90) % 360);
+                    List<(int, int)> validTiles = removed.GetValidTiles(data, (selected.orientation + 90) % 360);
                     if (validTiles.Contains(val)) destinations.Add((selected.orientation + 90) % 360);
 
                     // // Rotate 180 degrees
-                    validTiles = GetValidTiles(data, (selected.orientation + 180) % 360);
-                    if (validTiles.Contains(val)) destinations.Add((selected.orientation + 90) % 360);
+                    validTiles = removed.GetValidTiles(data, (selected.orientation + 180) % 360);
+                    if (validTiles.Contains(val)) destinations.Add((selected.orientation + 180) % 360);
 
                     // // Rotate 270 degrees
-                    validTiles = GetValidTiles(data, (selected.orientation + 270) % 360);
-                    if (validTiles.Contains(val)) destinations.Add((selected.orientation + 90) % 360);
+                    validTiles = removed.GetValidTiles(data, (selected.orientation + 270) % 360);
+                    if (validTiles.Contains(val)) destinations.Add((selected.orientation + 270) % 360);
+                    Debug.Log(destinations.Count);
+
 
                     if (destinations.Count > 0){
                         int randomDest = Random.Range(0, destinations.Count);
@@ -457,12 +501,11 @@ public class LevelGene {
                             mutatedGene = removed;
                     }
                 }
-        //         // Rotate or move? A; Both
 
                 break;
 
         // Adds a new item
-            case 1:
+            case 3:
                 FurnitureData furnitureData = LevelGene.furnitureLibrary.GetRandomFurnitureByMultipleType("Basic", "Minimalist");
                 // FurnitureData furnitureData = LevelGene.furnitureLibrary.GetFurniture("couch");
                 // Debug.Log(furnitureData.ToString());
@@ -481,21 +524,7 @@ public class LevelGene {
 
                 break;
 
-        // Removes an item
-            case 2:
-                var removableFeatureList = new List<int>();
-                for(int i = 0; i < mutatedGene.features.Count; i++) {
-                    Feature feature = mutatedGene.features[i];
-                    if (!feature.HasTag("essential")) {
-                        removableFeatureList.Add(i);
-                    }
-                }
 
-                if (removableFeatureList.Count > 0) {
-                    int removeIndex = removableFeatureList[Random.Range(0, removableFeatureList.Count)];
-                    mutatedGene.RemoveObject(mutatedGene.features[removeIndex]);
-                }
-                break;
 
             // Do nothing
             default:
@@ -729,7 +758,7 @@ public class LevelGene {
         // crossover
         List<LevelGene> children = new List<LevelGene>();
         // Debug.Log("parent 1: " + ToString());
-        // Debug.Log("parent 2: " + other.ToString());
+        // // Debug.Log("parent 2: " + other.ToString());
 
         // // Create the first child by combining the features from the two parents
         LevelGene child1 = LevelGene.GenerateEmptyLevelGene(dimensions);
@@ -757,6 +786,10 @@ public class LevelGene {
         {
             child1 = child1.TryPlaceObject(other.features[i]);
         }
+
+        // LevelGene child1 = new LevelGene(this);
+        // LevelGene child2 = new LevelGene(other);
+
 
         child1 = child1.Mutate();
         child2 = child2.Mutate();

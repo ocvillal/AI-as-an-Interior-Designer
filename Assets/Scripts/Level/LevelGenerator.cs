@@ -224,7 +224,7 @@ public class LevelGenerator : MonoBehaviour
 
         // Debug.Log(randlevel.ToString());
         for (int i = 0; i < _numLevels; i++){
-            population.Add(LevelGene.GenerateRandomLevelGene(Dimensions, 4));
+            population.Add(LevelGene.GenerateRandomLevelGene(Dimensions, 6));
         }
 
         // // Teleport player upwards
@@ -248,7 +248,7 @@ public class LevelGenerator : MonoBehaviour
 
 
     List<LevelGene> elitestSelection(){
-        Debug.Log("CALLED");
+        // Debug.Log("CALLED");
         List<LevelGene> results = new List<LevelGene>();
 
         // Sort from Biggest to smallest
@@ -275,7 +275,7 @@ public class LevelGenerator : MonoBehaviour
             // choose k individuals lets say 4
             randPop.Clear();
             for (int i = 0; i < 4; i++){
-                randPop.Add(population[UnityEngine.Random.Range(0, population.Count)]);
+                randPop.Add(population[UnityEngine.Random.Range(population.Count/8, population.Count)]);
             }
 
             // from those 4 sort em
@@ -293,7 +293,7 @@ public class LevelGenerator : MonoBehaviour
                 }
             }
             // Debug.Log(randProb);
-            Debug.Log(randIndex);
+            // Debug.Log(randIndex);
 
 
             results.Add(randPop[randIndex]);
@@ -330,8 +330,8 @@ public class LevelGenerator : MonoBehaviour
 
 
         for(int i = 0; i < selectList.Count / 2; i++){
-            LevelGene parentFirst = selectList[i];
-            LevelGene parentSecond = selectList[selectList.Count - i - 1];
+            LevelGene parentFirst = selectList[UnityEngine.Random.Range(0, selectList.Count)];
+            LevelGene parentSecond = selectList[UnityEngine.Random.Range(0, selectList.Count)];
             results.AddRange(parentFirst.GenerateChildren(parentSecond));
         }
 

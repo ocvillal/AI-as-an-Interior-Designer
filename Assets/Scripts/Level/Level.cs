@@ -206,7 +206,7 @@ public class Level : MonoBehaviour
             new List<string> { "blackDark", "white" }
         };
         selectedColors = availableColors[UnityEngine.Random.Range(0, availableColors.Count)];
-        Debug.Log(selectedColors.Count);
+        // Debug.Log(selectedColors.Count);
 
         Vector3 tile_pos = TopLeftCenter;
 
