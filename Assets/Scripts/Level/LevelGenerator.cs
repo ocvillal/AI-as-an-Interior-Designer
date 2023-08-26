@@ -255,9 +255,12 @@ public class LevelGenerator : MonoBehaviour
         List<LevelGene> randPop = new List<LevelGene>();
 
         randPop = population.OrderBy(x => -x.Fitness()).ToList();
-        for(int i = 0; i < population.Count / 2; i++){
+        int i = 0;
+        while(results.Count < population.Count/8){
             results.Add(randPop[i]);
+            i++;
         }
+
         return results;
     }
 
@@ -265,18 +268,49 @@ public class LevelGenerator : MonoBehaviour
         List<LevelGene> results = new List<LevelGene>();
         List<LevelGene> randPop = new List<LevelGene>();
         randPop = population.OrderBy(x=> UnityEngine.Random.Range(0, population.Count - 1)).ToList();
-        for(int i = 0; results.Count < population.Count / 2; i++){
-            LevelGene contestantA = randPop[i];
-            LevelGene contestantB = randPop[population.Count - i-1];
-            if (contestantB.Fitness() > contestantA.Fitness()){
-                results.Add(contestantB);
+
+
+
+        while (results.Count < 7*population.Count/8){
+            // choose k individuals lets say 4
+            randPop.Clear();
+            for (int i = 0; i < 4; i++){
+                randPop.Add(population[UnityEngine.Random.Range(0, population.Count)]);
             }
-            else{
-                results.Add(contestantA);
+
+            // from those 4 sort em
+            randPop.Sort((x, y) => -x.Fitness().CompareTo(y.Fitness()));
+
+            // choose with tournament
+
+            float randProb = UnityEngine.Random.Range(0f, 1f);
+            int randIndex = randPop.Count - 1;
+            float p = 0.5f;
+            for (int i = 0; i < randPop.Count; i++){
+                if (randProb < p*Mathf.Pow(1 - p, i)){
+                    randIndex = i;
+                    break;
+                }
             }
+            // Debug.Log(randProb);
+            Debug.Log(randIndex);
+
+
+            results.Add(randPop[randIndex]);
         }
+
+        // LevelGene contestantA = randPop[i];
+        // LevelGene contestantB = randPop[population.Count - i-1];
+        // if (contestantB.Fitness() > contestantA.Fitness()){
+        //     results.Add(contestantB);
+        // }
+        // else{
+        //     results.Add(contestantA);
+        // }
         return results;
     }
+
+
 
     List<LevelGene> generateSuccessors(){ // Octavio
         List<LevelGene> results = new List<LevelGene>();
@@ -285,6 +319,10 @@ public class LevelGenerator : MonoBehaviour
         List<LevelGene> selectList = new List<LevelGene>();
         selectList.AddRange(elitestSelection());
         selectList.AddRange(tourneySelection());
+
+        // elitestSelection(ref selectList);
+        // tourneySelection(ref selectList);
+
 
         // Debug.Log(string.Format("PARENTS: {0}", selectList.Count));
 
