@@ -21,6 +21,8 @@ public class LevelGene {
     public List<Feature> features;
     public Vector2Int dimensions;
 
+    public float fitness = float.NaN;
+
     private int[,] grid;
     public int[,] Grid {
         get { return grid; }
@@ -41,6 +43,7 @@ public class LevelGene {
         this.dimensions = dimensions;
         features = new List<Feature>();
         grid = new int[(int) dimensions.x, (int) dimensions.y]; // Top left (0,0) Bottom right (n, n)
+        this.fitness = float.NaN;
     }
 
     public LevelGene(LevelGene gene){
@@ -54,6 +57,7 @@ public class LevelGene {
         for (int y = 0; y < dimensions.y; y++)
             for (int x = 0; x < dimensions.x; x++)
                 this.grid[y, x] = gene.grid[y, x];
+        this.fitness = float.NaN;
     }
 
     static void LoadAllFurniture(){ // Arrian
@@ -102,6 +106,7 @@ public class LevelGene {
             }
         }
         // Debug.Log(string.Format("{0} fails out of {1}", fail, num_feat));
+        randomLevel.Fitness();
 
         return randomLevel;
     }
@@ -151,10 +156,10 @@ public class LevelGene {
 
         foreach (var feature in features)
         {
-            if (feature.position.x + feature.dimensions[0] <= 4) lef.Add(feature);
-            if (feature.position.y + feature.dimensions[1] <= 4) top.Add(feature);
-            if (feature.position.x >= 4) rig.Add(feature);
-            if (feature.position.y >= 4) bot.Add(feature);
+            if (feature.position.x + feature.dimensions[0] <= 3) lef.Add(feature);
+            if (feature.position.y + feature.dimensions[1] <= 3) top.Add(feature);
+            if (feature.position.x >= 5) rig.Add(feature);
+            if (feature.position.y >= 5) bot.Add(feature);
 
         }
 
@@ -163,8 +168,24 @@ public class LevelGene {
         float lefArea = lef.Sum(x => x.GetArea());
         float rigArea = rig.Sum(x => x.GetArea());
 
-        balance += (botArea > topArea) ? topArea / botArea : botArea / topArea;
-        balance += (rigArea > lefArea) ? lefArea / rigArea : rigArea / lefArea;
+
+        float topbot = (botArea > topArea) ? topArea / botArea : botArea / topArea;
+        float lefrig = (rigArea > lefArea) ? lefArea / rigArea : rigArea / lefArea;
+
+
+        if (float.IsNaN(topbot)){
+            topbot = 0;
+        }
+        if (float.IsNaN(lefrig)){
+            lefrig = 0;
+        }
+
+        balance += topbot;
+        balance += lefrig;
+
+        // Debug.Log(string.Format("{0} ? {1} = {2}; {3} ? {4} = {5}, {2} + {5} = {6}", topArea, botArea, topbot, lefArea, rigArea, lefrig, balance));
+
+
         // foreach (Feature topfeat in top){
         //     foreach(Feature botfeat in bot){
         //         balance += (Mathf.Abs(topfeat.GetArea() - botfeat.GetArea()) < 2) ? 1 : 0;
@@ -223,6 +244,7 @@ public class LevelGene {
             }
 
             // Scale and Proportion
+
             scale += area;
 
             // Deatils - Decorative furniture
@@ -232,17 +254,23 @@ public class LevelGene {
 
             // Rhythm - Small and duplicate non-essential furniture
             if (!feature.HasTag("essential")){
-                if (!rhythmList.Contains(feature.name)){
-                    rhythmList.Add(feature.name);
-                }
-                else {
+                if (feature.GetArea() < 2f){
                     rhythm += 1.0f;
                 }
+                // if (!rhythmList.Contains(feature.name)){
+                //     rhythmList.Add(feature.name);
+                // }
+                // else {
+                //     rhythm += 1.0f;
+                // }
             }
         }
 
         // Parabola of fitness -(x - 2)^2 + 4
         emphasis = -((emphasisCount - 2) * (emphasisCount - 2)) + 4;
+
+        // Total “footprint” of furniture pieces should not exceed half of the available space
+        scale = (scale > dimensions.x*dimensions.y * 0.5) ? -10 : 0;
 
         var metrics = new Dictionary<string, float>(){
             {"balance", balance},
@@ -258,15 +286,18 @@ public class LevelGene {
     }
 
     public float Fitness(){
+        if (!float.IsNaN(fitness)){
+            return fitness;
+        }
         var tileMetrics = Metrics();
-        float fitness = 0.0f;
+        fitness = 0.0f;
 
         // How heavily each category should affect overall fitness
         float balance   = 1.0f;
         // float harmony   = 2.0f;
         // float emphasis  = 2.0f;
         // float contrast  = 1.0f;
-        // float scale     = 0.5f;
+        float scale     = 0.5f;
         // float details   = 0.5f;
         // float rhythm    = 0.5f;
 
@@ -274,11 +305,12 @@ public class LevelGene {
         // fitness += tileMetrics["harmony"]   * harmony;
         // fitness += tileMetrics["emphasis"]  * emphasis;
         // fitness += tileMetrics["contrast"]  * contrast;
-        // fitness += tileMetrics["scale"]     * scale;
+        fitness += tileMetrics["scale"]     * scale;
         // fitness += tileMetrics["details"]   * details;
         // fitness += tileMetrics["rhythm"]    * rhythm;
 
-        fitness += (features.Any(f => f.HasTag("seat"))) ? 3f : 0f;
+        // fitness += (features.Any(f => f.HasTag("seat"))) ? 3f : 0f;
+
 
         return fitness;
     }
@@ -519,6 +551,9 @@ public class LevelGene {
                             (orientation == 90 && tlx < 4) ||
                             (orientation == 180 && tly + dim_y  - 1 < 4) ||
                             (orientation == 270 && tlx + dim_x - 1 > 4);
+            }
+            if (feat.HasConstraint("not_against_wall")){
+                isValid &= ((tlx > 0 && tlx + dim_x < dimensions.x) && (tly > 0 && tly + dim_y < dimensions.y));
             }
 
             // Check if within bounds

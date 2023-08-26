@@ -1,3 +1,4 @@
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -22,12 +23,16 @@ public class Level : MonoBehaviour
     public List<string> selectedColors;
 
     public LevelGene gene = null;
+
+    public float fitness = 0;
+
     public LevelGene Gene {
         get { return gene; }
         set {
             gene = value;
             Dimensions = gene.dimensions;
             Grid = value.Grid;
+            fitness = value.Fitness();
         }
     }
 
@@ -179,7 +184,7 @@ public class Level : MonoBehaviour
         {
             selectedColors.Add(availableColors[Random.Range(0, availableColors.Count - 1)]);
         }
-        Debug.Log(selectedColors.Count);
+        // Debug.Log(selectedColors.Count);
 
         Vector3 tile_pos = TopLeftCenter;
 

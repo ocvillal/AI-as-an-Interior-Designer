@@ -247,25 +247,24 @@ public class LevelGenerator : MonoBehaviour
     }
 
 
-    List<LevelGene> elitestSelection(){
+    List<LevelGene> elitestSelection(ref List<LevelGene> results){
         Debug.Log("CALLED");
-        List<LevelGene> results = new List<LevelGene>();
 
         // Sort from Biggest to smallest
         List<LevelGene> randPop = new List<LevelGene>();
 
-        randPop = population.OrderBy(x => x.Fitness()).ToList();
-        for(int i = 0; i < population.Count / 2; i++){
+        randPop = population.OrderBy(x => -x.Fitness()).ToList();
+        for(int i = 0; i < population.Count / 4; i++){
             results.Add(randPop[i]);
         }
         return results;
     }
 
-    List<LevelGene> tourneySelection(){
-        List<LevelGene> results = new List<LevelGene>();
+    List<LevelGene> tourneySelection(ref List<LevelGene> results){
+        // List<LevelGene> results = new List<LevelGene>();
         List<LevelGene> randPop = new List<LevelGene>();
         randPop = population.OrderBy(x=> UnityEngine.Random.Range(0, population.Count - 1)).ToList();
-        for(int i = 0; results.Count < population.Count / 2; i++){
+        for(int i = 0; results.Count < 3* population.Count / 4; i++){
             LevelGene contestantA = randPop[i];
             LevelGene contestantB = randPop[population.Count - i-1];
             if (contestantB.Fitness() > contestantA.Fitness()){
@@ -283,8 +282,8 @@ public class LevelGenerator : MonoBehaviour
 
 
         List<LevelGene> selectList = new List<LevelGene>();
-        selectList.AddRange(elitestSelection());
-        selectList.AddRange(tourneySelection());
+        elitestSelection(ref selectList);
+        tourneySelection(ref selectList);
 
         // Debug.Log(string.Format("PARENTS: {0}", selectList.Count));
 
@@ -321,8 +320,10 @@ public class LevelGenerator : MonoBehaviour
 
     void RenderPopulation(){
         // Copying population in case it would drastically affect outcomes
-        population.OrderBy(x => x.Fitness()).ToList();
-        Debug.Log(string.Format("FITNESS: {0}\nBest individual: {1}", population[0].Fitness(), population[0].ToString()));
+        population.Sort((x, y) => -x.Fitness().CompareTo(y.Fitness()));
+        Debug.Log(string.Format("BEST FITNESS: {0}\nBest individual: {1}", population[0].Fitness(), population[0].ToString()));
+        // Debug.Log(string.Format("WORST FITNESS: {0}\nBest individual: {1}", population[NumLevels - 1].Fitness(), population[NumLevels - 1].ToString()));
+
 
         int count = 0;
         Vector3 plot_pos = TopLeftCenter;

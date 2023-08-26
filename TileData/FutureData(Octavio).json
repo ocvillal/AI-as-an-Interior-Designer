@@ -27,7 +27,7 @@
     ],
 
     "constraints" : [
-        "against_wall", "back_against_wall", "must_face_out", "face_far_from_wall"
+        "against_wall", "back_against_wall", "must_face_out", "face_far_from_wall", "not_against_wall"
     ],
 
     "Basic" : {
@@ -57,7 +57,7 @@
             "models":[
                 "first"
             ]
-            
+
         },
         "end_table" : {
             "name": "end_table",
@@ -74,6 +74,7 @@
             "name": "ottoman",
             "dimensions": [2, 2],
             "constraints": [
+                "not_against_wall"
             ],
             "tags": [
                 "unique"
@@ -93,13 +94,14 @@
                 "unique"
             ],
             "models":[
-             
+
             ]
         },
         "coffee_table" : {
             "name": "coffee_table",
             "dimensions": [2, 2],
             "constraints": [
+                "not_against_wall"
             ],
             "tags": [
                 "unique"

@@ -642,7 +642,7 @@ PrefabInstance:
       objectReference: {fileID: 6823767285546003722, guid: ee26af7b112084624a253f984aed7d6d, type: 3}
     - target: {fileID: 1903218692280629627, guid: 11b7e3b98f79d94738e5b397ff308ba7, type: 3}
       propertyPath: _numLevels
-      value: 16
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 1903218692280629627, guid: 11b7e3b98f79d94738e5b397ff308ba7, type: 3}
       propertyPath: _dimensions.x
