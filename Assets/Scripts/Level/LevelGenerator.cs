@@ -13,6 +13,8 @@ public class LevelGenerator : MonoBehaviour
     GameObject player;
     int currPlot;
 
+    int generation = 0;
+
     public int SUCCESSOR_ITERATIONS = 1;
     public int MAX_LEVELS_PER_ROW = 5;
     public float PLOT_SIZE = 14;
@@ -117,6 +119,8 @@ public class LevelGenerator : MonoBehaviour
                 population.Clear();
                 population.AddRange(pop);
 
+                // population[0] = population[0].Mutate();
+
                 // Debug.Log(population.Count);
                 // Debug.Log("Hello");
                 // // Disable player movement
@@ -135,6 +139,7 @@ public class LevelGenerator : MonoBehaviour
                 UnityEngine.Object.Destroy(obj);
                 }
                 renderedObjects.Clear();
+                generation += 1;
 
                 // // Then call RenderPopulation()
                 RenderPopulation();
@@ -224,10 +229,13 @@ public class LevelGenerator : MonoBehaviour
 
         // Debug.Log(randlevel.ToString());
         for (int i = 0; i < _numLevels; i++){
-            population.Add(LevelGene.GenerateRandomLevelGene(Dimensions, 10));
+            population.Add(LevelGene.GenerateRandomLevelGene(Dimensions, 1));
         }
 
-        // // Teleport player upwards
+        // for (int i = 0; i < _numLevels/2; i++){
+        //     population.Add(LevelGene.GenerateEmptyLevelGene(Dimensions));
+        // }
+
 
         RenderPopulation();
 
@@ -360,7 +368,7 @@ public class LevelGenerator : MonoBehaviour
     void RenderPopulation(){
         // Copying population in case it would drastically affect outcomes
         population.Sort((x, y) => -x.Fitness().CompareTo(y.Fitness()));
-        Debug.Log(string.Format("BEST FITNESS: {0}\nBest individual: {1}", population[0].Fitness(), population[0].ToString()));
+        Debug.Log(string.Format("Generation {0}: BEST FITNESS: {1}\nBest individual: {2}", generation, population[0].Fitness(), population[0].ToString()));
         // Debug.Log(string.Format("WORST FITNESS: {0}\nBest individual: {1}", population[NumLevels - 1].Fitness(), population[NumLevels - 1].ToString()));
 
 

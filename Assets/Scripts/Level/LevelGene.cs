@@ -89,8 +89,8 @@ public class LevelGene {
         LevelGene randomLevel = new LevelGene(dims);
         int fail = 0;
         for (int i = 0; i < num_feat; i++){
-            // FurnitureData furnitureData = LevelGene.furnitureLibrary.GetRandomFurnitureByMultipleType("Basic", "Minimalist");
-            FurnitureData furnitureData = LevelGene.furnitureLibrary.GetFurniture("armchair");
+            FurnitureData furnitureData = LevelGene.furnitureLibrary.GetRandomFurnitureByMultipleType("Basic", "Minimalist");
+            // FurnitureData furnitureData = LevelGene.furnitureLibrary.GetFurniture("armchair");
             // Debug.Log(furnitureData);
             // Debug.Log(furnitureData.ToString());
             Feature feat = null;
@@ -381,30 +381,31 @@ public class LevelGene {
         }
 
         // Checks if it is of similar model stylistic purpose or checks if there is already a furniture piece of the same style just different size
-        if(feat.HasModel("first") || feat.HasModel("second") || feat.HasModel("third")){
-            foreach (Feature f in features){
-                // model 1
-                if((!f.HasModel("first")) && (feat.HasModel("first"))){
-                    ret = false;
-                }
-                else if((!f.HasModel("second")) && (feat.HasModel("second"))){
-                    ret = false;
-                }
-                else if((!f.HasModel("third")) && (feat.HasModel("third"))){
-                    ret = false;
-                }
+        // if(feat.HasModel("first") || feat.HasModel("second") || feat.HasModel("third")){
+        //     foreach (Feature f in features){
+        //         // model 1
+        //         if((!f.HasModel("first")) && (feat.HasModel("first"))){
+        //             ret = false;
+        //         }
+        //         else if((!f.HasModel("second")) && (feat.HasModel("second"))){
+        //             ret = false;
+        //         }
+        //         else if((!f.HasModel("third")) && (feat.HasModel("third"))){
+        //             ret = false;
+        //         }
 
-            }
-        }
+        //     }
+        // }
 
-        // Checks if there is already a different type of furniture (Ex if we have a coffee table no need for an ottoman)
-        if (feat.HasModel("middle_table")) {
-            foreach (var f in features){
-                if(f.HasModel("middle_table")){
-                    ret = false;
-                }
-            }
-        }
+        // // Checks if there is already a different type of furniture (Ex if we have a coffee table no need for an ottoman)
+        // if (feat.HasModel("middle_table")) {
+        //     foreach (var f in features){
+        //         if(f.HasModel("middle_table")){
+        //             ret = false;
+        //         }
+        //     }
+        // }
+
         // More intensive computation
         ret &= GetValidTiles(featData, feat.orientation).Contains(new (feat.position.x, feat.position.y));
 
@@ -468,8 +469,8 @@ public class LevelGene {
 
         // Adds a new item
             case 1:
-                // FurnitureData furnitureData = LevelGene.furnitureLibrary.GetRandomFurnitureByMultipleType("Basic", "Minimalist");
-                FurnitureData furnitureData = LevelGene.furnitureLibrary.GetFurniture("armchair");
+                FurnitureData furnitureData = LevelGene.furnitureLibrary.GetRandomFurnitureByMultipleType("Basic", "Minimalist");
+                // FurnitureData furnitureData = LevelGene.furnitureLibrary.GetFurniture("armchair");
                 // Debug.Log(furnitureData.ToString());
                 Feature feat = null;
                 if (furnitureData != null)
@@ -735,7 +736,7 @@ public class LevelGene {
             ret += "\n";
         }
         // Debug.Log(availableTiles.Count);
-        Debug.Log(ret);
+        Debug.Log(feat.ToString() + "\n" + ret);
 
         return validTiles;
     }
