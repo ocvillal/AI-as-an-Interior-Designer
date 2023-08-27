@@ -419,12 +419,23 @@ public class LevelGene {
         // Either
         LevelGene mutatedGene = new LevelGene(this);
 
-
-        int start = 0;
-        int end = 4;
-
-
         // Annealing based off feature count
+        // int start = 0;
+        // int end = 3;
+
+        float v = UnityEngine.Random.Range(0f, 1f);
+
+        float removeProb = 0.03125f * features.Count;
+        float addProb = removeProb + 0.05f * Mathf.Max(10f - features.Count, 0f) + 0.1f;
+        int actions = 2; //Random.Range(start, end);
+
+        if (v < removeProb){
+            actions = 0;
+        } else if (v < addProb){
+            actions = 1;
+        }
+
+
         // if (features.Count == 0) start = 3;
         // if (features.Count >= 10) end = 2;
         // if (features.Count == 0) end = 1;
@@ -435,7 +446,6 @@ public class LevelGene {
 
         // if (features.Count > 8) actions = actions % 2;
 
-        int actions = Random.Range(start, end);
         switch (actions)
         {
         // Removes an item
@@ -456,8 +466,29 @@ public class LevelGene {
                 }
                 break;
 
-        // Modifies the placement of an item
+        // Adds a new item
             case 1:
+                // FurnitureData furnitureData = LevelGene.furnitureLibrary.GetRandomFurnitureByMultipleType("Basic", "Minimalist");
+                FurnitureData furnitureData = LevelGene.furnitureLibrary.GetFurniture("armchair");
+                // Debug.Log(furnitureData.ToString());
+                Feature feat = null;
+                if (furnitureData != null)
+                    feat = mutatedGene.GenerateValidFeature(furnitureData);
+                    // Debug.Log(feat);
+                    // Debug.Log(feat != null);
+                if (feat != null)
+                    mutatedGene = mutatedGene.TryPlaceObject(feat);
+                else {
+                    // Debug.Log("Failure to add");
+                    fails += 1;
+                    // if (fails >= )
+                }
+
+                break;
+
+
+        // Modifies the placement of an item
+            case 2:
                 if (mutatedGene.features.Count > 0){
                     // Select a random feature
                     int randomIndex = Random.Range(0, mutatedGene.features.Count);
@@ -471,7 +502,7 @@ public class LevelGene {
                     // Generate a new feature?
                     int MOVE = 0;
                     int ROTATE = 1;
-                    int moveOrRotate = Random.Range(0, 2);
+                    int moveOrRotate = MOVE;//Random.Range(0, 2);
 
                     // Mutate and add it back
                     if (moveOrRotate == MOVE){ // Move
@@ -536,25 +567,6 @@ public class LevelGene {
 
                 break;
 
-        // Adds a new item
-            case 3:
-                // FurnitureData furnitureData = LevelGene.furnitureLibrary.GetRandomFurnitureByMultipleType("Basic", "Minimalist");
-                FurnitureData furnitureData = LevelGene.furnitureLibrary.GetFurniture("armchair");
-                // Debug.Log(furnitureData.ToString());
-                Feature feat = null;
-                if (furnitureData != null)
-                    feat = mutatedGene.GenerateValidFeature(furnitureData);
-                    // Debug.Log(feat);
-                    // Debug.Log(feat != null);
-                if (feat != null)
-                    mutatedGene = mutatedGene.TryPlaceObject(feat);
-                else {
-                    // Debug.Log("Failure to add");
-                    fails += 1;
-                    // if (fails >= )
-                }
-
-                break;
 
 
 
