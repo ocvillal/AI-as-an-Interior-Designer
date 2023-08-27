@@ -315,11 +315,11 @@ public class LevelGene {
 
         fitness += tileMetrics["balance"]   * balance;
         // fitness += tileMetrics["harmony"]   * harmony;
-        fitness += tileMetrics["emphasis"]  * emphasis;
+        // fitness += tileMetrics["emphasis"]  * emphasis;
         fitness += tileMetrics["contrast"]  * contrast;
         fitness += tileMetrics["scale"]     * scale;
-        fitness += tileMetrics["details"]   * details;
-        fitness += tileMetrics["rhythm"]    * rhythm;
+        // fitness += tileMetrics["details"]   * details;
+        // fitness += tileMetrics["rhythm"]    * rhythm;
         fitness += tileMetrics["diversity"]    * diversity;
 
 
@@ -397,14 +397,14 @@ public class LevelGene {
         //     }
         // }
 
-        // // Checks if there is already a different type of furniture (Ex if we have a coffee table no need for an ottoman)
-        // if (feat.HasModel("middle_table")) {
-        //     foreach (var f in features){
-        //         if(f.HasModel("middle_table")){
-        //             ret = false;
-        //         }
-        //     }
-        // }
+        // Checks if there is already a different type of furniture (Ex if we have a coffee table no need for an ottoman)
+        if (feat.HasModel("middle_table")) {
+            foreach (var f in features){
+                if(f.HasModel("middle_table")){
+                    ret = false;
+                }
+            }
+        }
 
         // More intensive computation
         ret &= GetValidTiles(featData, feat.orientation).Contains(new (feat.position.x, feat.position.y));
