@@ -89,8 +89,8 @@ public class LevelGene {
         LevelGene randomLevel = new LevelGene(dims);
         int fail = 0;
         for (int i = 0; i < num_feat; i++){
-            FurnitureData furnitureData = LevelGene.furnitureLibrary.GetRandomFurnitureByMultipleType("Basic", "Minimalist");
-            // FurnitureData furnitureData = LevelGene.furnitureLibrary.GetFurniture("armchair");
+            // FurnitureData furnitureData = LevelGene.furnitureLibrary.GetRandomFurnitureByMultipleType("Basic", "Minimalist");
+            FurnitureData furnitureData = LevelGene.furnitureLibrary.GetFurniture("armchair");
             // Debug.Log(furnitureData);
             // Debug.Log(furnitureData.ToString());
             Feature feat = null;
@@ -138,6 +138,7 @@ public class LevelGene {
         float scale     = 0.0f;
         float details   = 0.0f;
         float rhythm    = 0.0f;
+        float diversity = 0.0f;
 
         int emphasisCount = 0;
 
@@ -264,13 +265,22 @@ public class LevelGene {
                 //     rhythm += 1.0f;
                 // }
             }
+
+            foreach (var other in features){
+                if (feature == other)
+                    continue;
+                if (other.name != feature.name)
+                    diversity += 1;
+            }
+
+            diversity /=2;
         }
 
         // Parabola of fitness -(x - 2)^2 + 4
         emphasis = -((emphasisCount - 2) * (emphasisCount - 2)) + 4;
 
         // Total “footprint” of furniture pieces should not exceed half of the available space
-        scale = (totArea > dimensions.x*dimensions.y * 0.5) ? -10 : 0;
+        scale = (totArea > dimensions.x*dimensions.y * 0.5) ? -1 : 0;
 
         var metrics = new Dictionary<string, float>(){
             {"balance", balance},
@@ -279,16 +289,17 @@ public class LevelGene {
             {"contrast", contrast},
             {"scale", scale},
             {"details", details},
-            {"rhythm", rhythm}
+            {"rhythm", rhythm},
+            {"diversity", diversity}
         };
 
         return metrics;
     }
 
     public float Fitness(){
-        if (!float.IsNaN(fitness)){
-            return fitness;
-        }
+        // if (!float.IsNaN(fitness)){
+        //     return fitness;
+        // }
         var tileMetrics = Metrics();
         fitness = 0.0f;
 
@@ -298,43 +309,45 @@ public class LevelGene {
         float emphasis  = 2.0f;
         float contrast  = 1.0f;
         float scale     = 0.5f;
-        // float details  if (features.Count == 0) end = 1;
-        //  = 0.5f;
-        // float rhythm    = 0.5f;
+        float details  = 0.5f;
+        float rhythm    = 0.5f;
+        float diversity = 0.1f;
 
-        fitness += tileMetrics["balance"]   * balance;
+        // fitness += tileMetrics["balance"]   * balance;
         // fitness += tileMetrics["harmony"]   * harmony;
         // fitness += tileMetrics["emphasis"]  * emphasis;
         // fitness += tileMetrics["contrast"]  * contrast;
-        fitness += tileMetrics["scale"]     * scale;
+        // fitness += tileMetrics["scale"]     * scale;
         // fitness += tileMetrics["details"]   * details;
         // fitness += tileMetrics["rhythm"]    * rhythm;
+        // fitness += tileMetrics["diversity"]    * diversity;
+
 
         // fitness += (features.Any(f => f.HasTag("seat"))) ? 3f : 0f;
 
         // Connectability
-        int TOTAL_EDGES = 2* dimensions.x * dimensions.y - dimensions.y - dimensions.x;
-        int edges = 0;
-        int emptyArea = 0;
+        float TOTAL_EDGES = 2* dimensions.x * dimensions.y - dimensions.y - dimensions.x;
+        float edges = 0f;
+        float emptyArea = 0f;
 
         for (int j = 0; j < dimensions.y; j++){
             for (int i = 0; i < dimensions.x; i++){
-                emptyArea += (grid[j, i] == 1) ? 0 : 1;
+                emptyArea += (grid[j, i] == 1) ? 0f : 1f;
                 // Check right and down
                 if (i + 1 < dimensions.x){
-                    edges += (grid[j, i+1] == 1) ? 0 : 1;
+                    edges += (grid[j, i+1] == 1) ? 0f : 1f;
                 }
                 if (j + 1 < dimensions.y){
-                    edges += (grid[j+1, i] == 1) ? 0 : 1;
+                    edges += (grid[j+1, i] == 1) ? 0f : 1f;
                 }
 
             }
         }
 
-        fitness += 0.3f * edges / TOTAL_EDGES;
+        // fitness += 0.3f * edges / TOTAL_EDGES;
+        fitness += 100f*(1.0f - emptyArea /(dimensions.x * dimensions.y));
 
-        // fitness += 0.2f*(1 - emptyArea /dimensions.x * dimensions.y);
-
+        // Debug.Log(string.Format("{0} {1} {2} {3} {4}", fitness, emptyArea,(dimensions.x * dimensions.y), emptyArea /(dimensions.x * dimensions.y), ToString()));
         return fitness;
     }
 
@@ -402,7 +415,7 @@ public class LevelGene {
         return ret;
     }
 
-    LevelGene Mutate(){ // A mutate function
+    public LevelGene Mutate(){ // A mutate function
         // Either
         LevelGene mutatedGene = new LevelGene(this);
 
@@ -412,8 +425,8 @@ public class LevelGene {
 
 
         // Annealing based off feature count
-        if (features.Count == 0) start = 3;
-        if (features.Count >= 10) end = 2;
+        // if (features.Count == 0) start = 3;
+        // if (features.Count >= 10) end = 2;
         // if (features.Count == 0) end = 1;
         // if (features.Count == 0) end = 1;
 
@@ -425,7 +438,7 @@ public class LevelGene {
         int actions = Random.Range(start, end);
         switch (actions)
         {
-        // // Removes an item
+        // Removes an item
             case 0:
                 var removableFeatureList = new List<int>();
                 for(int i = 0; i < mutatedGene.features.Count; i++) {
@@ -506,7 +519,7 @@ public class LevelGene {
                         // // Rotate 270 degrees
                         validTiles = removed.GetValidTiles(data, (selected.orientation + 270) % 360);
                         if (validTiles.Contains(val)) destinations.Add((selected.orientation + 270) % 360);
-                        Debug.Log(destinations.Count);
+                        // Debug.Log(destinations.Count);
 
 
                         if (destinations.Count > 0){
@@ -525,8 +538,8 @@ public class LevelGene {
 
         // Adds a new item
             case 3:
-                FurnitureData furnitureData = LevelGene.furnitureLibrary.GetRandomFurnitureByMultipleType("Basic", "Minimalist");
-                // FurnitureData furnitureData = LevelGene.furnitureLibrary.GetFurniture("couch");
+                // FurnitureData furnitureData = LevelGene.furnitureLibrary.GetRandomFurnitureByMultipleType("Basic", "Minimalist");
+                FurnitureData furnitureData = LevelGene.furnitureLibrary.GetFurniture("armchair");
                 // Debug.Log(furnitureData.ToString());
                 Feature feat = null;
                 if (furnitureData != null)
@@ -549,6 +562,16 @@ public class LevelGene {
             default:
                 break;
         }
+
+        string rets = "";
+        for (int j = 0; j < dimensions.y; j++){
+            for (int i = 0; i < dimensions.x; i++){
+                rets += string.Format(" [{0}] ", (mutatedGene.grid[j, i] == 1)? "A" : (mutatedGene.grid[j, i] == 0) ? "0" : "H");
+            }
+            rets += "\n";
+        }
+        // Debug.Log(availableTiles.Count);
+        Debug.Log(rets);
         return mutatedGene;
     }
 
@@ -568,6 +591,11 @@ public class LevelGene {
     List<(int, int)> GetValidTiles(FurnitureData feat, float orientation=0){
         List<int> furn_dims = feat.dimensions;
         string [,] ret_grid = new string[dimensions[0], dimensions[1]];
+        for (int j = 0; j < dimensions[1]; j++){
+            for(int i = 0; i < dimensions[0]; i++){
+                ret_grid[j, i] = "0";
+            }
+        }
 
         List<(int, int)> availableTiles = GetAvailableTiles();
 
@@ -595,10 +623,10 @@ public class LevelGene {
                             (orientation == 270 && tlx + dim_x == dimensions.x);
             }
             if (feat.HasConstraint("face_far_from_wall")){
-                isValid &= (orientation == 0 && tly > 4) ||
-                            (orientation == 90 && tlx + dim_x - 1 < 4) ||
-                            (orientation == 180 && tly + dim_y  - 1 < 4) ||
-                            (orientation == 270 && tlx > 4);
+                isValid &= (orientation == 0 && tly >= 4) ||
+                            (orientation == 90 && tlx + dim_x - 1 <= 4) ||
+                            (orientation == 180 && tly + dim_y  - 1 <= 4) ||
+                            (orientation == 270 && tlx >= 4);
             }
             if (feat.HasConstraint("not_against_wall")){
                 isValid &= ((tlx > 0 && tlx + dim_x < dimensions.x) && (tly > 0 && tly + dim_y < dimensions.y));
@@ -617,19 +645,40 @@ public class LevelGene {
             int x_start = tile.Item1;
             int x_end = tile.Item1 + dim_x;
 
+            int yfront = -1;
+            int xfront = -1;
+
             // space in front constraint # Can I place it here?
             if (feat.HasConstraint("space_in_front")){
-                y_start = (orientation == 0) ? y_start - 1: 0;
-                y_end = (orientation == 180) ? y_end + 1: dimensions.y;
-                x_end = (orientation == 90) ? x_end + 1: dimensions.x;
-                x_start = (orientation == 270) ? x_start - 1: 0;
+                switch (orientation){
+                    case 0:
+                        y_start -= 1;
+                        yfront = y_start;
+                        break;
+
+                    case 180:
+                        y_end += 1;
+                        yfront = y_end - 1;
+                        break;
+
+                    case 90:
+                        x_end += 1;
+                        xfront = x_end - 1;
+                        break;
+
+                    case 270:
+                        x_start -= 1;
+                        xfront = x_start;
+                        break;
+                }
 
                 isValid &= (y_start >= 0 && x_start >= 0 && y_end <= dimensions.y && x_end <= dimensions.x);
+                // Debug.Log(isValid);
             }
 
             // Check if there is a need to do tilebased checks
             if (!isValid) {
-                ret_grid[tile.Item1, tile.Item2] = "0";
+                // ret_grid[tly, tlx] = "0";
                 continue;
             }
 
@@ -646,7 +695,8 @@ public class LevelGene {
                     }
 
                     // Debug.Log(string.Format("{0} {1}", x, y));
-                    isValid &= grid[y, x] == 0;
+                    isValid &= (grid[y, x] == 0) ||
+                                (grid[y, x] == 2 && (x == xfront || y == yfront));
 
                     // Some extra validation needs to be done here... or maybe not...
 
@@ -658,12 +708,10 @@ public class LevelGene {
             }
 
             if (isValid) {
-                ret_grid[tile.Item1, tile.Item2] = "A";
-                // Debug.Log(string.Format("IM sss Tile: ({0}, {1})", tile.Item1, tile.Item2));
+                ret_grid[tly, tlx] = "A";
+                // Debug.Log(string.Format("IM sss Tile: ({0}, {1})", tly, tlx));
                 validTiles.Add(tile);
-            }else {
-                ret_grid[tile.Item1, tile.Item2] = "0";
-            };
+            }
         }
 
 
@@ -675,14 +723,14 @@ public class LevelGene {
             ret += "\n";
         }
         // Debug.Log(availableTiles.Count);
-        // Debug.Log(ret);
+        Debug.Log(ret);
 
         return validTiles;
     }
 
     public Feature GenerateValidFeature(FurnitureData featureData){
         // pick random orientation
-        float orientation = Random.Range(0, 4) * 90;
+        float orientation = Random.Range(0,4) * 90;
 
         List<(int, int)> validTiles = GetValidTiles(featureData, orientation);
 
@@ -751,17 +799,19 @@ public class LevelGene {
         // space in front constraint # Can I be placed here?
         if (feature.HasConstraint("space_in_front")){
             if (feature.orientation == 0 || feature.orientation == 180){
-                int front = (feature.orientation == 0) ? y_start - 1 : y_end + 1;
+                int front = (feature.orientation == 0) ? y_start - 1 : y_end;
                 for (int i = x_start; i < x_end; i++)
                     ret.grid[front, i] = 2;
             }
 
             if (feature.orientation == 90 || feature.orientation == 270){
-                int front = (feature.orientation == 270) ? x_start - 1 : x_end + 1;
+                int front = (feature.orientation == 270) ? x_start - 1 : x_end;
+                Debug.Log(front);
                 for (int i = y_start; i < y_end; i++)
                     ret.grid[i, front] = 2;
             }
         }
+
 
 
 
@@ -784,6 +834,8 @@ public class LevelGene {
         }
 
         ret.features.Add(feature);
+
+
         return ret;
 
     }
@@ -814,10 +866,23 @@ public class LevelGene {
         int x_end = feature.position.x + dim_x;
 
         if (feature.HasConstraint("space_in_front")){
-            y_start = (feature.orientation == 0 && y_start - 1 > 0) ? y_start - 1: 0;
-            y_end = (feature.orientation == 180 && y_end + 1 < dimensions.y) ? y_end : dimensions.y;
-            x_end = (feature.orientation == 90 && x_end + 1 < dimensions.x) ? x_end : dimensions.x;
-            x_start = (feature.orientation == 270 && x_start - 1 > 0) ? x_start - 1: 0;
+                switch (feature.orientation){
+                    case 0:
+                        y_start = Mathf.Max(y_start - 1, 0);
+                        break;
+
+                    case 180:
+                        y_end = Mathf.Min(y_end + 1, dimensions.y);
+                        break;
+
+                    case 90:
+                        x_end = Mathf.Min(x_end + 1, dimensions.x);
+                        break;
+
+                    case 270:
+                        x_start = Mathf.Max(x_start - 1, 0);
+                        break;
+                }
         }
 
 
@@ -874,10 +939,10 @@ public class LevelGene {
         // LevelGene child1 = new LevelGene(this);
         // LevelGene child2 = new LevelGene(other);
 
-
-        child1 = child1.Mutate();
-        child2 = child2.Mutate();
-
+        for (int i = 0; i < 2; i++){
+            child1 = child1.Mutate();
+            child2 = child2.Mutate();
+        }
 
         children.Add(child1);
         children.Add(child2);

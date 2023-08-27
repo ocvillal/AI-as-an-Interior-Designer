@@ -19,7 +19,7 @@
 
 
     "tags": [
-        "essential", "unique", 
+        "essential", "unique"
     ],
 
     "models": [
@@ -28,7 +28,7 @@
 
     "constraints" : [
         "against_wall", "back_against_wall", "must_face_out", "face_far_from_wall", "not_against_wall",
-        "infront_of_couch"
+        "infront_of_couch", "space_in_front"
     ],
 
     "Basic" : {
@@ -36,7 +36,7 @@
                 "name": "armchair",
                 "dimensions": [2, 2],
                 "constraints": [
-                    "face_far_from_wall"
+                    "face_far_from_wall", "space_in_front"
                 ],
                 "tags": [
                     "seat"
@@ -88,7 +88,7 @@
             "name": "tv_stand",
             "dimensions": [4, 1],
             "constraints": [
-                "back_against_wall"
+                "back_against_wall", "space_in_front"
             ],
             "tags": [
                 "essential",
@@ -117,7 +117,7 @@
             "name": "armchair1",
             "dimensions": [2, 2],
             "constraints": [
-                "face_far_from_wall"
+                "face_far_from_wall", "space_in_front"
             ],
             "tags": [
                 "seat"
@@ -130,7 +130,7 @@
             "name": "armchair2",
             "dimensions": [2, 2],
             "constraints": [
-                "face_far_from_wall"
+                "face_far_from_wall", "space_in_front"
             ],
             "tags": [
                 "seat"
@@ -148,7 +148,7 @@
             "tags": [
             ],
             "models":[
-                
+
             ]
 
         },
@@ -184,7 +184,7 @@
             "name": "fireplace",
             "dimensions": [3,1],
             "constraints": [
-                "back_against_wall"
+                "back_against_wall", "space_in_front"
             ],
             "tags": [
                 "unique", "essential"
@@ -196,7 +196,7 @@
             "name": "tv_stand_small",
             "dimensions": [5,1],
             "constraints": [
-                "back_against_wall"
+                "back_against_wall", "space_in_front"
             ],
             "tags": [
                 "unique"
@@ -209,7 +209,7 @@
             "name": "tv_stand_medium",
             "dimensions": [5,1],
             "constraints": [
-                "back_against_wall"
+                "back_against_wall", "space_in_front"
             ],
             "tags": [
                 "unique"
