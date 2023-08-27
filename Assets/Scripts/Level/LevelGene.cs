@@ -313,14 +313,14 @@ public class LevelGene {
         float rhythm    = 0.5f;
         float diversity = 0.1f;
 
-        // fitness += tileMetrics["balance"]   * balance;
+        fitness += tileMetrics["balance"]   * balance;
         // fitness += tileMetrics["harmony"]   * harmony;
-        // fitness += tileMetrics["emphasis"]  * emphasis;
-        // fitness += tileMetrics["contrast"]  * contrast;
-        // fitness += tileMetrics["scale"]     * scale;
-        // fitness += tileMetrics["details"]   * details;
-        // fitness += tileMetrics["rhythm"]    * rhythm;
-        // fitness += tileMetrics["diversity"]    * diversity;
+        fitness += tileMetrics["emphasis"]  * emphasis;
+        fitness += tileMetrics["contrast"]  * contrast;
+        fitness += tileMetrics["scale"]     * scale;
+        fitness += tileMetrics["details"]   * details;
+        fitness += tileMetrics["rhythm"]    * rhythm;
+        fitness += tileMetrics["diversity"]    * diversity;
 
 
         // fitness += (features.Any(f => f.HasTag("seat"))) ? 3f : 0f;
@@ -344,8 +344,8 @@ public class LevelGene {
             }
         }
 
-        // fitness += 0.3f * edges / TOTAL_EDGES;
-        fitness += 100f*(1.0f - emptyArea /(dimensions.x * dimensions.y));
+        fitness += 0.4f * edges / TOTAL_EDGES;
+        fitness += 0.5f*(1.0f - emptyArea /(dimensions.x * dimensions.y));
 
         // Debug.Log(string.Format("{0} {1} {2} {3} {4}", fitness, emptyArea,(dimensions.x * dimensions.y), emptyArea /(dimensions.x * dimensions.y), ToString()));
         return fitness;
@@ -584,7 +584,7 @@ public class LevelGene {
             rets += "\n";
         }
         // Debug.Log(availableTiles.Count);
-        Debug.Log(rets);
+        // Debug.Log(rets);
         return mutatedGene;
     }
 
@@ -736,7 +736,7 @@ public class LevelGene {
             ret += "\n";
         }
         // Debug.Log(availableTiles.Count);
-        Debug.Log(feat.ToString() + "\n" + ret);
+        // Debug.Log(feat.ToString() + "\n" + ret);
 
         return validTiles;
     }
@@ -819,7 +819,6 @@ public class LevelGene {
 
             if (feature.orientation == 90 || feature.orientation == 270){
                 int front = (feature.orientation == 270) ? x_start - 1 : x_end;
-                Debug.Log(front);
                 for (int i = y_start; i < y_end; i++)
                     ret.grid[i, front] = 2;
             }
