@@ -344,7 +344,7 @@ public class LevelGene {
             }
         }
 
-        fitness += 0.4f * edges / TOTAL_EDGES;
+        fitness += 0.2f * edges / TOTAL_EDGES;
         fitness += 0.5f*(1.0f - emptyArea /(dimensions.x * dimensions.y));
 
         // Debug.Log(string.Format("{0} {1} {2} {3} {4}", fitness, emptyArea,(dimensions.x * dimensions.y), emptyArea /(dimensions.x * dimensions.y), ToString()));
@@ -426,7 +426,7 @@ public class LevelGene {
 
         float v = UnityEngine.Random.Range(0f, 1f);
 
-        float removeProb = 0.03125f * features.Count;
+        float removeProb = 0.025f * features.Count;
         float addProb = removeProb + 0.05f * Mathf.Max(10f - features.Count, 0f) + 0.1f;
         int actions = 2; //Random.Range(start, end);
 
