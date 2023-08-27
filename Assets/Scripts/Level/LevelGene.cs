@@ -502,7 +502,7 @@ public class LevelGene {
                     // Generate a new feature?
                     int MOVE = 0;
                     int ROTATE = 1;
-                    int moveOrRotate = MOVE;//Random.Range(0, 2);
+                    int moveOrRotate = Random.Range(0, 2);
 
                     // Mutate and add it back
                     if (moveOrRotate == MOVE){ // Move
