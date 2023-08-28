@@ -4,16 +4,23 @@
         "Basic": [
             "armchair",
             "couch",
-            "tv_stand",
-            "coffee_table",
-            "ottoman"
+            "end_table",
+            "coffeeTable",
+            "ottoman",
+            "tvStand",
         ],
         "Minimalist": [
+            "armchair1",
+            "armchair2",
             "bookshelf",
+            "couch1",
             "couch2",
             "fireplace",
-            "tv_stand_small",
-            "tv_stand_medium"
+            "glassTable",
+            "roundTable",
+            "tvStand",
+        ],
+        "Modern": [
         ]
     },
 
@@ -36,7 +43,8 @@
                 "name": "armchair",
                 "dimensions": [2, 2],
                 "constraints": [
-                    "face_far_from_wall", "space_in_front"
+                    "face_far_from_wall", 
+                    "space_in_front"
                 ],
                 "tags": [
                     "seat"
@@ -64,8 +72,10 @@
             "name": "end_table",
             "dimensions": [1, 1],
             "constraints": [
+
             ],
             "tags": [
+
             ],
             "models":[
                 "first"
@@ -84,9 +94,9 @@
                 "middle_table"
             ]
         },
-        "tv_stand" : {
-            "name": "tv_stand",
-            "dimensions": [4, 1],
+        "tvStand" : {
+            "name": "tvStand",
+            "dimensions": [3, 1],
             "constraints": [
                 "back_against_wall", "space_in_front"
             ],
@@ -98,8 +108,8 @@
 
             ]
         },
-        "coffee_table" : {
-            "name": "coffee_table",
+        "coffeeTable" : {
+            "name": "coffeeTable",
             "dimensions": [2, 2],
             "constraints": [
                 "not_against_wall"
@@ -113,7 +123,7 @@
         }
     },
     "Minimalist" : {
-        "armchair" : {
+        "armchair1" : {
             "name": "armchair1",
             "dimensions": [2, 2],
             "constraints": [
@@ -146,6 +156,7 @@
                 "back_against_wall"
             ],
             "tags": [
+
             ],
             "models":[
 
@@ -192,33 +203,180 @@
             "models":[
             ]
         },
-        "tv_stand_small" : {
-            "name": "tv_stand_small",
-            "dimensions": [5,1],
+        "glassTable" : {
+            "name": "glassTable",
+            "dimensions": [2,2],
+            "constraints": [
+                "not_against_wall"
+            ],
+            "tags": [
+                "unique"
+            ],
+            "models":[
+                "middle_table"
+            ]
+        },
+        "roundTable" : {
+            "name": "roundTable",
+            "dimensions": [2,2],
+            "constraints": [
+                "not_against_wall"
+            ],
+            "tags": [
+                "unique",
+                
+            ],
+            "models":[
+                "middle_table"
+            ]
+        },
+        "tvStand" : {
+            "name": "tvStand",
+            "dimensions": [3, 1],
             "constraints": [
                 "back_against_wall", "space_in_front"
             ],
             "tags": [
+                "essential",
+                "unique"
+            ],
+            "models":[
+
+            ]
+        }
+    },
+    "Modern" : {
+        "armChair1" : {
+            "name": "armChair1",
+            "dimensions": [2, 2],
+            "constraints": [
+                "face_far_from_wall", "space_in_front"
+            ],
+            "tags": [
+                "seat"
+            ],
+            "models":[
+                "first"
+            ]
+        },
+        "armChair2" : {
+            "name": "armChair2",
+            "dimensions": [2, 2],
+            "constraints": [
+                "face_far_from_wall", "space_in_front"
+            ],
+            "tags": [
+                "seat"
+            ],
+            "models":[
+                "second"
+            ]
+        },
+        "coffeeTable" : {
+            "name": "coffeeTable",
+            "dimensions": [2, 2],
+            "constraints": [
+                "not_against_wall"
+            ],
+            "tags": [
+                "unique"
+            ],
+            "models":[
+                "middle_table"
+            ]
+
+        },
+        "couch1" : {
+            "name": "couch1",
+            "dimensions": [4, 3],
+            "constraints": [
+                "back_against_wall"
+            ],
+            "tags": [
+                "essential",
+                "seat"
+            ],
+            "models":[
+                "first"
+            ]
+        },
+        "couch2" : {
+            "name": "couch2",
+            "dimensions": [4, 2],
+            "constraints": [
+                "back_against_wall"
+            ],
+            "tags": [
+                "essential",
+                "seat"
+            ],
+            "models":[
+                "second"
+            ]
+        },
+        "ottoman" : {
+            "name": "ottoman",
+            "dimensions": [2, 2],
+            "constraints": [
+                "not_against_wall"
+            ],
+            "tags": [
+                "unique"
+            ],
+            "models":[
+                "middle_table"
+            ]
+        },
+        "sideTable" : {
+            "name": "sideTable",
+            "dimensions": [2, 1],
+            "constraints": [
+
+            ],
+            "tags": [
+                "unique"
+            ],
+            "models":[
+            ]
+        },
+        "speakers" : {
+            "name": "speakers",
+            "dimensions": [1, 1],
+            "constraints": [
+                "back_against_wall"
+            ],
+            "tags": [  
+            ],
+            "models":[
+            ]
+        },
+        "tvStandMedium" : {
+            "name": "TvStandMedium",
+            "dimensions": [3, 1],
+            "constraints": [
+                "back_against_wall", "space_in_front"
+            ],
+            "tags": [
+                "essential",
                 "unique"
             ],
             "models":[
                 "first"
             ]
         },
-        "tv_stand_medium" : {
-            "name": "tv_stand_medium",
-            "dimensions": [5,1],
+        "tvStandSmall" : {
+            "name": "TvStandSmall",
+            "dimensions": [3, 1],
             "constraints": [
                 "back_against_wall", "space_in_front"
             ],
             "tags": [
+                "essential",
                 "unique"
             ],
             "models":[
                 "second"
             ]
         }
-
     }
-
 }
