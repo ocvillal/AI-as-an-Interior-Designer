@@ -22,7 +22,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: a1365773e153e4cdeb9db8d996d5ad79, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -11.202288
+      value: -0.97
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: a1365773e153e4cdeb9db8d996d5ad79, type: 3}
       propertyPath: m_LocalPosition.y
@@ -30,7 +30,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: a1365773e153e4cdeb9db8d996d5ad79, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -2.033223
+      value: 0.33
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: a1365773e153e4cdeb9db8d996d5ad79, type: 3}
       propertyPath: m_LocalRotation.w
@@ -62,7 +62,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: a1365773e153e4cdeb9db8d996d5ad79, type: 3}
       propertyPath: m_Name
-      value: armChair1
+      value: armChair1_modern
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

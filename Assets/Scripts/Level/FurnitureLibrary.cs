@@ -12,7 +12,7 @@ public class FurnitureLibrary{
     public List<string> models;
     public Dictionary<string, FurnitureData> Basic;
     public Dictionary<string, FurnitureData> Minimalist;
-    // public Dictionary<string, FurnitureData> Modern;
+    public Dictionary<string, FurnitureData> Modern;
 
     public Dictionary<string, FurnitureData> library;
     public Dictionary<string, GameObject> furniturePrefabs;
@@ -24,8 +24,8 @@ public class FurnitureLibrary{
     // }
 
     public FurnitureData GetFurniture(string name){
-        // return Basic.TryGetValue(name, out var ret) ? ret : Minimalist.TryGetValue(name, out ret) ? ret: (Modern.TryGetValue(name, out ret) ? ret: null);
-        return Basic.TryGetValue(name, out var ret) ? ret : (Minimalist.TryGetValue(name, out ret) ? ret: null);
+        return Basic.TryGetValue(name, out var ret) ? ret : Minimalist.TryGetValue(name, out ret) ? ret: (Modern.TryGetValue(name, out ret) ? ret: null);
+        // return Basic.TryGetValue(name, out var ret) ? ret : (Minimalist.TryGetValue(name, out ret) ? ret: null);
     }
 
     public FurnitureData GetRandomFurnitureByType(string type){
@@ -54,18 +54,18 @@ public class FurnitureLibrary{
     }
 
     public List<string> GetFurnitureTags(string name){
-        // return Basic.TryGetValue(name, out var ret) ? ret.tags : Minimalist.TryGetValue(name, out ret) ? ret.tags: (Modern.TryGetValue(name, out ret) ? ret.tags: new List<string>());
-        return Basic.TryGetValue(name, out var ret) ? ret.tags : (Minimalist.TryGetValue(name, out ret) ? ret.tags: new List<string>());
+        return Basic.TryGetValue(name, out var ret) ? ret.tags : Minimalist.TryGetValue(name, out ret) ? ret.tags: (Modern.TryGetValue(name, out ret) ? ret.tags: new List<string>());
+        // return Basic.TryGetValue(name, out var ret) ? ret.tags : (Minimalist.TryGetValue(name, out ret) ? ret.tags: new List<string>());
     }
 
     public List<string> GetFurnitureConstraints(string name){
-        // return Basic.TryGetValue(name, out var ret) ? ret.constraints : Minimalist.TryGetValue(name, out ret) ? ret.constraints : (Modern.TryGetValue(name, out ret) ? ret.constraints : new List<string>());
-        return Basic.TryGetValue(name, out var ret) ? ret.constraints : (Minimalist.TryGetValue(name, out ret) ? ret.constraints : new List<string>());
+        return Basic.TryGetValue(name, out var ret) ? ret.constraints : Minimalist.TryGetValue(name, out ret) ? ret.constraints : (Modern.TryGetValue(name, out ret) ? ret.constraints : new List<string>());
+        // return Basic.TryGetValue(name, out var ret) ? ret.constraints : (Minimalist.TryGetValue(name, out ret) ? ret.constraints : new List<string>());
     }
     
     public List<string> GetFurnitureModels(string name){
-        // return Basic.TryGetValue(name, out var ret) ? ret.models : Minimalist.TryGetValue(name, out ret) ? ret.models : (Modern.TryGetValue(name, out ret) ? ret.models : new List<string>());
-        return Basic.TryGetValue(name, out var ret) ? ret.models : (Minimalist.TryGetValue(name, out ret) ? ret.models : new List<string>());
+        return Basic.TryGetValue(name, out var ret) ? ret.models : Minimalist.TryGetValue(name, out ret) ? ret.models : (Modern.TryGetValue(name, out ret) ? ret.models : new List<string>());
+        // return Basic.TryGetValue(name, out var ret) ? ret.models : (Minimalist.TryGetValue(name, out ret) ? ret.models : new List<string>());
     }
 
 
@@ -96,9 +96,9 @@ public class FurnitureLibrary{
         foreach (KeyValuePair<string, FurnitureData> entry in Minimalist){
             ret += string.Format("{0} : {1}\n", entry.Key, !entry.Value.Equals(null));
         }
-        // foreach (KeyValuePair<string, FurnitureData> entry in Modern){
-        //     ret += string.Format("{0} : {1}\n", entry.Key, !entry.Value.Equals(null));
-        // }
+        foreach (KeyValuePair<string, FurnitureData> entry in Modern){
+            ret += string.Format("{0} : {1}\n", entry.Key, !entry.Value.Equals(null));
+        }
         return ret;
     }
 
