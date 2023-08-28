@@ -90,7 +90,7 @@ public class LevelGene {
         int fail = 0;
         for (int i = 0; i < num_feat; i++){
             // FurnitureData furnitureData = LevelGene.furnitureLibrary.GetRandomFurnitureByMultipleType("Basic", "Minimalist");
-            FurnitureData furnitureData = LevelGene.furnitureLibrary.GetFurniture("ottoman_Modern");
+            FurnitureData furnitureData = LevelGene.furnitureLibrary.GetFurniture("armChair2_Modern");
             // Debug.Log(furnitureData);
             // Debug.Log(furnitureData.ToString());
             Feature feat = null;
@@ -460,7 +460,7 @@ public class LevelGene {
         // Adds a new item
             case 1:
                 // FurnitureData furnitureData = LevelGene.furnitureLibrary.GetRandomFurnitureByMultipleType("Basic", "Minimalist");
-                FurnitureData furnitureData = LevelGene.furnitureLibrary.GetFurniture("ottoman_Modern");
+                FurnitureData furnitureData = LevelGene.furnitureLibrary.GetFurniture("armChair2_Modern");
                 // Debug.Log(furnitureData.ToString());
                 Feature feat = null;
                 if (furnitureData != null)
