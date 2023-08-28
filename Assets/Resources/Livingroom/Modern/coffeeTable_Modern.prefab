@@ -22,7 +22,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: d244dad29fa8943178bcaf3b148e16fa, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -4.69
+      value: 0.78
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: d244dad29fa8943178bcaf3b148e16fa, type: 3}
       propertyPath: m_LocalPosition.y
@@ -30,7 +30,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: d244dad29fa8943178bcaf3b148e16fa, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -0.82
+      value: -0.32
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: d244dad29fa8943178bcaf3b148e16fa, type: 3}
       propertyPath: m_LocalRotation.w
@@ -62,7 +62,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: d244dad29fa8943178bcaf3b148e16fa, type: 3}
       propertyPath: m_Name
-      value: coffeeTable
+      value: coffeeTable_Modern
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
