@@ -130,8 +130,22 @@
             "models":[
                 "middle_table"
             ]
-        }
+        },
+        "standing_lamp" : {
+            "name": "standing_lamp",
+            "dimensions": [1, 1],
+            "constraints": [
+                "not_against_wall"
+            ],
+            "tags": [
+                "unique"
+            ],
+            "models":[
+                "middle_table"
+            ]
+        }        
     },
+    
     "Minimalist" : {
         "armchair1" : {
             "name": "armchair1",
