@@ -89,8 +89,8 @@ public class LevelGene {
         LevelGene randomLevel = new LevelGene(dims);
         int fail = 0;
         for (int i = 0; i < num_feat; i++){
-            FurnitureData furnitureData = LevelGene.furnitureLibrary.GetRandomFurnitureByMultipleType("Basic", "Minimalist");
-            // FurnitureData furnitureData = LevelGene.furnitureLibrary.GetFurniture("armchair");
+            // FurnitureData furnitureData = LevelGene.furnitureLibrary.GetRandomFurnitureByMultipleType("Basic", "Minimalist");
+            FurnitureData furnitureData = LevelGene.furnitureLibrary.GetFurniture("glassTable");
             // Debug.Log(furnitureData);
             // Debug.Log(furnitureData.ToString());
             Feature feat = null;
@@ -351,16 +351,6 @@ public class LevelGene {
         return fitness;
     }
 
-    bool ValidateSelf(){ // n^2 complexity
-        return true;
-    }
-
-
-    public bool FeatureIsWithinBounds(Feature feat){
-
-        return false;
-    }
-
     bool CheckNoOverlaps(Feature feat){
         bool ret = true;
         foreach (Feature f in features){
@@ -469,8 +459,8 @@ public class LevelGene {
 
         // Adds a new item
             case 1:
-                FurnitureData furnitureData = LevelGene.furnitureLibrary.GetRandomFurnitureByMultipleType("Basic", "Minimalist");
-                // FurnitureData furnitureData = LevelGene.furnitureLibrary.GetFurniture("armchair");
+                // FurnitureData furnitureData = LevelGene.furnitureLibrary.GetRandomFurnitureByMultipleType("Basic", "Minimalist");
+                FurnitureData furnitureData = LevelGene.furnitureLibrary.GetFurniture("glassTable");
                 // Debug.Log(furnitureData.ToString());
                 Feature feat = null;
                 if (furnitureData != null)
