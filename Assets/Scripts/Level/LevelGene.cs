@@ -89,8 +89,8 @@ public class LevelGene {
         LevelGene randomLevel = new LevelGene(dims);
         int fail = 0;
         for (int i = 0; i < num_feat; i++){
-            // FurnitureData furnitureData = LevelGene.furnitureLibrary.GetRandomFurnitureByMultipleType("Basic", "Minimalist");
-            FurnitureData furnitureData = LevelGene.furnitureLibrary.GetFurniture("sideTable_Modern");
+            FurnitureData furnitureData = LevelGene.furnitureLibrary.GetRandomFurnitureByMultipleType("Basic", "Minimalist", "Modern");
+            // FurnitureData furnitureData = LevelGene.furnitureLibrary.GetFurniture("sideTable_Modern");
             // Debug.Log(furnitureData);
             // Debug.Log(furnitureData.ToString());
             Feature feat = null;
@@ -459,8 +459,8 @@ public class LevelGene {
 
         // Adds a new item
             case 1:
-                // FurnitureData furnitureData = LevelGene.furnitureLibrary.GetRandomFurnitureByMultipleType("Basic", "Minimalist");
-                FurnitureData furnitureData = LevelGene.furnitureLibrary.GetFurniture("sideTable_Modern");
+                FurnitureData furnitureData = LevelGene.furnitureLibrary.GetRandomFurnitureByMultipleType("Basic", "Minimalist", "Modern");
+                // FurnitureData furnitureData = LevelGene.furnitureLibrary.GetFurniture("sideTable_Modern");
                 // Debug.Log(furnitureData.ToString());
                 Feature feat = null;
                 if (furnitureData != null)

@@ -7,7 +7,7 @@
             "end_table",
             "coffeeTable",
             "ottoman",
-            "tvStand",
+            "tvStand"
         ],
         "Minimalist": [
             "armchair1",
@@ -18,7 +18,7 @@
             "fireplace",
             "glassTable",
             "roundTable",
-            "tvStand",
+            "tvStand"
         ],
         "Modern": [
             "armChair1_Modern",
@@ -28,9 +28,8 @@
             "couch2_Modern",
             "ottoman_Modern",
             "sideTable_Modern",
-            "speakers",
             "tvStandMedium",
-            "tvStandSmall",
+            "tvStandSmall"
         ]
     },
 
@@ -53,7 +52,7 @@
                 "name": "armchair",
                 "dimensions": [2, 2],
                 "constraints": [
-                    "face_far_from_wall", 
+                    "face_far_from_wall",
                     "space_in_front"
                 ],
                 "tags": [
@@ -233,8 +232,8 @@
                 "not_against_wall"
             ],
             "tags": [
-                "unique",
-                
+                "unique"
+
             ],
             "models":[
                 "middle_table"
@@ -355,7 +354,7 @@
             "constraints": [
                 "back_against_wall"
             ],
-            "tags": [  
+            "tags": [
             ],
             "models":[
             ]
